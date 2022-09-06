@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="icon" href="img/logo.ico">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Administración</title>
+</head>
+
+<body>
+    <!-- FONDO -->
+    <div class="fond-pink">
+    </div>
+    <div class="fond-blue">
+    </div>
+
+    <!-- LOGIN -->
+    <header>
+        <div class="container">
+            <div class="container-flex">
+
+                <!-- CAJA 1 -->
+                <div class="caja1">
+                    <div class="checked-flex">
+                        <p>Pizza Bohemia</p>
+                    </div>
+                    <div class="caja1-titulo">
+                        <h1>Administración</h1>
+                    </div>
+                    <div class="selectForm">
+                        <div class="select-i">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAJA 2 -->
+                <div class="caja2">
+                    <form action="validar.php" id="Form" method="post">
+                        <div class="form-flex">
+                            <label for="nombre" class="texto">Usuario</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Nombre Completo" required>
+                        </div>
+
+                        <div class="form-flex">
+                            <label for="contra" class="texto">Contraseña</label>
+                            <input type="password" id="contra" name="contra" placeholder="Contraseña" required>
+                        </div>                     
+
+                        <input type="submit" value="Iniciar Sesión" class="boton">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+
+</html>
