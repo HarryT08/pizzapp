@@ -1,0 +1,21 @@
+{
+  "name": "pizzapp",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "frontend-react"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarryT08/pizzapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HarryT08/pizzapp/issues"
+  },
+  "homepage": "https://github.com/HarryT08/pizzapp#readme"
+}

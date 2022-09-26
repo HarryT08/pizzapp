@@ -1,0 +1,52 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node -r module-alias/register build/index.js",
+    "dev": "nodemon src/index.ts",
+    "debug": "node --inspect -r ts-node/register  -r tsconfig-paths/register src/index.ts",
+    "build": "rimraf build && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarryT08/pizzapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HarryT08/pizzapp/issues"
+  },
+  "homepage": "https://github.com/HarryT08/pizzapp#readme",
+  "description": "",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
+    "mysql2": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.10"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "nodemon": "^2.0.20",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.0",
+    "typescript": "^4.8.3"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "node_modules/",
+      "build/"
+    ],
+    "exec": "node -r ts-node/register -r tsconfig-paths/register",
+    "watch": [
+      "src/"
+    ],
+    "ext": ".ts"
+  }
+}
