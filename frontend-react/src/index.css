@@ -1,70 +1,144 @@
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+* {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+@layer components {
+  /* Estados */
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+  .Terminado {
+    @apply bg-verde-profundo/20 rounded-md p-1 text-center
+    text-verde-profundo;
   }
-  a:hover {
-    color: #747bff;
+
+  .Pendiente {
+    @apply bg-naranja-vivido/20 rounded-md p-1 text-center
+    text-naranja-vivido;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .Cancelado {
+    @apply bg-rojo-fuerte/20 rounded-md p-1 text-center
+    text-rojo-fuerte;
+  }
+
+  /* Boton */
+
+  .btn {
+    @apply rounded-lg py-2 px-8
+    border-2 border-azul-marino/20 bg-azul-marino/20
+    text-azul-marino font-bold transition duration-300 ease-in-out
+
+    hover:bg-azul-marino hover:text-white;
+  }
+
+  /* Cards */
+  .card-producto {
+    @apply rounded-lg shadow-2xl drop-shadow-3xl bg-white w-80;
+  }
+  .container-img {
+    @apply w-full h-48;
+  }
+  .card-body {
+    @apply flex flex-col items-center
+    p-3;
+  }
+
+  /* Modal */
+  .overlay {
+    @apply w-screen h-screen fixed top-0 left-0 bg-black/50 flex items-center justify-center p-10 z-10;
+  }
+  .container-modal {
+    @apply w-[35rem] h-[42rem]  bg-white rounded-lg relative shadow-[rgba(100,100,111,0.2)] p-5;
+  }
+
+  .header-modal {
+    @apply flex items-center justify-between mb-5 pb-5 border-b-2 border-[#e8e8e8];
+  }
+
+  .btn-close {
+    @apply  border-none bg-none transition duration-200 ease-in rounded-md text-rojo-fuerte
+    hover:bg-rojo-fuerte hover:text-white text-xl;
+  }
+  .editar {
+    @apply rounded-lg py-2 px-3
+    border-2 border-naranja-vivido/20 bg-naranja-vivido/20
+    text-naranja-vivido font-bold text-sm transition duration-300 ease-in-out
+
+    hover:bg-naranja-vivido hover:text-white;
+  }
+  .eliminar {
+    @apply rounded-lg py-2 px-3
+    border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20
+    text-rojo-fuerte font-bold text-sm transition duration-300 ease-in-out
+
+    hover:bg-rojo-fuerte hover:text-white;
+  }
+
+  /* File styles */
+  .drop-file-input {
+    @apply relative w-full h-52
+    flex items-center justify-center
+    border-2 border-dashed border-gray-400
+    border-azul-marino/20 bg-azul-marino/20;
+  }
+
+  .drop-file-input input {
+    @apply top-0 left-0
+    absolute
+    w-full h-full
+    opacity-0 cursor-pointer
+
+    hover:opacity-5;
+  }
+
+  .drop-file-input__label {
+    @apply
+    p-2 w-36
+    text-azul-marino
+    font-bold text-center;
+  }
+  .drop-file-input__label p{
+    @apply
+    text-sm
+  }
+
+  .drop-file-preview {
+    @apply mt-3;
+  }
+
+  .drop-file-preview p {
+    @apply
+    font-semibold;
+  }
+  .drop-file-preview__title {
+    @apply mb-3;
+  }
+
+  .drop-file-preview__item {
+    @apply
+    relative flex justify-between mb-2
+    bg-slate-200
+    p-4 rounded-3xl;
+  }
+
+  .drop-file-preview__item img {
+    @apply w-12 mr-5;
+  }
+
+  .drop-file-preview__item__info {
+    @apply
+    flex flex-col justify-between
+  }
+
+  .drop-file-preview__item:hover .drop-file-preview__item__del {
+    @apply
+    opacity-100;
   }
 }
