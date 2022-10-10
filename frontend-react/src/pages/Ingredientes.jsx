@@ -1,6 +1,5 @@
 import { useStateContext } from '../context/ContextProvider';
 import { FiSearch } from "react-icons/fi";
-import BotonModal from "../components/modals/BotonModal";
 import Swal from "sweetalert2";
 import ModalIngredientes from '../components/modals/ModalIngredientes';
 

@@ -257,6 +257,34 @@ export const dataOrdenes = [
   }
 ]
 
+export const dataCuentas = [
+  {
+    id: 1,
+    nombre: 'Harold Rueda',
+    cargo: 'Administrador',
+  },
+  {
+    id: 2,
+    nombre: 'Edwin Torrado',
+    cargo: 'Mesero',
+  },
+  {
+    id: 3,
+    nombre: 'Felipe Alferez',
+    cargo: 'Mesero',
+  },
+  {
+    id: 4,
+    nombre: 'Antonio Acevedo',
+    cargo: 'Mesero',
+  },
+  {
+    id: 5,
+    nombre: 'Cristian Torres',
+    cargo: 'Cocinero',
+  },
+]
+
 export const dataIngredientes = [
   {
     id:1,
