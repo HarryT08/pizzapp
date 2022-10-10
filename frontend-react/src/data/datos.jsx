@@ -134,6 +134,129 @@ export const dataProductos = [
   }
 ]
 
+export const dataOrdenes = [
+  {
+    id: 1,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 2,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Pendiente'
+  },
+  {
+    id: 3,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 4,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 5,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Cancelado'
+  },
+  {
+    id: 6,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 7,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Pendiente'
+  },
+  {
+    id: 8,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 9,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Cancelado'
+  },
+  {
+    id: 10,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Pendiente'
+  },
+  {
+    id: 11,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 12,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Pendiente'
+  },
+  {
+    id: 13,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 14,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 15,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Cancelado'
+  },
+  {
+    id: 16,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 17,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Pendiente'
+  },
+  {
+    id: 18,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Terminado'
+  },
+  {
+    id: 19,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Cancelado'
+  },
+  {
+    id: 20,
+    fecha: '30-09-2022',
+    total: '$150000',
+    estado: 'Pendiente'
+  }
+]
+
 export const dataIngredientes = [
   {
     id:1,

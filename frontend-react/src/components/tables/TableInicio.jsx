@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -20,32 +19,6 @@ const rows = [
 ];
 
 const TableInicio = () => {
-  /* const [data, setData] = useState(userRows);
-
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
-  };
-
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 130,
-      renderCell: (params) => {
-        return (
-          <div className="flex gap-2">
-              <div className="editar"><AiFillEdit/></div>
-            <div
-              className="eliminar"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              <AiFillDelete/>
-            </div>
-          </div>
-        );
-      },
-    },
-  ]; */
 
   return (
     <>
@@ -117,14 +90,3 @@ const TableInicio = () => {
 };
 
 export default TableInicio;
-{
-  /* <DataGrid
-    className="datagrid"
-    rows={data}
-    columns={userColumns.concat(actionColumn)}
-    field={{backgroundColor: 'red'}}
-    pageSize={9}
-    rowsPerPageOptions={[9]}
-    checkboxSelection
-  /> */
-}
