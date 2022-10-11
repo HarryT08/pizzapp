@@ -1,15 +1,9 @@
 import 'reflect-metadata';
-import express from 'express';
+import {App} from './app';
 
-const app = express();
+async function main(){
+    const app = new App();
+    app.listen();
+}
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-const port = process.env.PORT || 4000;
-
-app.listen(port, () => {
-  console.log('Server started on port ' + port);
-});
-
+main();

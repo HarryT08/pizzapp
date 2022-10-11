@@ -21,11 +21,14 @@
   "homepage": "https://github.com/HarryT08/pizzapp#readme",
   "description": "",
   "dependencies": {
+    "@types/morgan": "^1.9.3",
+    "@types/mysql2": "github:types/mysql2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
+    "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.10"
