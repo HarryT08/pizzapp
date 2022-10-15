@@ -1,10 +1,10 @@
 import { Router } from 'express';
 const router = Router();
 
-import { getProducts } from '../controllers/products-controller';
+import { getMesas } from '../controllers/mesas-controller';
 
 router.route('/')
-    .get(getProducts)
+    .get(getMesas)
     .post()
     .put()
     .delete();
