@@ -6,7 +6,7 @@ export async function connect(){
         user: 'artdev',
         password: 'desarrollo2022*',
         database: 'pizzapp',
-        connectionLimit: 10,
+        connectionLimit: 10
     });
     return connection;
 }
