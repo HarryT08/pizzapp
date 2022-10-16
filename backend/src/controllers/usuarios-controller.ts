@@ -1,13 +1,13 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
+import { User } from "../entities/User";
 
-import { connect } from '../database';
-
-export async function getUsuarios(req: Request, res: Response): Promise<Response>{
-    const conn = await connect();
-    const usuarios = await conn.query("SELECT * FROM usuarios");
-    return res.send(usuarios[0]);
-}
-
-export async function getUsuario(req: Request, res: Response): Promise<Response>{
-    return res.send('USUARIO ID');
+/*
+Metodo para hacer insercciones de usuarios en la base de datos, usando el ORM de typeorm
+*/
+export function createUser(req: Request, res: Response): Response {
+  console.log(req.body);
+  const { username, password, cedula, idRol } = req.body;
+  const user = new User(cedula, idRol, username, password);
+  user.save();
+  return res.send(req.body);
 }
