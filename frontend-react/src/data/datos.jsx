@@ -30,42 +30,37 @@ import tomates from '../assets/img/ingredientes/tomates.jpg';
 
 export const dataSidebar = [
   {
-    path: "/inicio",
+    path: "inicio",
     titulo: "Inicio",
     icon: <AiFillHome />,
   },
   {
-    path: "/productos",
+    path: "productos",
     titulo: "Productos",
     icon: <IoMdPizza />,
   },
   {
-    path: "/ingredientes",
+    path: "ingredientes",
     titulo: "Ingredientes",
     icon: <ImSpoonKnife />,
   },
   {
-    path: "/ordenes",
+    path: "ordenes",
     titulo: "Ordenes",
     icon: <FaClipboardList />,
   },
   {
-    path: "/cuentas",
+    path: "cuentas",
     titulo: "Cuentas",
     icon: <BsPeopleFill />,
   },
   {
-    path: "/mesas",
+    path: "mesas",
     titulo: "Mesas",
     icon: <GiTabletopPlayers />,
   },
   {
-    path: "/reservas",
-    titulo: "Reservas",
-    icon: <GiNotebook />,
-  },
-  {
-    path: "/facturar",
+    path: "facturar",
     titulo: "Facturar",
     icon: <GiPaperBagFolded />,
   },
