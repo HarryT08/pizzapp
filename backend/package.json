@@ -21,8 +21,10 @@
   "homepage": "https://github.com/HarryT08/pizzapp#readme",
   "description": "",
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/morgan": "^1.9.3",
     "@types/mysql2": "github:types/mysql2",
+    "bcrypt": "^5.1.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",

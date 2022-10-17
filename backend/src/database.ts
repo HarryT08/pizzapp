@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { User } from './entities/User';
+import { Persona } from './entities/Persona';
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
@@ -7,7 +8,7 @@ export const AppDataSource = new DataSource({
     username: 'artdev',
     password: 'desarrollo2022*',
     database: 'pizzapp',
-    entities: [User]
+    entities: [User,Persona]
 })
 
 

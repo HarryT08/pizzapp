@@ -1,14 +1,14 @@
 import { Router } from 'express';
 const router = Router();
-import { createUser } from '../controllers/usuarios-controller';
+import { createUser, getUsers, getUserByPhone } from '../controllers/usuarios-controller';
 
 router.route('/')
-    .get((req, res) => { res.send('Hello World!') })
+    .get(getUsers)
     .post(createUser)
     .put()
     .delete();
 
-router.route('/:id')
-    // .get(getUsuario);
+router.route('/:username')
+    .get(getUserByPhone);
 
 export default router;

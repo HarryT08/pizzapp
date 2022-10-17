@@ -20,11 +20,7 @@ export class User extends BaseEntity{
   @Column()
   password : string
 
-  constructor(cedula : number, idRol: number, username : string, password : string) {
+  constructor() {
     super();
-    this.cedula = cedula;
-    this.idRol = idRol;
-    this.username = username;
-    this.password = password;
   }
 }

@@ -2,9 +2,10 @@ import express, {Application} from 'express';
 import morgan from 'morgan';
 
 //Importación de rutas 
-import productsRoutes from './routes/products-routes';
+import productsRoutes from './routes/productos-routes';
 import mesasRoutes from './routes/mesas-routes';
 import usuariosRoutes from './routes/usuarios-routes';
+import personasRoutes from './routes/personas-routes';
 
 export class App{
 
@@ -30,6 +31,7 @@ export class App{
         this.app.use('/productos',productsRoutes);
         this.app.use('/mesas',mesasRoutes);
         this.app.use('/usuarios',usuariosRoutes);
+        this.app.use('/personas',personasRoutes);
     }
 
     async listen(){
