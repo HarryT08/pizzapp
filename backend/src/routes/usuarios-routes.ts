@@ -1,6 +1,6 @@
 import { Router } from 'express';
 const router = Router();
-import { createUser, getUsers, getUserByPhone } from '../controllers/usuarios-controller';
+import { createUser, getUsers, getUserByPhone, login } from '../controllers/usuarios-controller';
 
 router.route('/')
     .get(getUsers)
@@ -9,6 +9,9 @@ router.route('/')
     .delete();
 
 router.route('/:username')
-    .get(getUserByPhone);
+    .get(getUserByPhone)
 
+router.route('/login')
+    .post(login)
+    
 export default router;

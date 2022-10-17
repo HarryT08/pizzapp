@@ -23,4 +23,11 @@ export class User extends BaseEntity{
   constructor() {
     super();
   }
+  
+  init(cedula : number , idRol : number, username : string, password : string){
+    this.cedula = cedula;
+    this.idRol = idRol;
+    this.username = username;
+    this.password = password;
+  }
 }
