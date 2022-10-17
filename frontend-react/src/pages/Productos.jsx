@@ -1,29 +1,11 @@
-import { useState } from "React"
 import { useStateContext } from '../context/ContextProvider';
 import { FiSearch } from "react-icons/fi";
 import BotonModal from "../components/modals/BotonModal";
-import { dataProductos } from "../data/datos";
 import Swal from "sweetalert2";
 
 const Productos = () => {
 
-  const { handleDelete, data} = useStateContext();
-
-  const [state, setState] = useState({
-    query: "",
-    list: []
-  });
-
-  const handleChange = (e) => {
-    const results = dataProductos.filter((item) => {
-      if(e.target.value === "") return dataProductos;
-      return item.nombre.toLowerCase().includes(e.target.value.toLowerCase());
-    })
-    setState({
-      query: e.target.value,
-      list: results
-    });
-  }
+  const { handleDelete, data,search,setSearch} = useStateContext();
 
   const showAlert = (id) => {
     Swal.fire({
@@ -51,8 +33,11 @@ const Productos = () => {
           <div className="relative flex items-center text-gray-400 focus-within:text-azul-marino border-2 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino">
             <input
               type="text"
-              onChange={handleChange} value={state.query}
               placeholder="Busqueda"
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
               className="px-3 py-2 placeholder-gray-500 text-black rounded-lg border-none focus:outline-none"
             />
             <FiSearch className="w-5 h-5 mr-3" />
@@ -67,19 +52,17 @@ const Productos = () => {
 
       <div className="mt-8">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
-          {/*  <ul>
-            {(state.query === ' ' ? "Ninguna publicación coincide con la consulta" : !state.list.length ? 'No se encontro ninguna consulta' : state.list.map((item) => {
-              return (
-                <li key={item.id} className="flex flex-col items-center gap-3">
-                  <img src={item.img} alt={item.nombre} className="w-32 h-32" />
-                  <p className="text-center text-azul-marino font-bold">{item.nombre}</p>
-                  <p className="text-center text-azul-marino font-bold">{item.precio}</p>
-                  <button onClick={() => showAlert(item.id)} className="bg-azul-marino text-white font-bold py-2 px-4 rounded-full">Eliminar</button>
-                </li>
-              )
-            }))}
-          </ul> */}
-          {data.map((item) => (
+          {data
+            .filter((val) => {
+              if (search === "") {
+                return val;
+              } else if (
+                val.nombre.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return val;
+              }
+            })
+            .map((item) => (
               <div key={item.id} className="card-producto">
                 <div className="container-img">
                   <img
