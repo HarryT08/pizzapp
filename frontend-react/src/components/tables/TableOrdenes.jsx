@@ -28,6 +28,7 @@ const TableOrdenes = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [dataOrders, setDataOrders] = useState(dataOrdenes);
 
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -65,6 +66,12 @@ const TableOrdenes = () => {
       }
     });
   };
+
+  const ordernarUltimos = () => {
+    return dataOrders.sort((a,b) => {
+      return b.id - a.id;
+    })
+  }
 
   return (
     <>
@@ -119,7 +126,7 @@ const TableOrdenes = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {dataOrders
+              {ordernarUltimos()
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item) => (
                   <TableRow key={item.id}>

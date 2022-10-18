@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,6 +20,14 @@ const rows = [
 ];
 
 const TableInicio = () => {
+
+  const [order, setOrder] = useState(rows);
+
+  const ordernarUltimos = () => {
+    return order.sort((a,b) => {
+      return b.id - a.id;
+    })
+  }
 
   return (
     <>
@@ -70,7 +79,7 @@ const TableInicio = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {ordernarUltimos().map((row) => (
               <TableRow
                 key={row.id}
               >
