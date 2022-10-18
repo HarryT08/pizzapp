@@ -66,7 +66,7 @@ const Productos = () => {
       <div className="mt-8">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
           {filterData().length === 0 ? 
-            "No hay datos"
+            "No se encontraron productos"
           :
           filterData().map((item) => (
             <div key={item.id} className="card-producto">
