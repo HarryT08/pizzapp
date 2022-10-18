@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../entities/User";
+import { Persona } from "../entities/Persona";
+import { Rol } from "../entities/Rol";
 import bcrypt from "bcrypt";
 
 /*
@@ -8,11 +10,15 @@ Metodo para hacer insercciones de usuarios en la base de datos, usando el ORM de
 export const createUser = async (req: Request, res: Response) => {  
   try {
     
-    let { username, password, cedula, idRol } = req.body;
+    let { username, password, cedula, idRol, nombre, apellido, celular } = req.body;
     //Encriptar la contraseña
     password = bcrypt.hashSync(password, 10);  
     const user = new User();
-    user.init(username, password, cedula, idRol);
+    const persona = new Persona();
+    const rol = new Rol();
+    persona.init(cedula, nombre, apellido, celular);
+    rol.init(idRol, "");
+    user.init(cedula, rol, username, password, persona);
     await user.save();
     return res.send(req.body);
   } catch (error) {
@@ -21,9 +27,12 @@ export const createUser = async (req: Request, res: Response) => {
   }
 }
 
+/*
+Metodo para buscar todos los usuarios, usando el ORM de typeorm
+*/
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.find();
+    const users = await User.find({relations: ["rol", "persona"]});
     return res.json(users);
   } catch (error) {
     if (error instanceof Error)
@@ -31,16 +40,9 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 }
 
-export const getUserByPhone = async (req: Request, res: Response) => {
-  try {
-    const user = await User.findOneBy(req.params);
-    return res.json(user);
-  } catch (error) {
-    if(error instanceof Error)
-      return res.status(500).json({message: error.message});
-  }
-}
-
+/*
+Metodo para buscar un usuario y si este existe comprobar la contraseña y retornar el mensaje
+*/
 export const login = async (req: Request, res: Response) => {
   try {
     let { username, password } = req.body;

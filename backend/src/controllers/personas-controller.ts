@@ -15,6 +15,9 @@ export const createPersona = async (req: Request, res: Response) => {
     return res.send(req.body);
 }
 
+/*
+Metodo para buscar una persona por su cedula, usando el ORM de typeorm
+*/
 export function findByCedula(req: Request, res: Response): Response {  
     return res.send(req.body);
 }

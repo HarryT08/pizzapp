@@ -23,4 +23,11 @@ export class Persona extends BaseEntity{
     constructor() {
         super();        
     }
+
+    init(cedula: number, nombre: string, apellido: string, celular: string){
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.celular = celular;
+    }
 }

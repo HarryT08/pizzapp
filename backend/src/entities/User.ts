@@ -2,32 +2,43 @@ import {
   PrimaryColumn,
   Column,
   Entity,
-  BaseEntity
+  BaseEntity,
+  OneToOne,
+  JoinColumn
 } from 'typeorm';
+
+import { Persona } from './Persona';
+import { Rol } from "./Rol";
 
 @Entity('usuario')
 export class User extends BaseEntity{   
- 
+
   @PrimaryColumn()
-  cedula : number
+  cedula : number;
 
   @Column()
-  idRol : number
+  username : string;
 
   @Column()
-  username : string
+  password : string;
 
-  @Column()
-  password : string
+  @OneToOne(() => Persona, {cascade: ["insert", "update"]})
+  @JoinColumn({name: 'cedula'})
+  persona: Persona;
+
+  @OneToOne(() => Rol)
+  @JoinColumn({name: "idRol"})
+  rol: Rol;
 
   constructor() {
     super();
   }
   
-  init(cedula : number , idRol : number, username : string, password : string){
+  init(cedula : number , rol: Rol, username : string, password : string, persona: Persona){
     this.cedula = cedula;
-    this.idRol = idRol;
     this.username = username;
     this.password = password;
+    this.rol = rol;
+    this.persona = persona;
   }
 }
