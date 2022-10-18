@@ -71,7 +71,7 @@ const FormLogin = () => {
         )}
         <button
           type="submit"
-          className="w-full block text-center bg-naranja-vivido border-2 border-naranja-vivido hover:bg-white hover:text-naranja-vivido rounded-md text-white font-semibold text-14 2xl:text-2xl px-3 py-2 mt-6"
+          className="w-full block text-center bg-naranja-vivido border-2 border-naranja-vivido hover:bg-white hover:text-naranja-vivido rounded-md text-white font-semibold text-14 2xl:text-2xl px-3 py-2 mt-6 transition duration-300 ease-in-out"
         >
           Iniciar sesion
         </button>
