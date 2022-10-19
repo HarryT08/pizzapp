@@ -6,7 +6,7 @@ import {
   OneToOne,
   JoinColumn
 } from 'typeorm';
-
+import bcrypt from "bcrypt";
 import { Persona } from './Persona';
 import { Rol } from "./Rol";
 
@@ -32,7 +32,7 @@ export class User extends BaseEntity{
 
   constructor() {
     super();
-  }
+  } 
   
   init(cedula : number , rol: Rol, username : string, password : string, persona: Persona){
     this.cedula = cedula;
@@ -40,5 +40,14 @@ export class User extends BaseEntity{
     this.password = password;
     this.rol = rol;
     this.persona = persona;
+  }
+
+  encryptPassword (password : string) : string {
+    const encryptPassword = bcrypt.hashSync(password, 10);
+    return encryptPassword;
+  }
+
+  validatePassword (password : string) : boolean {
+    return bcrypt.compareSync(password, this.password);
   }
 }

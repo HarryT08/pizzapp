@@ -7,10 +7,7 @@ Metodo para hacer insercciones de personas en la base de datos, usando el ORM de
 export const createPersona = async (req: Request, res: Response) => {  
     let { cedula, nombre, apellido, celular } = req.body;
     const persona = new Persona();
-    persona.cedula = cedula;
-    persona.nombre = nombre;
-    persona.apellido = apellido;
-    persona.celular = celular;
+    persona.init(cedula, nombre, apellido, celular);
     await persona.save();
     return res.send(req.body);
 }
