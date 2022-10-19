@@ -1,8 +1,15 @@
 import { DataSource } from 'typeorm';
-import { User } from './entities/User';
-import { Persona } from './entities/Persona';
-import { Rol } from './entities/Rol';
+import { Comanda } from './entities/Comanda';
+import { DetalleComanda } from './entities/DetalleComanda';
+import { Domicilio } from './entities/Domicilio';
+import { MateriaPrima } from './entities/MateriaPrima';
 import { Mesa } from './entities/Mesa';
+import { Persona } from './entities/Persona';
+import { Preparacion } from './entities/Preparacion';
+import { Producto } from './entities/Producto';
+import { Rol } from './entities/Rol';
+import { User } from './entities/User';
+
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
@@ -10,7 +17,8 @@ export const AppDataSource = new DataSource({
     username: 'artdev',
     password: 'desarrollo2022*',
     database: 'pizzapp',
-    entities: [User,Persona,Rol, Mesa]
+    entities: [Comanda, DetalleComanda, Domicilio, MateriaPrima, Mesa, 
+                Persona, Preparacion, Producto, Rol, User]
 })
 
 

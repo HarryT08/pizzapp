@@ -2,8 +2,10 @@ import {
     PrimaryColumn,
     Column,
     Entity,
-    BaseEntity
+    BaseEntity,
+    OneToMany
 } from 'typeorm';
+import { Domicilio } from './Domicilio';
 
 @Entity('persona')
 export class Persona extends BaseEntity{
@@ -19,6 +21,9 @@ export class Persona extends BaseEntity{
 
     @Column()
     celular: string;
+
+    @OneToMany(() => Domicilio, (domicilio) => domicilio.persona)
+    domicilios: Domicilio[];
 
     constructor() {
         super();        
