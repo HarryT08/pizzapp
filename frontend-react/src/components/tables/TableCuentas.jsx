@@ -45,7 +45,7 @@ const TableCuentas = () => {
     contraseña: "",
     usuario: "",
     cedula: "",
-    telefono: "",
+    celular: "",
   });
 
   const handleChange = (e) => {
@@ -75,9 +75,13 @@ const TableCuentas = () => {
     e.preventDefault();
     try {
       let cedu = usuario.cedula
-      const response = await instance.get(`/personas/${cedu}`);
-      // return setUsuario(response.data);
-      console.log(response)
+      if(cedu.length >= 1){
+        const response = await instance.get(`/personas/${cedu}`);
+        if(response.data){          
+          return setUsuario(response.data);
+        }
+      }
+      return setUsuario({nombre: "", apellido: "", cedula: "", celular: ""})
     } catch (err) {
       console.log(err);
     }
@@ -182,6 +186,7 @@ const seleccionarUsuario = (user, caso) => {
               onChange={handleChange}
               value={usuario.nombre}
               className="inp"
+              disabled={usuario.nombre.length >= 1 ? true : false}
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -190,15 +195,18 @@ const seleccionarUsuario = (user, caso) => {
               type="text"
               name="apellido"
               onChange={handleChange}
+              value={usuario.apellido}
               className="inp"
+              disabled={usuario.apellido.length >= 1 ? true : false}
             />
           </div>
           <div className="flex flex-col mt-2">
             <label className="font-semibold text-lg md:text-base">Telefono</label>
             <input
               type="text"
-              name="telefono"
+              name="celular"
               onChange={handleChange}
+              value={usuario.celular}
               className="inp"
             />
           </div>
