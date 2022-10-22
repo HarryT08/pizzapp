@@ -46,6 +46,7 @@ const TableCuentas = () => {
     usuario: "",
     cedula: "",
     celular: "",
+    found: false,
   });
 
   const handleChange = (e) => {
@@ -78,7 +79,10 @@ const TableCuentas = () => {
       if(cedu.length >= 1){
         const response = await instance.get(`/personas/${cedu}`);
         if(response.data){          
-          return setUsuario(response.data);
+          return setUsuario({
+            ...response.data,
+            found: true,
+          });
         }
       }
       return setUsuario({nombre: "", apellido: "", cedula: "", celular: ""})
@@ -176,6 +180,7 @@ const seleccionarUsuario = (user, caso) => {
               onChange={handleChange}
               onBlur={getPerson}
               className="inp"
+              required
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -186,7 +191,8 @@ const seleccionarUsuario = (user, caso) => {
               onChange={handleChange}
               value={usuario.nombre}
               className="inp"
-              disabled={usuario.nombre.length >= 1 ? true : false}
+              disabled = { usuario.found }
+              required
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -197,7 +203,8 @@ const seleccionarUsuario = (user, caso) => {
               onChange={handleChange}
               value={usuario.apellido}
               className="inp"
-              disabled={usuario.apellido.length >= 1 ? true : false}
+              disabled = { usuario.found }
+              required
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -208,6 +215,7 @@ const seleccionarUsuario = (user, caso) => {
               onChange={handleChange}
               value={usuario.celular}
               className="inp"
+              required
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -219,6 +227,7 @@ const seleccionarUsuario = (user, caso) => {
               name="contraseña"
               onChange={handleChange}
               className="inp"
+              required
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -228,6 +237,7 @@ const seleccionarUsuario = (user, caso) => {
               name="usuario"
               onChange={handleChange}
               className="inp"
+              required
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -236,8 +246,9 @@ const seleccionarUsuario = (user, caso) => {
               name="cargo"
               onChange={handleChange}
               className="inp"
+              required
             >
-              <option value="todos" className="text-black bg-white">
+              <option disabled className="text-black bg-white">
                 Selecciona el cargo
               </option>
               <option value="mesero" className="text-black bg-white">

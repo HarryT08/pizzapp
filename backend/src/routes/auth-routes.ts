@@ -12,6 +12,5 @@ router.route('/login')
 
 router.route('/proof')
     .get(verifyToken, pruebaToken)
-
-
+    
 export default router;
