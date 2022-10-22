@@ -10,25 +10,18 @@ const FormLogin = () => {
 
   const navigate = useNavigate();
 
-  const iniciarSesion = (e) => {
+  const iniciarSesion = async (e) => {
     e.preventDefault();
-    instance
-      .post("/usuarios/login", {
+    try {
+      await instance.post("/usuarios/login", {
         username: username,
         password: password,
       })
-      .then((response) => {
-        if (response.status === 200) {
-          navigate("/dashboard/");
-        }
-      })
-      .catch((err) => {
-        console.log("Esto es un error", err.response.status);
-        if (err.response.status === 404) {
-          setError(true);
-        }
-      });
-    console.log(username, password);
+      navigate("/dashboard/");
+    } catch (err) {
+      console.log(err);
+      setError(true);
+    }
   };
 
   return (
