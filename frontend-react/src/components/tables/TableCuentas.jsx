@@ -141,9 +141,9 @@ const TableCuentas = () => {
       if (result.isConfirmed) {
         Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
         instance
-          .delete(`${baseURL}/${id}`)
+          .delete(`usuarios/${id}`)
           .then((response) => {
-            setData(data.filter((usuario) => usuario.id !== id));
+            getUsers();
           })
           .catch((error) => {
             console.log(error);
@@ -426,7 +426,7 @@ const seleccionarUsuario = (user, caso) => {
                       <AiTwotoneDelete
                         size={25}
                         className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
-                        onClick={() => deleteUser(item.id)}
+                        onClick={() => deleteUser(item.cedula)}
                       />
                     </div>
                   </TableCell>

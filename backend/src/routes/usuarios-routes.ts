@@ -1,12 +1,14 @@
 import { Router } from 'express';
 const router = Router();
-import { createUser, getUsers } from '../controllers/usuarios-controller';
+import { createUser, getUsers, deleteUser } from '../controllers/usuarios-controller';
 
 router.route('/')
     .get(getUsers)
     .post(createUser)
-    .put()
-    .delete();
+    .put();
+
+router.route('/:cedula')
+    .delete(deleteUser);
 
 /*
 router.route('/login')

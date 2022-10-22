@@ -42,3 +42,16 @@ export const getUsers = async (req: Request, res: Response) => {
       return res.status(500).json({message: error.message});
   }
 }
+
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const {cedula} = req.params;
+    const result = await User.delete({cedula: parseInt(cedula)});
+    if(result.affected === 0) return res.status(404).json({message: "Usuario no encontrado"});
+
+    return res.status(202).json({message: "Usuario eliminado"});
+  } catch (error) {
+    if (error instanceof Error)
+      return res.status(500).json({message: error.message});
+  }
+}
