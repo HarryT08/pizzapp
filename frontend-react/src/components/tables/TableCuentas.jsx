@@ -41,9 +41,9 @@ const TableCuentas = () => {
     id: "",
     nombre: "",
     apellido: "",
-    cargo: "",
-    contraseña: "",
-    usuario: "",
+    idRol: "1",
+    password: "",
+    userName: "",
     cedula: "",
     celular: "",
     found: false,
@@ -64,14 +64,14 @@ const TableCuentas = () => {
   // Peticion GET
   const getUsers = async () => {
     try {
-      const response = await axios.get(baseURL);
+      const response = await instance.get("/usuarios");
       return setData(response.data);
     } catch (err) {
       console.log(err);
     }
   };
-
   
+  // Peticion GET by ID
   const getPerson = async (e) => {
     e.preventDefault();
     try {
@@ -85,7 +85,7 @@ const TableCuentas = () => {
           });
         }
       }
-      return setUsuario({nombre: "", apellido: "", cedula: "", celular: ""})
+      return setUsuario({nombre: "", apellido: "", cedula: usuario.cedula, celular: "", idRol: "1"})
     } catch (err) {
       console.log(err);
     }
@@ -95,27 +95,28 @@ const TableCuentas = () => {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(baseURL, usuario);
-      return setData(data.concat(response.data),setModalInsertar(false));
+      const response = await instance.post('/usuarios', usuario);
+      getUsers();
+      setModalInsertar(false)
+      setUsuario({nombre: "", apellido: "", celular: "", idRol: "1"})
     } catch (err) {
       console.log(err);
     }
   };
 
-
   // Peticion PUT
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(baseURL + "/" + usuario.id, usuario);
+      const response = await instance.put(baseURL + "/" + usuario.id, usuario);
       let newData = data;
       newData.map((user) => {
         if (user.id === usuario.id) {
           user.nombre = usuario.nombre;
           user.apellido = usuario.apellido;
-          user.cargo = usuario.cargo;
+          user.cargo = usuario.idRol;
           user.email = usuario.email;
-          user.contraseña = usuario.contraseña;
+          user.contraseña = usuario.password;
         }
       });
       return setData(newData,setModalEditar(false));
@@ -139,7 +140,7 @@ const TableCuentas = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
-        axios
+        instance
           .delete(`${baseURL}/${id}`)
           .then((response) => {
             setData(data.filter((usuario) => usuario.id !== id));
@@ -153,6 +154,7 @@ const TableCuentas = () => {
 
   const abrirCerrarModal = () => {
     setModalInsertar(!modalInsertar);
+    setUsuario({nombre: "", apellido: "", celular: "", idRol: "1"})
   };
 
   const abrirCerrarModalEditar = () => {
@@ -224,7 +226,7 @@ const seleccionarUsuario = (user, caso) => {
             </label>
             <input
               type="password"
-              name="contraseña"
+              name="password"
               onChange={handleChange}
               className="inp"
               required
@@ -234,7 +236,7 @@ const seleccionarUsuario = (user, caso) => {
             <label className="font-semibold text-lg md:text-base">Usuario</label>
             <input
               type="text"
-              name="usuario"
+              name="username"
               onChange={handleChange}
               className="inp"
               required
@@ -243,18 +245,18 @@ const seleccionarUsuario = (user, caso) => {
           <div className="flex flex-col mt-2">
             <label className="font-semibold text-lg md:text-base">Cargo</label>
             <select
-              name="cargo"
+              name="idRol"
               onChange={handleChange}
               className="inp"
               required
             >
-              <option disabled className="text-black bg-white">
+{/*               <option disabled className="text-black bg-white">
                 Selecciona el cargo
-              </option>
-              <option value="mesero" className="text-black bg-white">
+              </option> */}
+              <option  defaultValue="1" className="text-black bg-white">
                 Mesero
               </option>
-              <option value="admin" className="text-black bg-white">
+              <option value="2" className="text-black bg-white">
                 Admin
               </option>
             </select>
@@ -301,7 +303,7 @@ const seleccionarUsuario = (user, caso) => {
           <select
             name="cargo"
             onChange={handleChange}
-            value={usuario && usuario.cargo}
+            value={usuario && usuario.idRol}
             className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
           >
             <option name='0' value="todos" className="text-black bg-white">
@@ -323,7 +325,7 @@ const seleccionarUsuario = (user, caso) => {
             type="password"
             name="contraseña"
             onChange={handleChange}
-            value={usuario && usuario.contraseña}
+            value={usuario && usuario.password}
             className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
           />
         </div>
@@ -333,7 +335,7 @@ const seleccionarUsuario = (user, caso) => {
             type="text"
             name="usuario"
             onChange={handleChange}
-            value={usuario && usuario.usuario}
+            value={usuario && usuario.userName}
             className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
           />
         </div>
@@ -393,25 +395,25 @@ const seleccionarUsuario = (user, caso) => {
             </TableHead>
             <TableBody>
               {data.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.cedula}>
                   <TableCell
                     style={{ fontFamily: "Montserrat" }}
                     align="center"
                   >
-                    {item.id}
+                    {item.cedula}
                   </TableCell>
                   <TableCell
                     style={{ fontFamily: "Montserrat" }}
                     align="center"
                   >
-                    {item.nombre}
+                    {item.persona.nombre + " " + item.persona.apellido}
                   </TableCell>
                   <TableCell
                     style={{ fontFamily: "Montserrat" }}
                     align="center"
                   >
                     <p className="bg-azul-marino/20 rounded-md p-1 text-azul-marino">
-                      {item.cargo}
+                      {item.rol.nombre}
                     </p>
                   </TableCell>
                   <TableCell>

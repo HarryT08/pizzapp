@@ -4,7 +4,7 @@ import { createUser, getUsers } from '../controllers/usuarios-controller';
 
 router.route('/')
     .get(getUsers)
-    //.post(createUser)
+    .post(createUser)
     .put()
     .delete();
 

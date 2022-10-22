@@ -10,6 +10,7 @@ Metodo para hacer insercciones de usuarios en la base de datos, usando el ORM de
 export const createUser = async (req: Request, res: Response) => {  
   try {
     
+    console.log(req.body)
     let { username, password, cedula, idRol, nombre, apellido, celular } = req.body;
     //Encriptar la contraseña
     const user = new User();
