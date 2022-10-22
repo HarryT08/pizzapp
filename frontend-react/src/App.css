@@ -138,8 +138,8 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
 .pizza{
-  height: 501px;
-  width: 502px;
+  height: 401px;
+  width: 402px;
   animation: spin 10s infinite reverse linear;
   position: relative;
 }

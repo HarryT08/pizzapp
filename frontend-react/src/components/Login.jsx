@@ -5,7 +5,7 @@ const Login = () => {
     return (
     <div className="flex flex-col md:flex-row h-screen items-center">
         <div className="bg-loginBanner bg-cover bg-center hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen border-r border-black">
-            <div className='absolute top-[22%] left-[19%]'>
+            <div className='absolute top-[22%] left-[19%] '>
                 <img src={pizzaLogin} alt="" className=' pizza'/>
             </div>
         </div>

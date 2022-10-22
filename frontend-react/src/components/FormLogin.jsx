@@ -13,7 +13,7 @@ const FormLogin = () => {
   const iniciarSesion = async (e) => {
     e.preventDefault();
     try {
-      await instance.post("/usuarios/login", {
+      await instance.post("/auth/login", {
         username: username,
         password: password,
       })
