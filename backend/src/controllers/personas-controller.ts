@@ -15,6 +15,12 @@ export const createPersona = async (req: Request, res: Response) => {
 /*
 Metodo para buscar una persona por su cedula, usando el ORM de typeorm
 */
-export function findByCedula(req: Request, res: Response): Response {  
-    return res.send(req.body);
+export const findByCedula = async (req: Request, res: Response) => {  
+    try {
+        const persona = await Persona.findOneBy(req.params);
+        return res.json(persona);
+    } catch (error) {
+    if(error instanceof Error)
+        return res.status(500).json({message: error.message});
+    }
 }

@@ -8,7 +8,7 @@ const Sidebar = () => {
   return (
     <nav className="nav">
       <div>
-        <Link to="/inicio" className="nav-logo">
+        <Link to="/dashboard" className="nav-logo">
           <img src={logoBohemia} alt="logo" className="nav-logo-icon" />
         </Link>
 

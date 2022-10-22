@@ -7,5 +7,5 @@ router.route('/')
     .post(createPersona);
 
 router.route('/:cedula')
-    .get();
+    .get(findByCedula);
 export default router;

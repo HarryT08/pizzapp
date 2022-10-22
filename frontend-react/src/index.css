@@ -142,3 +142,10 @@
     opacity-100;
   }
 }
+
+
+/* Input */
+.inp {
+  @apply
+  border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none
+}

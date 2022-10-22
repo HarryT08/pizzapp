@@ -10,6 +10,7 @@ import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import { Modal, Box } from "@mui/material";
 import Swal from "sweetalert2";
 import axios from "axios";
+import {instance} from '../../api/api'
 
 const columns = [
   { id: "id", label: "Id" },
@@ -69,6 +70,19 @@ const TableCuentas = () => {
     }
   };
 
+  
+  const getPerson = async (e) => {
+    e.preventDefault();
+    try {
+      let cedu = usuario.cedula
+      const response = await instance.get(`/personas/${cedu}`);
+      // return setUsuario(response.data);
+      console.log(response)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   // Peticion POST
   const registerUser = async (e) => {
     e.preventDefault();
@@ -79,6 +93,7 @@ const TableCuentas = () => {
       console.log(err);
     }
   };
+
 
   // Peticion PUT
   const updateUser = async (e) => {
@@ -149,13 +164,24 @@ const seleccionarUsuario = (user, caso) => {
       </div>
       <form onSubmit={registerUser}>
         <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col mt-2">
+            <label className="font-semibold text-lg md:text-base">Cedula</label>
+            <input
+              type="text"
+              name="cedula"
+              onChange={handleChange}
+              onBlur={getPerson}
+              className="inp"
+            />
+          </div>
           <div className="flex flex-col mt-2">
             <label className="font-semibold text-lg md:text-base">Nombre</label>
             <input
               type="text"
               name="nombre"
               onChange={handleChange}
-              className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+              value={usuario.nombre}
+              className="inp"
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -164,7 +190,36 @@ const seleccionarUsuario = (user, caso) => {
               type="text"
               name="apellido"
               onChange={handleChange}
-              className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+              className="inp"
+            />
+          </div>
+          <div className="flex flex-col mt-2">
+            <label className="font-semibold text-lg md:text-base">Telefono</label>
+            <input
+              type="text"
+              name="telefono"
+              onChange={handleChange}
+              className="inp"
+            />
+          </div>
+          <div className="flex flex-col mt-2">
+            <label className="font-semibold text-lg md:text-base">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              name="contraseña"
+              onChange={handleChange}
+              className="inp"
+            />
+          </div>
+          <div className="flex flex-col mt-2">
+            <label className="font-semibold text-lg md:text-base">Usuario</label>
+            <input
+              type="text"
+              name="usuario"
+              onChange={handleChange}
+              className="inp"
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -172,7 +227,7 @@ const seleccionarUsuario = (user, caso) => {
             <select
               name="cargo"
               onChange={handleChange}
-              className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+              className="inp"
             >
               <option value="todos" className="text-black bg-white">
                 Selecciona el cargo
@@ -185,47 +240,9 @@ const seleccionarUsuario = (user, caso) => {
               </option>
             </select>
           </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              name="contraseña"
-              onChange={handleChange}
-              className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-            />
-          </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Usuario</label>
-            <input
-              type="text"
-              name="usuario"
-              onChange={handleChange}
-              className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-            />
-          </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Cedula</label>
-            <input
-              type="text"
-              name="cedula"
-              onChange={handleChange}
-              className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-            />
-          </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Telefono</label>
-            <input
-              type="text"
-              name="telefono"
-              onChange={handleChange}
-              className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-            />
-          </div>
         </div>
         <div className="flex pt-3 gap-10">
-              <button type="submit" className="btn">Insertar</button>
+              <button type="submit" className="btn">Crear</button>
               <button className="btn" onClick={() => abrirCerrarModal()}>Cancelar</button>
         </div>
       </form>
