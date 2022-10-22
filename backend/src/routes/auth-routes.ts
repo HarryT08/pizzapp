@@ -5,8 +5,10 @@ const router = Router();
 
 
 router.route('/')
-    .get(login)
     .post(signup)
+
+router.route('/login')
+    .post(login)
 
 router.route('/proof')
     .get(verifyToken, pruebaToken)
