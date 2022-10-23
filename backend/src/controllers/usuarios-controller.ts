@@ -55,3 +55,25 @@ export const deleteUser = async (req: Request, res: Response) => {
       return res.status(500).json({message: error.message});
   }
 }
+
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    let { username, password, cedula, idRol, nombre, apellido, celular } = req.body;
+    const persona = new Persona();
+    const user = new User();
+    persona.init(cedula, nombre, apellido, celular);
+    if(password.indexOf("$2b$10$") === -1){
+      password = user.encryptPassword(password);
+    }
+    Persona.update({cedula: cedula}, persona);
+    User.createQueryBuilder()
+      .update(User)
+      .set({username: username, password: password, idRol: idRol})
+      .where("cedula = :cedula", { cedula: cedula })
+      .execute();
+    return res.status(202).json({message: "Usuario actualizado"});
+  } catch (error) {
+    if (error instanceof Error)
+      return res.status(500).json({message: error.message});
+  }
+}

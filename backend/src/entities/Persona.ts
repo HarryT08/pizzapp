@@ -3,9 +3,11 @@ import {
     Column,
     Entity,
     BaseEntity,
-    OneToMany
+    OneToMany,
+    OneToOne
 } from 'typeorm';
 import { Domicilio } from './Domicilio';
+import { User } from './User';
 
 @Entity('persona')
 export class Persona extends BaseEntity{
@@ -24,6 +26,9 @@ export class Persona extends BaseEntity{
 
     @OneToMany(() => Domicilio, (domicilio) => domicilio.persona)
     domicilios: Domicilio[];
+
+    @OneToOne(() => User, (user) => user.cedula, {onUpdate: 'CASCADE'})
+    user: User;
 
     constructor() {
         super();        

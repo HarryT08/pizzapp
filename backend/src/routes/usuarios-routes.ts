@@ -1,11 +1,11 @@
 import { Router } from 'express';
 const router = Router();
-import { createUser, getUsers, deleteUser } from '../controllers/usuarios-controller';
+import { createUser, getUsers, deleteUser, updateUser } from '../controllers/usuarios-controller';
 
 router.route('/')
     .get(getUsers)
     .post(createUser)
-    .put();
+    .put(updateUser);
 
 router.route('/:cedula')
     .delete(deleteUser);

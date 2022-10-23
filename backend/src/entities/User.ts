@@ -22,13 +22,16 @@ export class User extends BaseEntity{
   @Column()
   password : string;
 
-  @OneToOne(() => Persona, {cascade: ["insert", "update"]})
+  @OneToOne(() => Persona, (persona) => persona.cedula, {cascade: true})
   @JoinColumn({name: 'cedula'})
   persona: Persona;
 
-  @OneToOne(() => Rol)
+  @OneToOne(() => Rol, (rol) => rol.id)
   @JoinColumn({name: "idRol"})
   rol: Rol;
+
+  @Column()
+  idRol: number;
 
   constructor() {
     super();

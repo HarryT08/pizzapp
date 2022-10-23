@@ -31,8 +31,6 @@ const style = {
   p: 4,
 };
 
-const baseURL = "http://localhost:3001/usuarios";
-
 const TableCuentas = () => {
   const [data, setData] = useState([]);
   const [modalInsertar, setModalInsertar] = useState(false);
@@ -61,7 +59,6 @@ const TableCuentas = () => {
   });
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
     setUsuario((prevState) => ({
       ...prevState,
@@ -120,7 +117,7 @@ const TableCuentas = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.put('/usuarios' + "/" + usuario.cedula, usuario);
+      const response = await instance.put('/usuarios', usuario);
       getUsers();
       setModalEditar(false);
       setUsuario({nombre: "", apellido: "", celular: "", idRol: "1", password: "", username: "", cedula: "",})
@@ -129,9 +126,9 @@ const TableCuentas = () => {
     }
   };
 
+  //Obtención del id del usuario a editar
   const edit = (cedu) => {
     let user = data.filter((user) => user.cedula === cedu);
-    console.log(user)
     setUsuario(user[0]);
     setEmpleado({
       persona: user[0].persona,
@@ -336,14 +333,13 @@ const TableCuentas = () => {
             name="password"
             onChange={handleChange}
             className="inp"
-            required
           />
         </div>
         <div className="flex flex-col mt-2">
           <label className="font-semibold text-lg md:text-base">Usuario</label>
           <input
             type="text"
-            name="userName"
+            name="username"
             onChange={handleChange}
             defaultValue={usuario && usuario.username}
             className="inp"
