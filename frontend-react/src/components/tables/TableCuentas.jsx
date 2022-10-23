@@ -37,19 +37,31 @@ const TableCuentas = () => {
   const [data, setData] = useState([]);
   const [modalInsertar, setModalInsertar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
+  const [empleado, setEmpleado] = useState({
+    persona:{
+      nombre: "",
+      apellido: "",
+      celular: ""
+    },
+    rol:{
+      id: "",
+      nombre: ""
+    },
+  })
   const [usuario, setUsuario] = useState({
     id: "",
     nombre: "",
     apellido: "",
     idRol: "1",
     password: "",
-    userName: "",
+    username: "",
     cedula: "",
     celular: "",
     found: false,
   });
 
   const handleChange = (e) => {
+    console.log(e.target.value);
     const { name, value } = e.target;
     setUsuario((prevState) => ({
       ...prevState,
@@ -108,22 +120,25 @@ const TableCuentas = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.put(baseURL + "/" + usuario.id, usuario);
-      let newData = data;
-      newData.map((user) => {
-        if (user.id === usuario.id) {
-          user.nombre = usuario.nombre;
-          user.apellido = usuario.apellido;
-          user.cargo = usuario.idRol;
-          user.email = usuario.email;
-          user.contraseña = usuario.password;
-        }
-      });
-      return setData(newData,setModalEditar(false));
+      const response = await instance.put('/usuarios' + "/" + usuario.cedula, usuario);
+      getUsers();
+      setModalEditar(false);
+      setUsuario({nombre: "", apellido: "", celular: "", idRol: "1", password: "", username: "", cedula: "",})
     } catch (err) {
       console.log(err);
     }
   };
+
+  const edit = (cedu) => {
+    let user = data.filter((user) => user.cedula === cedu);
+    console.log(user)
+    setUsuario(user[0]);
+    setEmpleado({
+      persona: user[0].persona,
+      rol: user[0].rol
+    });
+    setModalEditar(true);
+  }
 
   // Peticion DELETE
   const deleteUser = (id) => {
@@ -159,11 +174,7 @@ const TableCuentas = () => {
 
   const abrirCerrarModalEditar = () => {
     setModalEditar(!modalEditar)
-}
-
-const seleccionarUsuario = (user, caso) => {
-  setUsuario(user);
-  (caso === "Editar") && abrirCerrarModalEditar() 
+    setEmpleado({persona:{nombre: "", apellido: "", celular: ""}, rol:{id: "", nombre: ""}})
 }
 
   // Contenido modal agregar
@@ -250,9 +261,6 @@ const seleccionarUsuario = (user, caso) => {
               className="inp"
               required
             >
-{/*               <option disabled className="text-black bg-white">
-                Selecciona el cargo
-              </option> */}
               <option  defaultValue="1" className="text-black bg-white">
                 Mesero
               </option>
@@ -274,18 +282,29 @@ const seleccionarUsuario = (user, caso) => {
   const bodyEditar = (
     <Box sx={style}>
     <div className="header-modal">
-      <h3>Agregar Usuario</h3>
+      <h3>Modificar Usuario</h3>
     </div>
     <form onSubmit={updateUser}>
       <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col mt-2">
+          <label className="font-semibold text-lg md:text-base">Cedula</label>
+          <input
+            type="text"
+            name="cedula"
+            onChange={handleChange}
+            value={usuario && usuario.cedula}
+            disabled
+            className="inp"
+          />
+        </div>
         <div className="flex flex-col mt-2">
           <label className="font-semibold text-lg md:text-base">Nombre</label>
           <input
             type="text"
             name="nombre"
             onChange={handleChange}
-            value={usuario && usuario.nombre}
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+            defaultValue={empleado && empleado.persona.nombre}
+            className="inp"
           />
         </div>
         <div className="flex flex-col mt-2">
@@ -294,28 +313,19 @@ const seleccionarUsuario = (user, caso) => {
             type="text"
             name="apellido"
             onChange={handleChange}
-            value={usuario && usuario.apellido}
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+            defaultValue={empleado && empleado.persona.apellido}
+            className="inp"
           />
         </div>
         <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Cargo</label>
-          <select
-            name="cargo"
+          <label className="font-semibold text-lg md:text-base">Telefono</label>
+          <input
+            type="text"
+            name="celular"
             onChange={handleChange}
-            value={usuario && usuario.idRol}
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-          >
-            <option name='0' value="todos" className="text-black bg-white">
-              Selecciona el cargo
-            </option>
-            <option name='1' value="mesero" className="text-black bg-white">
-              Mesero
-            </option>
-            <option name='2' value="admin" className="text-black bg-white">
-              Admin
-            </option>
-          </select>
+            defaultValue={empleado && empleado.persona.celular}
+            className="inp"
+          />
         </div>
         <div className="flex flex-col mt-2">
           <label className="font-semibold text-lg md:text-base">
@@ -323,45 +333,40 @@ const seleccionarUsuario = (user, caso) => {
           </label>
           <input
             type="password"
-            name="contraseña"
+            name="password"
             onChange={handleChange}
-            value={usuario && usuario.password}
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+            className="inp"
+            required
           />
         </div>
         <div className="flex flex-col mt-2">
           <label className="font-semibold text-lg md:text-base">Usuario</label>
           <input
             type="text"
-            name="usuario"
+            name="userName"
             onChange={handleChange}
-            value={usuario && usuario.userName}
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+            defaultValue={usuario && usuario.username}
+            className="inp"
           />
         </div>
         <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Cedula</label>
-          <input
-            type="text"
-            name="cedula"
+          <label className="font-semibold text-lg md:text-base">Cargo</label>
+          <select
+            name="idRol"
             onChange={handleChange}
-            value={usuario && usuario.cedula}
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-          />
-        </div>
-        <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Telefono</label>
-          <input
-            type="text"
-            name="telefono"
-            onChange={handleChange}
-            value={usuario && usuario.telefono}
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-          />
+            className="inp"
+          >
+            <option value="1" className="text-black bg-white" selected={empleado.rol.id === 1 ? true : false}>
+              Mesero
+            </option>
+            <option value="2" className="text-black bg-white" selected={empleado.rol.id === 2 ? true : false}>
+              Admin
+            </option>
+          </select>
         </div>
       </div>
       <div className="flex pt-3 gap-10">
-            <button className="btn" type="submit">Insertar</button>
+            <button className="btn" type="submit">Editar</button>
             <button className="btn" onClick={() => abrirCerrarModalEditar()}>Cancelar</button>
       </div>
     </form>
@@ -421,7 +426,7 @@ const seleccionarUsuario = (user, caso) => {
                       <AiFillEdit
                         size={25}
                         className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
-                        onClick={() => seleccionarUsuario(item, "Editar")}
+                        onClick={() => edit(item.cedula)}
                       />
                       <AiTwotoneDelete
                         size={25}
