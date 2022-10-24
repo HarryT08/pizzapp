@@ -14,7 +14,7 @@ const Inicio = () => {
       <div className='p-3 bg-white rounded-lg drop-shadow-3xl 2xl:w-[42rem] md:w-[30rem]'>
         <LinesCharts/>
       </div>
-      <div className='p-3 bg-white rounded-lg drop-shadow-3xl 2xl:w-[42rem]'>
+      <div className='p-3 bg-white rounded-lg drop-shadow-3xl'>
         <TableInicio/>
       </div>
     </div>

@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useState } from "react";
-import { dataProductos, dataIngredientes,dataCuentas} from "../data/datos";
+import { dataProductos, dataIngredientes} from "../data/datos";
 const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [data, setData] = useState(dataProductos);
   const [dataProducts, setDataProducts] = useState(dataIngredientes);
-  const [dataAccount, setDataAccount] = useState(dataCuentas);
   const [search, setSearch] = useState("");
 
   const handleDelete = (id) => {
@@ -33,8 +32,6 @@ export const ContextProvider = ({ children }) => {
         setData,
         dataProducts,
         setDataProducts,
-        dataAccount,
-        setDataAccount,
         search,
         setSearch,
       }}

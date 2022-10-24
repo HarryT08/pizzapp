@@ -1,6 +1,6 @@
 import { AiFillHome } from "react-icons/ai";
 import { BsPeopleFill } from "react-icons/bs";
-import { GiPaperBagFolded, GiNotebook } from "react-icons/gi";
+import { GiPaperBagFolded } from "react-icons/gi";
 import { IoMdPizza } from "react-icons/io";
 import { ImSpoonKnife } from "react-icons/im";
 import { FaClipboardList } from "react-icons/fa";
@@ -65,6 +65,49 @@ export const dataSidebar = [
     icon: <GiPaperBagFolded />,
   },
 ];
+
+export const mesas = [
+  {
+    id: 1,
+    valor: '$50.000'
+  },
+  {
+    id: 2,
+    valor: '$50.000'
+  },
+  {
+    id: 3,
+    valor: '$50.000'
+  },
+  {
+    id: 4,
+    valor: '$50.000'
+  },
+  {
+    id: 5,
+    valor: '$50.000'
+  },
+  {
+    id: 6,
+    valor: '$50.000'
+  },
+  {
+    id: 7,
+    valor: '$50.000'
+  },
+  {
+    id: 8,
+    valor: '$50.000'
+  },
+  {
+    id: 9,
+    valor: '$50.000'
+  },
+  {
+    id: 10,
+    valor: '$50.000'
+  },
+]
 
 export const dataProductos = [
   {
@@ -250,34 +293,6 @@ export const dataOrdenes = [
     total: '$150000',
     estado: 'Pendiente'
   }
-]
-
-export const dataCuentas = [
-  {
-    id: 1,
-    nombre: 'Harold Rueda',
-    cargo: 'Administrador',
-  },
-  {
-    id: 2,
-    nombre: 'Edwin Torrado',
-    cargo: 'Mesero',
-  },
-  {
-    id: 3,
-    nombre: 'Felipe Alferez',
-    cargo: 'Mesero',
-  },
-  {
-    id: 4,
-    nombre: 'Antonio Acevedo',
-    cargo: 'Mesero',
-  },
-  {
-    id: 5,
-    nombre: 'Cristian Torres',
-    cargo: 'Cocinero',
-  },
 ]
 
 export const dataIngredientes = [

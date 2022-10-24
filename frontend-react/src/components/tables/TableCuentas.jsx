@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { instance } from "../../api/api";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,11 +8,11 @@ import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
-import { Modal, Box } from "@mui/material";
+import { Modal, Box, TextField, MenuItem } from "@mui/material";
 import Swal from "sweetalert2";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {instance} from '../../api/api'
+import Loader from "../Loader";
 
 const columns = [
   { id: "id", label: "Id" },
@@ -37,17 +38,18 @@ const TableCuentas = () => {
   const [modalInsertar, setModalInsertar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [empleado, setEmpleado] = useState({
-    persona:{
+    persona: {
       nombre: "",
       apellido: "",
-      celular: ""
+      celular: "",
     },
-    rol:{
+    rol: {
       id: "",
-      nombre: ""
+      nombre: "",
     },
-  })
+  });
   const [usuario, setUsuario] = useState({
     id: "",
     nombre: "",
@@ -76,45 +78,54 @@ const TableCuentas = () => {
   const getUsers = async () => {
     try {
       const response = await instance.get("/usuarios");
-      setError(false)
+      setError(false);
       return setData(response.data);
     } catch (err) {
-      setError(true)
-      setData([])
+      setError(true);
+      setData([]);
     }
-  }
-  
+  };
+
   // Peticion GET by ID
   const getPerson = async (e) => {
     e.preventDefault();
     try {
-      let cedu = usuario.cedula
-      if(cedu.length >= 1){
+      let cedu = usuario.cedula;
+      if (cedu.length >= 1) {
         const response = await instance.get(`/personas/${cedu}`);
-        if(response.data){          
+        if (response.data) {
           return setUsuario({
             ...response.data,
             found: true,
           });
         }
       }
-      return setUsuario({nombre: "", apellido: "", cedula: usuario.cedula, celular: "", idRol: "1"})
+      return setUsuario({
+        nombre: "",
+        apellido: "",
+        cedula: usuario.cedula,
+        celular: "",
+        idRol: "1",
+      });
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   // Peticion POST
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.post('/usuarios', usuario);
+      setLoading(true)
+      const response = await instance.post("/usuarios", usuario);
       getUsers();
-      setModalInsertar(false)
-      toast.success("Usuario registrado con exito")
-      setUsuario({nombre: "", apellido: "", celular: "", idRol: "1"})
+      setModalInsertar(false);
+      toast.success("Usuario registrado con exito");
+      setUsuario({ nombre: "", apellido: "", celular: "", idRol: "1" });
+      setLoading(false)
     } catch (err) {
       console.log(err);
+      setLoading(false)
     }
   };
 
@@ -122,13 +133,24 @@ const TableCuentas = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.put('/usuarios', usuario);
+      setLoading(true)
+      const response = await instance.put("/usuarios", usuario);
       getUsers();
       setModalEditar(false);
-      toast.success("Usuario actualizado con exito")
-      setUsuario({nombre: "", apellido: "", celular: "", idRol: "1", password: "", username: "", cedula: "",})
-    } catch (err){
+      toast.success("Usuario actualizado con exito");
+      setUsuario({
+        nombre: "",
+        apellido: "",
+        celular: "",
+        idRol: "1",
+        password: "",
+        username: "",
+        cedula: "",
+      });
+      setLoading(false)
+    } catch (err) {
       console.log(err);
+      setLoading(false)
     }
   };
 
@@ -138,10 +160,10 @@ const TableCuentas = () => {
     setUsuario(user[0]);
     setEmpleado({
       persona: user[0].persona,
-      rol: user[0].rol
+      rol: user[0].rol,
     });
     setModalEditar(true);
-  }
+  };
 
   // Peticion DELETE
   const deleteUser = (id) => {
@@ -172,110 +194,112 @@ const TableCuentas = () => {
 
   const abrirCerrarModal = () => {
     setModalInsertar(!modalInsertar);
-    setUsuario({nombre: "", apellido: "", celular: "", idRol: "1"})
+    setUsuario({ nombre: "", apellido: "", celular: "", idRol: "1" });
   };
 
   const abrirCerrarModalEditar = () => {
-    setModalEditar(!modalEditar)
-    setEmpleado({persona:{nombre: "", apellido: "", celular: ""}, rol:{id: "", nombre: ""}})
-}
+    setModalEditar(!modalEditar);
+    setEmpleado({
+      persona: { nombre: "", apellido: "", celular: "" },
+      rol: { id: "", nombre: "" },
+    });
+  };
 
   // Contenido modal agregar
   const bodyInsertar = (
     <Box sx={style}>
       <div className="header-modal">
-        <h3>Agregar Usuario</h3>
+        <h3 className="text-xl font-semibold">Agregar Usuario</h3>
       </div>
       <form onSubmit={registerUser}>
         <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Cedula</label>
-            <input
-              type="text"
+          <div className="mt-2">
+            <TextField
+              required
               name="cedula"
+              label="Cedula"
+              type="number"
               onChange={handleChange}
               onBlur={getPerson}
-              className="inp"
-              required
+              variant="filled"
             />
           </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Nombre</label>
-            <input
+          <div className="mt-2">
+            <TextField
+              label="nombre"
               type="text"
               name="nombre"
               onChange={handleChange}
-              defaultValue={usuario.nombre}
+              value={usuario.nombre}
               className="inp"
-              disabled = { usuario.found }
+              disabled={usuario.found}
+              variant="filled"
               required
             />
           </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Apellido</label>
-            <input
+          <div className="mt-2">
+            <TextField
+              label="Apellido"
               type="text"
               name="apellido"
               onChange={handleChange}
-              defaultValue={usuario.apellido}
-              className="inp"
-              disabled = { usuario.found }
+              value={usuario.apellido}
+              disabled={usuario.found}
+              variant="filled"
               required
             />
           </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Telefono</label>
-            <input
-              type="text"
+          <div className="mt-2">
+            <TextField
+              label="Telefono"
+              type="number"
               name="celular"
               onChange={handleChange}
-              defaultValue={usuario.celular}
-              className="inp"
+              value={usuario.celular}
+              variant="filled"
               required
             />
           </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">
-              Contraseña
-            </label>
-            <input
+          <div className="mt-2">
+            <TextField
+              label="Contraseña"
               type="password"
               name="password"
               onChange={handleChange}
-              className="inp"
-              required
+              variant="filled"
             />
           </div>
-          <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Usuario</label>
-            <input
+          <div className="mt-2">
+            <TextField
+              label="Usuario"
               type="text"
               name="username"
               onChange={handleChange}
-              className="inp"
+              variant="filled"
               required
             />
           </div>
           <div className="flex flex-col mt-2">
-            <label className="font-semibold text-lg md:text-base">Cargo</label>
-            <select
+            <TextField
+              label="Categorias"
+              select
               name="idRol"
               onChange={handleChange}
-              className="inp"
+              variant="filled"
               required
             >
-              <option value="1" className="text-black bg-white">
-                Mesero
-              </option>
-              <option value="2" className="text-black bg-white">
-                Admin
-              </option>
-            </select>
+              <MenuItem value="1">Mesero</MenuItem>
+              <MenuItem value="2">Admin</MenuItem>
+            </TextField>
           </div>
         </div>
-        <div className="flex pt-3 gap-10">
-              <button type="submit" className="btn">Crear</button>
-              <button className="btn" onClick={() => abrirCerrarModal()}>Cancelar</button>
+        <div className="flex pt-3 gap-3">
+          <button type="submit" className="btn">
+            {loading ? <Loader/> : 'Agregar usuario'}
+          </button>
+          <button className="btnCancel" onClick={() => abrirCerrarModal()}>
+            Cancelar
+          </button>
         </div>
       </form>
     </Box>
@@ -284,110 +308,119 @@ const TableCuentas = () => {
   // Contenido modal editar
   const bodyEditar = (
     <Box sx={style}>
-    <div className="header-modal">
-      <h3>Modificar Usuario</h3>
-    </div>
-    <form onSubmit={updateUser}>
-      <div className="grid grid-cols-2 gap-4">
-      <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Cedula</label>
-          <input
-            type="text"
-            name="cedula"
-            onChange={handleChange}
-            value={usuario && usuario.cedula}
-            disabled
-            className="inp"
-          />
-        </div>
-        <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Nombre</label>
-          <input
-            type="text"
-            name="nombre"
-            onChange={handleChange}
-            defaultValue={empleado && empleado.persona.nombre}
-            className="inp"
-          />
-        </div>
-        <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Apellido</label>
-          <input
-            type="text"
-            name="apellido"
-            onChange={handleChange}
-            defaultValue={empleado && empleado.persona.apellido}
-            className="inp"
-          />
-        </div>
-        <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Telefono</label>
-          <input
-            type="text"
-            name="celular"
-            onChange={handleChange}
-            defaultValue={empleado && empleado.persona.celular}
-            className="inp"
-          />
-        </div>
-        <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">
-            Contraseña
-          </label>
-          <input
-            type="password"
-            name="password"
-            onChange={handleChange}
-            className="inp"
-          />
-        </div>
-        <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Usuario</label>
-          <input
-            type="text"
-            name="username"
-            onChange={handleChange}
-            defaultValue={usuario && usuario.username}
-            className="inp"
-          />
-        </div>
-        <div className="flex flex-col mt-2">
-          <label className="font-semibold text-lg md:text-base">Cargo</label>
-          <select
-            name="idRol"
-            onChange={handleChange}
-            className="inp"
-          >
-            <option value="1" className="text-black bg-white" selected={empleado.rol.id === 1 ? true : false}>
-              Mesero
-            </option>
-            <option value="2" className="text-black bg-white" selected={empleado.rol.id === 2 ? true : false}>
-              Admin
-            </option>
-          </select>
-        </div>
+      <div className="header-modal">
+        <h3 className='text-xl font-semibold'>Modificar Usuario</h3>
       </div>
-      <div className="flex pt-3 gap-10">
-            <button className="btn" type="submit">Editar</button>
-            <button className="btn" onClick={() => abrirCerrarModalEditar()}>Cancelar</button>
-      </div>
-    </form>
-  </Box>
-  )
+      <form onSubmit={updateUser}>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="mt-2">
+            <TextField
+              label="Cedula"
+              type="number"
+              name="cedula"
+              onChange={handleChange}
+              value={usuario && usuario.cedula}
+              variant="filled"
+              disabled
+            />
+          </div>
+          <div className="mt-2">
+            <TextField
+              label="Nombre"
+              type="text"
+              name="nombre"
+              onChange={handleChange}
+              defaultValue={empleado && empleado.persona.nombre}
+              variant="filled"
+            />
+          </div>
+          <div className="mt-2">
+            <TextField
+              label="Apellido"
+              type="text"
+              name="apellido"
+              onChange={handleChange}
+              defaultValue={empleado && empleado.persona.apellido}
+              variant="filled"
+            />
+          </div>
+          <div className="mt-2">
+            <TextField
+              label="Telefono"
+              type="number"
+              name="celular"
+              onChange={handleChange}
+              defaultValue={empleado && empleado.persona.celular}
+              variant="filled"
+            />
+          </div>
+          <div className="mt-2">
+            <TextField
+              label="Contraseña"
+              type="password"
+              name="password"
+              onChange={handleChange}
+              variant="filled"
+            />
+          </div>
+          <div className="mt-2">
+            <TextField
+              label="Usuario"
+              type="text"
+              name="username"
+              onChange={handleChange}
+              defaultValue={usuario && usuario.username}
+              variant="filled"
+            />
+          </div>
+          <div className="flex flex-col mt-2">
+            <TextField
+              label={empleado && empleado.rol.nombre}
+              select
+              name="idRol"
+              onChange={handleChange}
+              variant="filled"
+            >
+              <MenuItem
+                value="1"
+                selected={empleado.rol.id === 1 ? true : false}
+              >
+                Mesero
+              </MenuItem>
+              <MenuItem
+                value="2"
+                selected={empleado.rol.id === 2 ? true : false}
+              >
+                Admin
+              </MenuItem>
+            </TextField>
+          </div>
+        </div>
+        <div className="flex pt-3 gap-3">
+          <button className="btn" type="submit">
+            {loading ? <Loader/> : 'Editar usuario'}
+          </button>
+          <button className="btnCancel" onClick={() => abrirCerrarModalEditar()}>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </Box>
+  );
 
   return (
     <>
       <button className="btn mb-3" onClick={() => abrirCerrarModal()}>
         Agregar usuario
       </button>
-      <ToastContainer/>
+      <ToastContainer />
       <Paper>
         <TableContainer component={Paper}>
-        {error && (
-                <div className="flex justify-center">
-                  <p className="text-center">No existen usuarios</p>
-                </div>
-              )}
+          {error && (
+            <div className="flex justify-center">
+              <p className="text-center">No existen usuarios</p>
+            </div>
+          )}
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow style={{ background: "#D00000" }}>
