@@ -36,7 +36,10 @@ export const getUsers = async (req: Request, res: Response) => {
   //if( req.body.mi_rol != 'admin') return res.status(400).json({message: "No tienes permisos para realizar esta accion"});
   try {
     const users = await User.find({relations: ["rol", "persona"]});
-    return res.json(users);
+    if(users.length > 0)
+      return res.json(users);
+    else
+      return res.status(404).json({data: "No hay usuarios"});
   } catch (error) {
     if (error instanceof Error)
       return res.status(500).json({message: error.message});

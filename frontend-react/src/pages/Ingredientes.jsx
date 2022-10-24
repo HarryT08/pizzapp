@@ -2,10 +2,12 @@ import { useStateContext } from '../context/ContextProvider';
 import { FiSearch } from "react-icons/fi";
 import Swal from "sweetalert2";
 import ModalIngredientes from '../components/modals/ModalIngredientes';
+import { useState } from 'react';
 
 const Ingredientes = () => {
 
-  const { handleDeleteProduct,dataProducts,search,setSearch} = useStateContext();
+  const { handleDeleteProduct,dataProducts} = useStateContext();
+  const [search, setSearch] = useState("");
 
   const showAlert = (id) => {
     Swal.fire({

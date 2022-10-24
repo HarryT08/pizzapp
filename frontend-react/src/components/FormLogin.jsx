@@ -1,26 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { instance } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import logoBohemia from "../assets/img/logoBohemiaLogin.png";
+import Loader from "./Loader";
+
 
 const FormLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();  
 
-  const navigate = useNavigate();
 
   const iniciarSesion = async (e) => {
     e.preventDefault();
     try {
-      await instance.post("/auth/login", {
+        await instance.post("/auth/login", {
         username: username,
         password: password,
       })
+      setLoading(true);
       navigate("/dashboard/");
     } catch (err) {
-      console.log(err);
-      setError(true);
+      toast.error(err.response.data.message);
+      setLoading(false);
     }
   };
 
@@ -57,19 +62,15 @@ const FormLogin = () => {
             className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-bright-blue focus:bg-white focus:outline-none"
           />
         </div>
-        {error && (
-          <p className="text-red-500 text-sm mt-2">
-            Usuario o contraseña incorrectos
-          </p>
-        )}
+        <ToastContainer />
         <button
           type="submit"
           className="w-full block text-center bg-naranja-vivido border-2 border-naranja-vivido hover:bg-white hover:text-naranja-vivido rounded-md text-white font-semibold text-14 2xl:text-2xl px-3 py-2 mt-6 transition duration-300 ease-in-out"
         >
           Iniciar sesion
+          {loading && <Loader />}
         </button>
       </form>
-
       <p className="pt-12">© 2022 Pizza Bohemia. Todos los derechos reservados</p>
     </div>
   );

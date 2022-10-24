@@ -9,7 +9,8 @@ import Paper from "@mui/material/Paper";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import { Modal, Box } from "@mui/material";
 import Swal from "sweetalert2";
-import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import {instance} from '../../api/api'
 
 const columns = [
@@ -35,6 +36,7 @@ const TableCuentas = () => {
   const [data, setData] = useState([]);
   const [modalInsertar, setModalInsertar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
+  const [error, setError] = useState(false);
   const [empleado, setEmpleado] = useState({
     persona:{
       nombre: "",
@@ -74,11 +76,13 @@ const TableCuentas = () => {
   const getUsers = async () => {
     try {
       const response = await instance.get("/usuarios");
+      setError(false)
       return setData(response.data);
     } catch (err) {
-      console.log(err);
+      setError(true)
+      setData([])
     }
-  };
+  }
   
   // Peticion GET by ID
   const getPerson = async (e) => {
@@ -107,6 +111,7 @@ const TableCuentas = () => {
       const response = await instance.post('/usuarios', usuario);
       getUsers();
       setModalInsertar(false)
+      toast.success("Usuario registrado con exito")
       setUsuario({nombre: "", apellido: "", celular: "", idRol: "1"})
     } catch (err) {
       console.log(err);
@@ -120,8 +125,9 @@ const TableCuentas = () => {
       const response = await instance.put('/usuarios', usuario);
       getUsers();
       setModalEditar(false);
+      toast.success("Usuario actualizado con exito")
       setUsuario({nombre: "", apellido: "", celular: "", idRol: "1", password: "", username: "", cedula: "",})
-    } catch (err) {
+    } catch (err){
       console.log(err);
     }
   };
@@ -199,7 +205,7 @@ const TableCuentas = () => {
               type="text"
               name="nombre"
               onChange={handleChange}
-              value={usuario.nombre}
+              defaultValue={usuario.nombre}
               className="inp"
               disabled = { usuario.found }
               required
@@ -211,7 +217,7 @@ const TableCuentas = () => {
               type="text"
               name="apellido"
               onChange={handleChange}
-              value={usuario.apellido}
+              defaultValue={usuario.apellido}
               className="inp"
               disabled = { usuario.found }
               required
@@ -223,7 +229,7 @@ const TableCuentas = () => {
               type="text"
               name="celular"
               onChange={handleChange}
-              value={usuario.celular}
+              defaultValue={usuario.celular}
               className="inp"
               required
             />
@@ -258,7 +264,7 @@ const TableCuentas = () => {
               className="inp"
               required
             >
-              <option  defaultValue="1" className="text-black bg-white">
+              <option value="1" className="text-black bg-white">
                 Mesero
               </option>
               <option value="2" className="text-black bg-white">
@@ -374,8 +380,14 @@ const TableCuentas = () => {
       <button className="btn mb-3" onClick={() => abrirCerrarModal()}>
         Agregar usuario
       </button>
+      <ToastContainer/>
       <Paper>
         <TableContainer component={Paper}>
+        {error && (
+                <div className="flex justify-center">
+                  <p className="text-center">No existen usuarios</p>
+                </div>
+              )}
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow style={{ background: "#D00000" }}>
