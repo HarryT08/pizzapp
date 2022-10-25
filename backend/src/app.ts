@@ -1,44 +1,45 @@
-import express, {Application} from 'express';
+import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
-//Importación de rutas 
+//Importación de rutas
 import productsRoutes from './routes/productos-routes';
 import mesasRoutes from './routes/mesas-routes';
 import usuariosRoutes from './routes/usuarios-routes';
 import personasRoutes from './routes/personas-routes';
 import authRoutes from './routes/auth-routes';
-export class App{
+export class App {
+  private app: Application;
 
-    private app: Application;
+  constructor() {
+    this.app = express();
+    this.settings();
+    this.middlewares();
+    this.routes();
+  }
 
-    constructor(){
-        this.app = express();
-        this.settings();
-        this.middlewares();
-        this.routes();
-    }
+  settings() {
+    this.app.set('port', process.env.PORT || 3000);
+  }
 
-    settings(){
-        this.app.set('port', process.env.PORT || 3000);
-    }
+  middlewares() {
+    this.app.use(morgan('dev'));
+    this.app.use(express.json());
+    this.app.use(cors());
+    this.app.use(cookieParser());
+  }
 
-    middlewares(){
-        this.app.use(morgan('dev'));
-        this.app.use(express.json());
-        this.app.use(cors());
-    }
+  routes() {
+    this.app.use('/productos', productsRoutes);
+    this.app.use('/mesas', mesasRoutes);
+    this.app.use('/usuarios', usuariosRoutes);
+    this.app.use('/personas', personasRoutes);
+    this.app.use('/auth', authRoutes);
+  }
 
-    routes(){
-        this.app.use('/productos',productsRoutes);
-        this.app.use('/mesas',mesasRoutes);
-        this.app.use('/usuarios',usuariosRoutes);
-        this.app.use('/personas',personasRoutes);
-        this.app.use('/auth', authRoutes);
-    }
-
-    async listen(){
-        await this.app.listen(this.app.get('port'));
-        console.log('Server on port', this.app.get('port'));
-    }
+  async listen() {
+    await this.app.listen(this.app.get('port'));
+    console.log('Server on port', this.app.get('port'));
+  }
 }

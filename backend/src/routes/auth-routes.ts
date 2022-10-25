@@ -1,16 +1,12 @@
-import { Router } from "express";
-import { login , signup, pruebaToken } from '../controllers/auth-controller';
+import { Router } from 'express';
+import { login, signup, pruebaToken } from '../controllers/auth-controller';
 import { verifyToken } from '../libs/verifyToken';
 const router = Router();
 
+router.route('/').post(signup);
 
-router.route('/')
-    .post(signup)
+router.route('/login').post(login);
 
-router.route('/login')
-    .post(login)
+router.get('/proof', verifyToken, pruebaToken);
 
-router.route('/proof')
-    .get(verifyToken, pruebaToken)
-    
 export default router;

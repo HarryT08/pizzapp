@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { instance } from "../api/api";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import { TextField } from "@mui/material";
-import "react-toastify/dist/ReactToastify.css";
-import logoBohemia from "../assets/img/logoBohemiaLogin.png";
-import Loader from "./Loader";
+import { useState } from 'react';
+import { instance } from '../api/api';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { TextField } from '@mui/material';
+import 'react-toastify/dist/ReactToastify.css';
+import logoBohemia from '../assets/img/logoBohemiaLogin.png';
+import Loader from './Loader';
 
 const FormLogin = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -17,11 +17,20 @@ const FormLogin = () => {
     e.preventDefault();
     try {
       setLoading(true);
-        await instance.post("/auth/login", {
+
+      await instance.post('/auth/login', {
         username: username,
-        password: password,
+        password: password
       });
-      navigate("/dashboard/");
+
+      //:D
+      // instance.get('/dfdfdfdf', {
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem('token')}`
+      //   }
+      // })
+
+      // navigate('/dashboard/');
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -59,7 +68,7 @@ const FormLogin = () => {
             label="Contraseña"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
-            variant='filled'
+            variant="filled"
           />
         </div>
         <ToastContainer />
