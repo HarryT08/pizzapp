@@ -7,13 +7,22 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { BiLogOut } from "react-icons/bi";
+import { useNavigate } from 'react-router-dom';
 
 const Perfil = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+const logout = () => {
+    localStorage.removeItem("Authorization");
+    navigate('/login')
+}
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -78,7 +87,7 @@ const Perfil = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem sx={{ fontFamily: "Montserrat" }}>
+        <MenuItem sx={{ fontFamily: "Montserrat" }} onClick={() => logout()}>
           <ListItemIcon>
             <BiLogOut color="#ba181b" size={20} />
           </ListItemIcon>
