@@ -18,11 +18,14 @@ const FormLogin = () => {
     try {
       setLoading(true);
 
-      await instance.post('/auth/login', {
+     const response = await instance.post('/auth/login', {
         username: username,
         password: password
       });
-
+      localStorage.setItem('Authorization', response.data.token);
+      console.log(response)
+      navigate('/dashboard/');
+      
       //:D
       // instance.get('/dfdfdfdf', {
       //   headers: {
@@ -30,7 +33,6 @@ const FormLogin = () => {
       //   }
       // })
 
-      // navigate('/dashboard/');
       setLoading(false);
     } catch (err) {
       setLoading(false);

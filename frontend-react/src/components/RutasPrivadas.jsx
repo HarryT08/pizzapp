@@ -3,7 +3,16 @@ import { Navigate } from 'react-router-dom'
 import { LOGIN } from '../routes/paths'
 
 const RutasPrivadas = ( { children }) => {
-  return localStorage.getItem('token') ? children : <Navigate to={LOGIN} />;
+  if(!localStorage.getItem('Authorization')){
+    return <Navigate to={LOGIN} />
+  }
+
+  return (
+    <>
+      {children}
+    </>
+  )
+  /* return localStorage.getItem('Authorization') ? children : <Navigate to={LOGIN} />; */
 }
 
 export default RutasPrivadas
