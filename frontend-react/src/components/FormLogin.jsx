@@ -17,7 +17,7 @@ const FormLogin = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      await instance.post("/auth/login", {
+        await instance.post("/auth/login", {
         username: username,
         password: password,
       });

@@ -6,7 +6,6 @@ export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [data, setData] = useState(dataProductos);
   const [dataProducts, setDataProducts] = useState(dataIngredientes);
-  const [search, setSearch] = useState("");
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -32,8 +31,6 @@ export const ContextProvider = ({ children }) => {
         setData,
         dataProducts,
         setDataProducts,
-        search,
-        setSearch,
       }}
     >
       {children}
