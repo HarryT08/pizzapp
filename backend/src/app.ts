@@ -9,6 +9,7 @@ import mesasRoutes from './routes/mesas-routes';
 import usuariosRoutes from './routes/usuarios-routes';
 import personasRoutes from './routes/personas-routes';
 import authRoutes from './routes/auth-routes';
+import ingredientesRoutes from './routes/ingredientes-routes';
 export class App {
   private app: Application;
 
@@ -36,6 +37,7 @@ export class App {
     this.app.use('/usuarios', usuariosRoutes);
     this.app.use('/personas', personasRoutes);
     this.app.use('/auth', authRoutes);
+    this.app.use('/ingredientes', ingredientesRoutes);
   }
 
   async listen() {

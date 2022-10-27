@@ -21,8 +21,7 @@ export class MateriaPrima extends BaseEntity{
         super();
     }
 
-    init(id:number, nombre:string, cantidad:number){
-        this.id = id;
+    init(nombre:string, cantidad:number){
         this.nombre = nombre;
         this.existencia = cantidad;
     }
