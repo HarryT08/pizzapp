@@ -366,12 +366,12 @@ export const dataLineChart = [
         label: "Ventas 2022",
         responsive: true,
         data: [100, 200, 300, 1000, 500, 600, 700, 800, 750, 1000, 200, 100],
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        borderColor: "#35a2eb",
+        backgroundColor: "#35a2eb7f",
         tension: 0.2,
         pointStyle: 'rect',
-        pointBackgroundColor: 'white',
-        pointBorderColor:"rgb(53, 162, 235)",
+        pointBackgroundColor: '#ffffff',
+        pointBorderColor:"#35a2eb",
       }
     ]
   }
@@ -384,21 +384,21 @@ export const dataLinePopular = [
       {
         label: "Agosto",
         data: [100, 200, 300, 1000, 500, 600, 700, 800, 750, 1000],
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        borderColor: "#35a2eb",
+        backgroundColor: "#35a2eb7f",
         tension: 0.2,
         pointStyle: 'rect',
-        pointBackgroundColor: 'white',
-        pointBorderColor:"rgb(53, 162, 235)",
+        pointBackgroundColor: '#fff',
+        pointBorderColor:"#35a2eb",
       },
       {
         label: "Septiembre",
         data: [210, 220, 230, 2100, 250, 260, 270, 280, 275, 2200],
         borderColor: "#D00000",
-        backgroundColor: "rgba(208, 0, 0, 0.5)",
+        backgroundColor: "#d000007f",
         tension: 0.2,
         pointStyle: 'rect',
-        pointBackgroundColor: 'white',
+        pointBackgroundColor: '#ffffff',
         pointBorderColor:"#D00000",
       }
     ]
