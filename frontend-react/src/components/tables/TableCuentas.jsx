@@ -157,6 +157,7 @@ const TableCuentas = () => {
   //Obtención del id del usuario a editar
   const edit = (cedu) => {
     let user = data.filter((user) => user.cedula === cedu);
+    console.log(user);
     setUsuario(user[0]);
     setEmpleado({
       persona: user[0].persona,

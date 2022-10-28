@@ -33,7 +33,7 @@ const Ingredientes = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setIngrediente((prevState) => ({
+    return setIngrediente((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -41,7 +41,7 @@ const Ingredientes = () => {
 
   useEffect(() => {
     getProducts(); 
-  }, []);
+    }, []);
 
   // Petincion GET
   const getProducts = async () => {
@@ -53,8 +53,8 @@ const Ingredientes = () => {
     }
   };
 
-  // Peticion POST
-  const addProduct = async (e) => {
+   // Peticion POST
+   const addProduct = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -89,7 +89,7 @@ const Ingredientes = () => {
     }).then((result) => {
       if(result.isConfirmed) {
         Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
-        instance.delete(`ingredientes/${id}`)
+        instance.delete(`/ingredientes/${id}`)
         .then((res) => {
           getProducts();
         }).catch((err) => {
@@ -120,16 +120,18 @@ const Ingredientes = () => {
       setIngrediente({
         id: "",
         nombre: "",
-        existencia: "",
+        existencia: ""
       })
       setModalEditar(false);
       toast.success("Ingrediente actualizado correctamente");
       setLoading(false);
     } catch (err) {
       setLoading(false);
+      console.log(err)
       toast.error("Error al actualizar ingrediente");
     }
   }
+  
   //Busca el elemento que tenga el ID y setea el hook ingrediente de la linea 26 :D
   const findAndEdit = (_id) => {
     //Data contiene todos los ingredientes de la BD, filtramos y buscamos el que tenga el ID que le pasamos
@@ -144,7 +146,7 @@ const Ingredientes = () => {
     setModalEditar(true); 
   }
 
-  const filterData = (e) => {
+  const filterData = () => {
     return data
     .filter((val) => {
       if (search === "") {
@@ -163,6 +165,7 @@ const Ingredientes = () => {
 
   const abrirCerrarModalEditar = () => {
     setModalEditar(!modalEditar);
+    console.log(ingrediente.id, 'modal');
   }
 
   const bodyModalAgregar = (
@@ -272,7 +275,6 @@ const Ingredientes = () => {
             Agregar ingrediente
         </button>
       </div>
-      {/* {() => getProducts()} */}
       <div className="mt-8">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
           {filterData().length === 0
