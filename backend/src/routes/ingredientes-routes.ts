@@ -11,6 +11,8 @@ router.route('/')
     .get(getIngredients)
     .post(createIngredient)
     .put(updateIngredient)
+
+router.route('/:id')
     .delete(deleteIngredient);
 
 export default router;

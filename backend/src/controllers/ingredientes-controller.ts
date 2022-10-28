@@ -24,8 +24,8 @@ export const updateIngredient = async (req : Request , res : Response) => {
 
 export const deleteIngredient = async (req : Request , res : Response) => {
     try {
-        const {id} = req.body;
-        const result = await MateriaPrima.delete({id: parseInt(id)});
+        const id = parseInt(req.params['id'])
+        const result = await MateriaPrima.delete(id);
         if(result.affected === 0) return res.status(404).json({message: "Ingrediente no encontrado"});
         return res.status(202).json({message: "Ingrediente eliminado"});
     } catch (error) {
