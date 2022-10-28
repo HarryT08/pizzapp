@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import { MateriaPrima } from '../entities/MateriaPrima';
 
-export const createIngredient = (req : Request , res : Response) => {
+export const createIngredient = async(req : Request , res : Response) => {
     const {nombre , existencia} = req.body;
     const materiaPrima = new MateriaPrima();
     materiaPrima.init(nombre, existencia);
-    materiaPrima.save();
-    return res.send("Ingrediente creado");
+    const saved = await materiaPrima.save();
+    console.log(saved);
+    return res.json({...saved});
 }
 
 export const updateIngredient = async (req : Request , res : Response) => {

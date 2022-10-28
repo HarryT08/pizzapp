@@ -59,7 +59,12 @@ const Ingredientes = () => {
     try {
       setLoading(true);
       const response = await instance.post("/ingredientes", ingrediente);
-      setData([...data, ingrediente]);
+      const newData = [...data, {
+        id: response.data.id,
+        nombre: response.data.nombre,
+        existencia: response.data.existencia,
+      }]
+      setData([...newData]);
       setLoading(false);
       setModalAgregar(false);
       toast.success("Ingrediente agregado correctamente");
@@ -99,15 +104,15 @@ const Ingredientes = () => {
     e.preventDefault();
     getProducts();
     try {
-      console.log("JOA MANI --> " , ingrediente);
       await instance.put(`/ingredientes/${ingrediente.id}`, {
         nombre: ingrediente.nombre,
         existencia: ingrediente.existencia, 
       });
       let newData = data.map((item) => {
+        const currentExistencia = parseInt(item.existencia)
         if (item.id === ingrediente.id) { 
           item.nombre = ingrediente.nombre;
-          item.existencia += parseInt(ingrediente.existencia)
+          item.existencia = currentExistencia + parseInt(ingrediente.existencia)
         }
         return item;
       });
@@ -127,10 +132,8 @@ const Ingredientes = () => {
   }
   //Busca el elemento que tenga el ID y setea el hook ingrediente de la linea 26 :D
   const findAndEdit = (_id) => {
-    console.log("El id que recibo en el boton edit --> " + _id);
     //Data contiene todos los ingredientes de la BD, filtramos y buscamos el que tenga el ID que le pasamos
     let toFind = data.find(ingrediente => ingrediente.id === _id);
-    //setData([...prodc, item]); No se si dejar esto aqui , jumm
 
     //Seteamos el hook ingrediente con el ingrediente que encontramos
     setIngrediente({
@@ -269,7 +272,7 @@ const Ingredientes = () => {
             Agregar ingrediente
         </button>
       </div>
-      {() => getProducts()}
+      {/* {() => getProducts()} */}
       <div className="mt-8">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
           {filterData().length === 0
