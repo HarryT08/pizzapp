@@ -9,10 +9,10 @@ import {
 
 router.route('/')
     .get(getIngredients)
-    .post(createIngredient)
-    .put(updateIngredient)
+    .post(createIngredient);
 
 router.route('/:id')
-    .delete(deleteIngredient);
+    .delete(deleteIngredient)
+    .put(updateIngredient);
 
 export default router;

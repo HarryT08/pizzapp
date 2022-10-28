@@ -24,6 +24,7 @@ const Ingredientes = () => {
   const [modalAgregar, setModalAgregar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
   const [ingrediente, setIngrediente] = useState({
+    id: "",
     nombre: "",
     existencia: "",
   });
@@ -39,14 +40,14 @@ const Ingredientes = () => {
   };
 
   useEffect(() => {
-    getProducts();
+    getProducts(); 
   }, []);
 
   // Petincion GET
   const getProducts = async () => {
     try {
       const response = await instance.get("/ingredientes");
-      return setData(response.data);
+      return setData(response.data)
     } catch (err) {
       setData([]);
     }
@@ -96,36 +97,47 @@ const Ingredientes = () => {
   // Peticion PUT
   const editProduct = async (e) => {
     e.preventDefault();
+    getProducts();
     try {
-      setLoading(true);
-      const response = await instance.put(`/ingredientes`, ingrediente);
-      setLoading(false);
+      console.log("JOA MANI --> " , ingrediente);
+      await instance.put(`/ingredientes/${ingrediente.id}`, {
+        nombre: ingrediente.nombre,
+        existencia: ingrediente.existencia, 
+      });
+      let newData = data.map((item) => {
+        if (item.id === ingrediente.id) { 
+          item.nombre = ingrediente.nombre;
+          item.existencia += parseInt(ingrediente.existencia)
+        }
+        return item;
+      });
+      setData(newData);
       setIngrediente({
         id: "",
         nombre: "",
         existencia: "",
       })
-      getProducts();
-      // setData([...data]);
       setModalEditar(false);
       toast.success("Ingrediente actualizado correctamente");
+      setLoading(false);
     } catch (err) {
       setLoading(false);
       toast.error("Error al actualizar ingrediente");
     }
   }
+  //Busca el elemento que tenga el ID y setea el hook ingrediente de la linea 26 :D
+  const findAndEdit = (_id) => {
+    console.log("El id que recibo en el boton edit --> " + _id);
+    //Data contiene todos los ingredientes de la BD, filtramos y buscamos el que tenga el ID que le pasamos
+    let toFind = data.find(ingrediente => ingrediente.id === _id);
+    //setData([...prodc, item]); No se si dejar esto aqui , jumm
 
-  const edit = (item) => {
-    let prodc = data.map((elemnt) => {
-      if(elemnt.id !== item){
-        return elemnt;
-      }
-    })
-    setData([...prodc, item]);
-    // setIngrediente(prodc[0]);
-    /* 
-    console.log(prodc[0]);
-    */
+    //Seteamos el hook ingrediente con el ingrediente que encontramos
+    setIngrediente({
+      id: _id,
+      nombre : toFind.nombre,
+      existencia : toFind.existencia,
+    });
     setModalEditar(true); 
   }
 
@@ -199,7 +211,7 @@ const Ingredientes = () => {
           <label>Nombre</label>
           <input
             name="nombre"
-            defaultValue={ingrediente && ingrediente.nombre}
+            defaultValue={ingrediente.nombre}
             onChange={handleChange}
             type="text"
             className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
@@ -209,7 +221,7 @@ const Ingredientes = () => {
           <label>Existencia</label>
           <input
             name="existencia"
-            defaultValue={ingrediente && ingrediente.existencia}
+            defaultValue={ingrediente.existencia}
             onChange={handleChange}
             type="number"
             className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
@@ -217,7 +229,7 @@ const Ingredientes = () => {
         </div>
         <div className="flex pt-3 gap-3">
           <button type="submit" className="btn">
-            {loading ? <Loader /> : "Agregar usuario"}
+            {loading ? <Loader /> : "Editar ingrediente"}
           </button>
           <button
             className="btnCancel"
@@ -257,7 +269,7 @@ const Ingredientes = () => {
             Agregar ingrediente
         </button>
       </div>
-
+      {() => getProducts()}
       <div className="mt-8">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
           {filterData().length === 0
@@ -273,7 +285,8 @@ const Ingredientes = () => {
                     {item.existencia}
                   </div>
                   <div className="card-buttons flex justify-center gap-5 py-3">
-                    <button onClick={() => edit(item.id)} className="editar">Editar</button>
+                    <button onClick={ () => findAndEdit(item.id) }  
+                      className="editar">Editar</button>
                     <button
                       className="eliminar"
                       onClick={() => deleteProduct(item.id)}
