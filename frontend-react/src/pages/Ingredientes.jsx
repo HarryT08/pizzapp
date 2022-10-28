@@ -1,17 +1,78 @@
-import { useStateContext } from '../context/ContextProvider';
 import { FiSearch } from "react-icons/fi";
 import Swal from "sweetalert2";
-import ModalIngredientes from '../components/modals/ModalIngredientes';
-import { useState } from 'react';
+import { Modal, Box, MenuItem } from "@mui/material";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { instance } from "../api/api";
+import Loader from "../components/Loader";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  borderRadius: "10px",
+  boxShadow: 24,
+  p: 4,
+};
 
 const Ingredientes = () => {
-
-  const { handleDeleteProduct,dataProducts} = useStateContext();
+  const [data, setData] = useState([]);
+  const [modalAgregar, setModalAgregar] = useState(false);
+  const [modalEditar, setModalEditar] = useState(false);
+  const [ingrediente, setIngrediente] = useState({
+    nombre: "",
+    existencia: "",
+  });
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
-  const showAlert = (id) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setIngrediente((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  // Petincion GET
+  const getProducts = async () => {
+    try {
+      const response = await instance.get("/ingredientes");
+      return setData(response.data);
+    } catch (err) {
+      setData([]);
+    }
+  };
+
+  // Peticion POST
+  const addProduct = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await instance.post("/ingredientes", ingrediente);
+      setData([...data, ingrediente]);
+      setLoading(false);
+      setModalAgregar(false);
+      toast.success("Ingrediente agregado correctamente");
+    } catch (err) {
+      setLoading(false);
+      toast.error("Error al agregar ingrediente");
+    }
+  }
+
+  // Peticion DELETE
+  const deleteProduct = async (id) => {
     Swal.fire({
-      title: "¿Estás seguro?",
+      title: `¿Estás seguro?`,
+      html: `No podrás revertir esto!`,
       text: "No podrás revertir esta acción",
       icon: "warning",
       showCancelButton: true,
@@ -20,15 +81,56 @@ const Ingredientes = () => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
-      if (result.isConfirmed) {
-        handleDeleteProduct(id);
-        Swal.fire("Eliminado", "El producto ha sido eliminado", "success");
+      if(result.isConfirmed) {
+        Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
+        instance.delete(`ingredientes/${id}`)
+        .then((res) => {
+          getProducts();
+        }).catch((err) => {
+          console.log(err);
+        })
       }
-    });
+    })
+  }
+
+  // Peticion PUT
+  const editProduct = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await instance.put(`/ingredientes`, ingrediente);
+      setLoading(false);
+      setIngrediente({
+        id: "",
+        nombre: "",
+        existencia: "",
+      })
+      getProducts();
+      // setData([...data]);
+      setModalEditar(false);
+      toast.success("Ingrediente actualizado correctamente");
+    } catch (err) {
+      setLoading(false);
+      toast.error("Error al actualizar ingrediente");
+    }
+  }
+
+  const edit = (item) => {
+    let prodc = data.map((elemnt) => {
+      if(elemnt.id !== item){
+        return elemnt;
+      }
+    })
+    setData([...prodc, item]);
+    // setIngrediente(prodc[0]);
+    /* 
+    console.log(prodc[0]);
+    */
+    setModalEditar(true); 
   }
 
   const filterData = (e) => {
-    return dataProducts
+    return data
     .filter((val) => {
       if (search === "") {
         return val;
@@ -40,8 +142,97 @@ const Ingredientes = () => {
     })   
   }
 
+  const abrirCerrarModalAgregar = () => {
+    setModalAgregar(!modalAgregar);
+  }
+
+  const abrirCerrarModalEditar = () => {
+    setModalEditar(!modalEditar);
+  }
+
+  const bodyModalAgregar = (
+    <Box sx={style}>
+      <div className="header-modal">
+        <h3 className="text-xl font-semibold">Agregar ingrediente</h3>
+      </div>
+      <form onSubmit={addProduct}>
+        <div className="mt-2 flex flex-col">
+          <label>Nombre</label>
+          <input
+            name="nombre"
+            onChange={handleChange}
+            type="text"
+            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+          />
+        </div>
+        <div className="my-2 flex flex-col">
+          <label>Existencia</label>
+          <input
+            name="existencia"
+            onChange={handleChange}
+            type="number"
+            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+          />
+        </div>
+        <div className="flex pt-3 gap-3">
+          <button type="submit" className="btn">
+            {loading ? <Loader /> : "Agregar ingrediente"}
+          </button>
+          <button
+            className="btnCancel"
+            onClick={() => abrirCerrarModalAgregar()}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </Box>
+  );
+
+  const bodyModalEditar = (
+    <Box sx={style}>
+      <div className="header-modal">
+        <h3 className="text-xl font-semibold">Editar ingrediente</h3>
+      </div>
+      <form onSubmit={editProduct}>
+        <div className="mt-2 flex flex-col">
+          <label>Nombre</label>
+          <input
+            name="nombre"
+            defaultValue={ingrediente && ingrediente.nombre}
+            onChange={handleChange}
+            type="text"
+            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+          />
+        </div>
+        <div className="my-2 flex flex-col">
+          <label>Existencia</label>
+          <input
+            name="existencia"
+            defaultValue={ingrediente && ingrediente.existencia}
+            onChange={handleChange}
+            type="number"
+            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+          />
+        </div>
+        <div className="flex pt-3 gap-3">
+          <button type="submit" className="btn">
+            {loading ? <Loader /> : "Agregar usuario"}
+          </button>
+          <button
+            className="btnCancel"
+            onClick={() => abrirCerrarModalEditar()}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </Box>
+  );
+
   return (
     <div className="w-full p-3">
+      <ToastContainer />
       {/* Barra busqueda */}
       <div className="flex justify-between py-3 border-b-2">
         <form action="">
@@ -62,43 +253,47 @@ const Ingredientes = () => {
 
       {/* Boton agg ingredientes */}
       <div className="mt-8">
-        <ModalIngredientes/>
+        <button className="btn" onClick={() => abrirCerrarModalAgregar()}>
+            Agregar ingrediente
+        </button>
       </div>
 
       <div className="mt-8">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
-        {filterData().length === 0 ? 
-            "No se encontraron ingredientes"
-          :
-          filterData().map((item) => (
-            <div key={item.id} className="card-producto">
-              <div className="container-img">
-                <img
-                  src={item.img}
-                  alt="Foto producto"
-                  className="w-full h-48 object-cover rounded-t-lg"
-                />
-                <hr className="border-2 border-rojo-fuerte" />
-              </div>
-              <div className="card-body">
-                <h1 className="text-xl font-extrabold text-center">
-                  {item.nombre}
-                </h1>
-                <p className="mt-1 text-center px-2 py-1 bg-verde-profundo w-max text-white font-semibold text-lg rounded-lg">
-                  {item.precio}
-                </p>
-              </div>
-              <div className="card-buttons flex justify-center gap-5 py-3">
-                <button className="editar">Editar</button>
-                <button className="eliminar" onClick={() => showAlert(item.id)}> Eliminar </button>
-              </div>
-            </div>
-          ))
-          }
+          {filterData().length === 0
+            ? "No se encontraron ingredientes"
+            : filterData().map((item) => (
+                <div key={item.id} className="card-producto">
+                  <div className="card-body">
+                    <h1 className="text-xl font-extrabold text-center">
+                      {item.nombre}
+                    </h1>
+                  </div>
+                  <div className="flex justify-center gap-2">
+                    {item.existencia}
+                  </div>
+                  <div className="card-buttons flex justify-center gap-5 py-3">
+                    <button onClick={() => edit(item.id)} className="editar">Editar</button>
+                    <button
+                      className="eliminar"
+                      onClick={() => deleteProduct(item.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
+      <Modal open={modalAgregar} onClose={abrirCerrarModalAgregar}>
+        {bodyModalAgregar}
+      </Modal>
+
+      <Modal open={modalEditar} onClose={abrirCerrarModalEditar}>
+        {bodyModalEditar}
+      </Modal>
     </div>
   )
 }
 
-export default Ingredientes
+export default Ingredientes;
