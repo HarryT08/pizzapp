@@ -1,10 +1,10 @@
-import { FiSearch } from "react-icons/fi";
-import Swal from "sweetalert2";
-import { Modal, Box, MenuItem } from "@mui/material";
 import { useEffect, useState } from "react";
+import { FiSearch } from "react-icons/fi";
+import { Modal, Box } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { instance } from "../api/api";
+import Swal from "sweetalert2";
 import Loader from "../components/Loader";
 
 const style = {

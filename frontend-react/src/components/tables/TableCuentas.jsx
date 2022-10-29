@@ -378,6 +378,7 @@ const TableCuentas = () => {
             <TextField
               label={empleado && empleado.rol.nombre}
               select
+              value={usuario && usuario.idRol}
               name="idRol"
               onChange={handleChange}
               variant="filled"
