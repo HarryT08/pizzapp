@@ -33,7 +33,7 @@ export const login = async (req: Request, res: Response) => {
     const user = await User.findOneBy({ username });
 
     if (user && user.validatePassword(password)) {
-      const token = jwt.sign({ cedula: user.cedula }, 'secret', {
+      const token = jwt.sign({ cedula: user.cedula, nombre: user.persona.nombre }, 'secret', {
         expiresIn: '9h'
       });
 
