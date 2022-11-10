@@ -28,11 +28,10 @@ const Perfil = () => {
   const decodedUserName = () => {
     const token = localStorage.getItem("Authorization");
     const decoded = jwt_decode(token);
-    console.log('Usuario decodificado',decoded)
-    // return setUserName(decoded.username);
+    return setUserName(decoded.nombre);
   }
 
-  // console.log('Usuario',userName)
+  console.log('Usuario',userName)
 
 const logout = () => {
     localStorage.removeItem("Authorization");
@@ -104,6 +103,9 @@ const logout = () => {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem sx={{ fontFamily: "Montserrat" }} onClick={() => logout()}>
+          <ListItemIcon>
+            {userName}
+          </ListItemIcon>
           <ListItemIcon>
             <BiLogOut color="#ba181b" size={20} />
           </ListItemIcon>
