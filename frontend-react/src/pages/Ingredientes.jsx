@@ -1,12 +1,30 @@
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { Modal, Box, TextField } from "@mui/material";
+import {
+  Modal,
+  Box,
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { instance } from "../api/api";
 import Swal from "sweetalert2";
-import { BtnAgg, BtnEdit, BtnDelete } from '../styles/Button'
+import { BtnAgg, BtnEdit, BtnDelete } from "../styles/Button";
 import Loader from "../components/Loader";
+import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
+
+const columns = [
+  { id: "nombre", label: "Nombre" },
+  { id: "existencia", label: "Existencia" },
+  { id: "acciones", label: "Acciones" },
+];
 
 const style = {
   position: "absolute",
@@ -48,7 +66,7 @@ const Ingredientes = () => {
   const getProducts = async () => {
     try {
       const response = await instance.get("/ingredientes");
-      return setData(response.data)
+      return setData(response.data);
     } catch (err) {
       setData([]);
     }
@@ -60,11 +78,14 @@ const Ingredientes = () => {
     try {
       setLoading(true);
       const response = await instance.post("/ingredientes", ingrediente);
-      const newData = [...data, {
-        id: response.data.id,
-        nombre: response.data.nombre,
-        existencia: response.data.existencia,
-      }]
+      const newData = [
+        ...data,
+        {
+          id: response.data.id,
+          nombre: response.data.nombre,
+          existencia: response.data.existencia,
+        },
+      ];
       setData([...newData]);
       setLoading(false);
       setModalAgregar(false);
@@ -73,7 +94,7 @@ const Ingredientes = () => {
       setLoading(false);
       toast.error("Error al agregar ingrediente");
     }
-  }
+  };
 
   // Peticion DELETE
   const deleteProduct = async (id) => {
@@ -90,15 +111,17 @@ const Ingredientes = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
-        instance.delete(`/ingredientes/${id}`)
+        instance
+          .delete(`/ingredientes/${id}`)
           .then((res) => {
             getProducts();
-          }).catch((err) => {
-            console.log(err);
           })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-    })
-  }
+    });
+  };
 
   // Peticion PUT
   const editProduct = async (e) => {
@@ -110,10 +133,11 @@ const Ingredientes = () => {
         existencia: ingrediente.existencia,
       });
       let newData = data.map((item) => {
-        const currentExistencia = parseInt(item.existencia)
+        const currentExistencia = parseInt(item.existencia);
         if (item.id === ingrediente.id) {
           item.nombre = ingrediente.nombre;
-          item.existencia = currentExistencia + parseInt(ingrediente.existencia)
+          item.existencia =
+            currentExistencia + parseInt(ingrediente.existencia);
         }
         return item;
       });
@@ -121,22 +145,22 @@ const Ingredientes = () => {
       setIngrediente({
         id: "",
         nombre: "",
-        existencia: ""
-      })
+        existencia: "",
+      });
       setModalEditar(false);
       toast.success("Ingrediente actualizado correctamente");
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.log(err)
+      console.log(err);
       toast.error("Error al actualizar ingrediente");
     }
-  }
+  };
 
   //Busca el elemento que tenga el ID y setea el hook ingrediente de la linea 26 :D
   const findAndEdit = (_id) => {
     //Data contiene todos los ingredientes de la BD, filtramos y buscamos el que tenga el ID que le pasamos
-    let toFind = data.find(ingrediente => ingrediente.id === _id);
+    let toFind = data.find((ingrediente) => ingrediente.id === _id);
 
     //Seteamos el hook ingrediente con el ingrediente que encontramos
     setIngrediente({
@@ -145,29 +169,26 @@ const Ingredientes = () => {
       existencia: toFind.existencia,
     });
     setModalEditar(true);
-  }
+  };
 
   const filterData = () => {
-    return data
-      .filter((val) => {
-        if (search === "") {
-          return val;
-        } else if (
-          val.nombre.toLowerCase().includes(search.toLowerCase())
-        ) {
-          return val;
-        }
-      })
-  }
+    return data.filter((val) => {
+      if (search === "") {
+        return val;
+      } else if (val.nombre.toLowerCase().includes(search.toLowerCase())) {
+        return val;
+      }
+    });
+  };
 
   const abrirCerrarModalAgregar = () => {
     setModalAgregar(!modalAgregar);
-  }
+  };
 
   const abrirCerrarModalEditar = () => {
     setModalEditar(!modalEditar);
-    console.log(ingrediente.id, 'modal');
-  }
+    console.log(ingrediente.id, "modal");
+  };
 
   const bodyModalAgregar = (
     <Box sx={style}>
@@ -279,32 +300,53 @@ const Ingredientes = () => {
         </BtnAgg>
       </div>
       <div className="mt-8">
-        <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
-          {filterData().length === 0
-            ? "No se encontraron ingredientes"
-            : filterData().map((item) => (
-              <div key={item.id} className="card-producto">
-                <div className="card-body">
-                  <h1 className="text-xl font-extrabold text-center">
-                    {item.nombre}
-                  </h1>
-                </div>
-                <div className="flex justify-center gap-2">
-                  {item.existencia}
-                </div>
-                <div className="card-buttons flex justify-center gap-5 py-3">
-                  <BtnEdit onClick={() => findAndEdit(item.id)}
-                    className="editar">Editar</BtnEdit>
-                  <BtnDelete
-                    className="eliminar"
-                    onClick={() => deleteProduct(item.id)}
-                  >
-                    Eliminar
-                  </BtnDelete>
-                </div>
-              </div>
-            ))}
-        </div>
+        <Paper>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }}>
+              <TableHead>
+                <TableRow style={{ background: "#D00000" }}>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      style={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontFamily: "Montserrat",
+                      }}
+                      align="center"
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filterData().length === 0
+                  ? "No se encontraron ingredientes"
+                  : filterData().map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell align="center">{item.nombre}</TableCell>
+                        <TableCell align="center">{item.existencia}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-5 justify-center">
+                            <AiFillEdit
+                              size={25}
+                              onClick={() => findAndEdit(item.id)}
+                              className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
+                            />
+                            <AiTwotoneDelete
+                              size={25}
+                              className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
+                              onClick={() => deleteProduct(item.id)}
+                            />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       </div>
       <Modal open={modalAgregar} onClose={abrirCerrarModalAgregar}>
         {bodyModalAgregar}
@@ -314,7 +356,7 @@ const Ingredientes = () => {
         {bodyModalEditar}
       </Modal>
     </div>
-  )
-}
+  );
+};
 
 export default Ingredientes;

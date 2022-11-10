@@ -424,7 +424,7 @@ const TableCuentas = () => {
               <p className="text-center">No existen usuarios</p>
             </div>
           )}
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow style={{ background: "#D00000" }}>
                 {columns.map((column) => (
