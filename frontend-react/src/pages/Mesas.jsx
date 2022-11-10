@@ -2,6 +2,7 @@ import { useState } from "react"
 import { mesas } from "../data/datos"
 import {GiKnifeFork} from 'react-icons/gi'
 import { Modal, Box } from "@mui/material";
+import {BtnAgg, BtnDelete} from '../styles/Button'
 
 const style = {
   position: "absolute",
@@ -27,12 +28,12 @@ const Mesas = () => {
   const bodyModal = (
     <Box sx={style}>
       <div className="flex justify-center gap-3">
-          <button type="submit" className="btn">
+          <BtnAgg type="submit" className="btn">
             Agregar mesa
-          </button>
-          <button className="btnCancel" onClick={() => abrirCerrarModal()}>
+          </BtnAgg>
+          <BtnDelete onClick={() => abrirCerrarModal()}>
             Cancelar
-          </button>
+          </BtnDelete>
         </div>
     </Box>
   )
@@ -40,7 +41,7 @@ const Mesas = () => {
   return (
     <div className='w-full p-3'>
       <div className='mt-2'>
-        <button className='btn' onClick={abrirCerrarModal}>Agregar mesa</button>
+        <BtnAgg onClick={abrirCerrarModal}>Agregar mesa</BtnAgg>
       </div>
       <div className='mt-8'>
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">  

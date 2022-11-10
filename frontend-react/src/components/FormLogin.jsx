@@ -3,6 +3,7 @@ import { instance } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { TextField } from '@mui/material';
+import {BtnEdit} from '../styles/Button'
 import 'react-toastify/dist/ReactToastify.css';
 import logoBohemia from '../assets/img/logoBohemiaLogin.png';
 import Loader from './Loader';
@@ -75,7 +76,7 @@ const FormLogin = () => {
         </div>
         <ToastContainer />
         <div className="mt-6">
-          <button type="submit" className="btnLogin">
+          <BtnEdit fullWidth type="submit">
             {loading ? (
               <>
                 <Loader />
@@ -83,7 +84,7 @@ const FormLogin = () => {
             ) : (
               <>Iniciar sesion</>
             )}
-          </button>
+          </BtnEdit>
         </div>
       </form>
       <p className="pt-12 text-sm text-black/50">
