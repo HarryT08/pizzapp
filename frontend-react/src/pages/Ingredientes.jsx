@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { Modal, Box } from "@mui/material";
+import { Modal, Box, TextField } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { instance } from "../api/api";
 import Swal from "sweetalert2";
+import { BtnAgg, BtnEdit, BtnDelete } from '../styles/Button'
 import Loader from "../components/Loader";
 
 const style = {
@@ -40,8 +41,8 @@ const Ingredientes = () => {
   };
 
   useEffect(() => {
-    getProducts(); 
-    }, []);
+    getProducts();
+  }, []);
 
   // Petincion GET
   const getProducts = async () => {
@@ -53,8 +54,8 @@ const Ingredientes = () => {
     }
   };
 
-   // Peticion POST
-   const addProduct = async (e) => {
+  // Peticion POST
+  const addProduct = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -87,14 +88,14 @@ const Ingredientes = () => {
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
     }).then((result) => {
-      if(result.isConfirmed) {
+      if (result.isConfirmed) {
         Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
         instance.delete(`/ingredientes/${id}`)
-        .then((res) => {
-          getProducts();
-        }).catch((err) => {
-          console.log(err);
-        })
+          .then((res) => {
+            getProducts();
+          }).catch((err) => {
+            console.log(err);
+          })
       }
     })
   }
@@ -106,11 +107,11 @@ const Ingredientes = () => {
     try {
       await instance.put(`/ingredientes/${ingrediente.id}`, {
         nombre: ingrediente.nombre,
-        existencia: ingrediente.existencia, 
+        existencia: ingrediente.existencia,
       });
       let newData = data.map((item) => {
         const currentExistencia = parseInt(item.existencia)
-        if (item.id === ingrediente.id) { 
+        if (item.id === ingrediente.id) {
           item.nombre = ingrediente.nombre;
           item.existencia = currentExistencia + parseInt(ingrediente.existencia)
         }
@@ -131,7 +132,7 @@ const Ingredientes = () => {
       toast.error("Error al actualizar ingrediente");
     }
   }
-  
+
   //Busca el elemento que tenga el ID y setea el hook ingrediente de la linea 26 :D
   const findAndEdit = (_id) => {
     //Data contiene todos los ingredientes de la BD, filtramos y buscamos el que tenga el ID que le pasamos
@@ -140,23 +141,23 @@ const Ingredientes = () => {
     //Seteamos el hook ingrediente con el ingrediente que encontramos
     setIngrediente({
       id: _id,
-      nombre : toFind.nombre,
-      existencia : toFind.existencia,
+      nombre: toFind.nombre,
+      existencia: toFind.existencia,
     });
-    setModalEditar(true); 
+    setModalEditar(true);
   }
 
   const filterData = () => {
     return data
-    .filter((val) => {
-      if (search === "") {
-        return val;
-      } else if (
-        val.nombre.toLowerCase().includes(search.toLowerCase())
-      ) {
-        return val;
-      }
-    })   
+      .filter((val) => {
+        if (search === "") {
+          return val;
+        } else if (
+          val.nombre.toLowerCase().includes(search.toLowerCase())
+        ) {
+          return val;
+        }
+      })
   }
 
   const abrirCerrarModalAgregar = () => {
@@ -175,33 +176,35 @@ const Ingredientes = () => {
       </div>
       <form onSubmit={addProduct}>
         <div className="mt-2 flex flex-col">
-          <label>Nombre</label>
-          <input
+          <TextField
+            required
+            label="Nombre"
             name="nombre"
-            onChange={handleChange}
             type="text"
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+            onChange={handleChange}
+            variant="filled"
           />
         </div>
         <div className="my-2 flex flex-col">
-          <label>Existencia</label>
-          <input
+          <TextField
+            required
+            label="Existencia"
             name="existencia"
-            onChange={handleChange}
             type="number"
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
+            onChange={handleChange}
+            variant="filled"
           />
         </div>
         <div className="flex pt-3 gap-3">
-          <button type="submit" className="btn">
+          <BtnAgg type="submit" className="btn">
             {loading ? <Loader /> : "Agregar ingrediente"}
-          </button>
-          <button
+          </BtnAgg>
+          <BtnDelete
             className="btnCancel"
             onClick={() => abrirCerrarModalAgregar()}
           >
             Cancelar
-          </button>
+          </BtnDelete>
         </div>
       </form>
     </Box>
@@ -271,36 +274,36 @@ const Ingredientes = () => {
 
       {/* Boton agg ingredientes */}
       <div className="mt-8">
-        <button className="btn" onClick={() => abrirCerrarModalAgregar()}>
-            Agregar ingrediente
-        </button>
+        <BtnAgg onClick={() => abrirCerrarModalAgregar()}>
+          Agregar ingrediente
+        </BtnAgg>
       </div>
       <div className="mt-8">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
           {filterData().length === 0
             ? "No se encontraron ingredientes"
             : filterData().map((item) => (
-                <div key={item.id} className="card-producto">
-                  <div className="card-body">
-                    <h1 className="text-xl font-extrabold text-center">
-                      {item.nombre}
-                    </h1>
-                  </div>
-                  <div className="flex justify-center gap-2">
-                    {item.existencia}
-                  </div>
-                  <div className="card-buttons flex justify-center gap-5 py-3">
-                    <button onClick={ () => findAndEdit(item.id) }  
-                      className="editar">Editar</button>
-                    <button
-                      className="eliminar"
-                      onClick={() => deleteProduct(item.id)}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
+              <div key={item.id} className="card-producto">
+                <div className="card-body">
+                  <h1 className="text-xl font-extrabold text-center">
+                    {item.nombre}
+                  </h1>
                 </div>
-              ))}
+                <div className="flex justify-center gap-2">
+                  {item.existencia}
+                </div>
+                <div className="card-buttons flex justify-center gap-5 py-3">
+                  <BtnEdit onClick={() => findAndEdit(item.id)}
+                    className="editar">Editar</BtnEdit>
+                  <BtnDelete
+                    className="eliminar"
+                    onClick={() => deleteProduct(item.id)}
+                  >
+                    Eliminar
+                  </BtnDelete>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
       <Modal open={modalAgregar} onClose={abrirCerrarModalAgregar}>
