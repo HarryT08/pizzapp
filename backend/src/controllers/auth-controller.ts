@@ -30,7 +30,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     let { username, password } = req.body;
     //buscar el usuario por su username
-    const user = await User.findOne({ where: username, relations: ['persona'] });
+    const user = await User.findOne({ where: {username: username}, relations: ["persona"] });
 
     if (user && user.validatePassword(password)) {
       const token = jwt.sign({ cedula: user.cedula, nombre: user.persona.nombre }, 'secret', {
