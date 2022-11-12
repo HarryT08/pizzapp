@@ -14,68 +14,54 @@
   /* Estados */
 
   .Terminado {
-    @apply bg-verde-profundo/20 rounded-md p-1
-    text-verde-profundo;
+    @apply bg-verde-profundo/20 rounded-md p-1 text-verde-profundo;
   }
 
   .Pendiente {
-    @apply bg-naranja-vivido/20 rounded-md p-1
-    text-naranja-vivido;
+    @apply bg-naranja-vivido/20 rounded-md p-1 text-naranja-vivido;
   }
 
   .Cancelado {
-    @apply bg-rojo-fuerte/20 rounded-md p-1
-    text-rojo-fuerte;
+    @apply bg-rojo-fuerte/20 rounded-md p-1 text-rojo-fuerte;
   }
 
   /* Boton */
 
   .btn {
-    @apply rounded-md py-2 px-8
-    text-sm
-    border-2 border-azul-marino/20 bg-azul-marino/20
-    text-azul-marino font-bold transition duration-300 ease-in-out
-
-    hover:bg-azul-marino hover:text-white;
+    @apply rounded-md py-2 px-8 text-sm border-2 border-azul-marino/20 bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white;
   }
 
-  .btnCancel{
-    @apply rounded-md py-2 px-8
-    text-sm
-    border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20
-    text-rojo-fuerte font-bold transition duration-300 ease-in-out
-    hover:bg-rojo-fuerte hover:text-white;
+  .btnCancel {
+    @apply rounded-md py-2 px-8 text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white;
   }
 
-  .btnLogin{
-    @apply w-full 
-    bg-naranja-vivido hover:bg-white hover:text-naranja-vivido
-    border-2 border-naranja-vivido
-    rounded-md
-    text-white font-semibold 
-    text-sm md:text-base 2xl:text-2xl 
-    px-3 py-2
-    transition duration-300 ease-in-out
+  .btnLogin {
+    @apply w-full bg-naranja-vivido hover:bg-white hover:text-naranja-vivido border-2 border-naranja-vivido rounded-md text-white font-semibold text-sm md:text-base 2xl:text-2xl px-3 py-2 transition duration-300 ease-in-out;
   }
 
   /* Cards */
   .card-producto {
-    @apply rounded-lg shadow-2xl drop-shadow-3xl bg-white w-80;
+    @apply rounded-lg shadow-2xl drop-shadow-3xl bg-white w-80
+    
+    md:w-72 2xl:w-80
+    ;
   }
+
   .container-img {
     @apply w-full h-48;
   }
+
   .card-body {
-    @apply flex flex-col items-center
-    p-3;
+    @apply flex flex-col items-center p-3;
   }
 
   /* Modal */
   .overlay {
     @apply w-screen h-screen fixed top-0 left-0 bg-black/50 flex items-center justify-center p-10 z-10;
   }
+
   .container-modal {
-    @apply w-[35rem] h-[42rem]  bg-white rounded-lg relative shadow-[rgba(100,100,111,0.2)] p-5;
+    @apply w-[35rem] h-[42rem] bg-white rounded-lg relative shadow-[rgba(100, 100, 111, 0.2)] p-5;
   }
 
   .header-modal {
@@ -83,50 +69,32 @@
   }
 
   .btn-close {
-    @apply  border-none bg-none transition duration-200 ease-in rounded-md text-rojo-fuerte
-    hover:bg-rojo-fuerte hover:text-white text-xl;
+    @apply border-none bg-none transition duration-200 ease-in rounded-md text-rojo-fuerte hover:bg-rojo-fuerte hover:text-white text-xl;
   }
+
   .editar {
-    @apply rounded-lg py-2 px-3
-    border-2 border-naranja-vivido/20 bg-naranja-vivido/20
-    text-naranja-vivido font-bold text-sm transition duration-300 ease-in-out
-
-    hover:bg-naranja-vivido hover:text-white;
+    @apply rounded-lg py-2 px-3 border-2 border-naranja-vivido/20 bg-naranja-vivido/20 text-naranja-vivido font-bold text-sm transition duration-300 ease-in-out hover:bg-naranja-vivido hover:text-white;
   }
-  .eliminar {
-    @apply rounded-lg py-2 px-3
-    border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20
-    text-rojo-fuerte font-bold text-sm transition duration-300 ease-in-out
 
-    hover:bg-rojo-fuerte hover:text-white;
+  .eliminar {
+    @apply rounded-lg py-2 px-3 border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold text-sm transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white;
   }
 
   /* File styles */
   .drop-file-input {
-    @apply relative w-full h-52
-    flex items-center justify-center
-    border-2 border-dashed border-gray-400
-    border-azul-marino/20 bg-azul-marino/20;
+    @apply relative w-full h-52 flex items-center justify-center border-2 border-dashed border-gray-400 border-azul-marino/20 bg-azul-marino/20;
   }
 
   .drop-file-input input {
-    @apply top-0 left-0
-    absolute
-    w-full h-full
-    opacity-0 cursor-pointer
-
-    hover:opacity-5;
+    @apply top-0 left-0 absolute w-full h-full opacity-0 cursor-pointer hover: opacity-5;
   }
 
   .drop-file-input__label {
-    @apply
-    p-2 w-36
-    text-azul-marino
-    font-bold text-center;
+    @apply p-2 w-36 text-azul-marino font-bold text-center;
   }
-  .drop-file-input__label p{
-    @apply
-    text-sm
+
+  .drop-file-input__label p {
+    @apply text-sm;
   }
 
   .drop-file-preview {
@@ -134,18 +102,15 @@
   }
 
   .drop-file-preview p {
-    @apply
-    font-semibold;
+    @apply font-semibold;
   }
+
   .drop-file-preview__title {
     @apply mb-3;
   }
 
   .drop-file-preview__item {
-    @apply
-    relative flex justify-between mb-2
-    bg-slate-200
-    p-4 rounded-3xl;
+    @apply relative flex justify-between mb-2 bg-slate-200 p-4 rounded-3xl;
   }
 
   .drop-file-preview__item img {
@@ -153,18 +118,10 @@
   }
 
   .drop-file-preview__item__info {
-    @apply
-    flex flex-col justify-between
+    @apply flex flex-col justify-between;
   }
 
   .drop-file-preview__item:hover .drop-file-preview__item__del {
-    @apply
-    opacity-100;
+    @apply opacity-100;
   }
-}
-
-/* Input */
-.inp {
-  @apply
-  border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {Divider} from '@mui/material'
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -41,6 +42,14 @@ const logout = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const getInitials = (name) => {
+    const names = name.split(" ");
+    const initials = names[0].substring(0, 1).toUpperCase();
+    return initials;
+  }
+
+
   return (
     <div>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -62,7 +71,7 @@ const logout = () => {
                 height: 30,
               }}
             >
-              E
+              {getInitials(userName)}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -102,7 +111,20 @@ const logout = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem sx={{ fontFamily: "Montserrat" }} onClick={() => logout()}>
+        <MenuItem>
+          <ListItemIcon>
+            <Avatar />
+          </ListItemIcon>
+          {userName}
+        </MenuItem>
+        <Divider/>
+        <MenuItem onClick={() => logout()}>
+          <ListItemIcon>
+          <BiLogOut color="#ba181b" size={20} />
+          </ListItemIcon>
+          Cerrar Sesion
+        </MenuItem>
+        {/* <MenuItem onClick={() => logout()}>
           <ListItemIcon>
             {userName}
           </ListItemIcon>
@@ -110,7 +132,7 @@ const logout = () => {
             <BiLogOut color="#ba181b" size={20} />
           </ListItemIcon>
           Logout
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </div>
   );

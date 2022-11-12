@@ -51,9 +51,9 @@ const Mesas = () => {
       </div>
       <form>
         <div className="my-2">
-          <TextField fullWidth label='Numero de la mesa' variant="filled" type='number'/>
+          <TextField fullWidth label='Numero de la mesa'  type='number'/>
         </div>
-        <div className="flex justify-center gap-3">
+        <div className="flex pt-3 gap-3">
           <BtnAgg type="submit" className="btn">
             Agregar mesa
           </BtnAgg>

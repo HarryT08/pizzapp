@@ -196,26 +196,23 @@ const Ingredientes = () => {
         <h3 className="text-xl font-semibold">Agregar ingrediente</h3>
       </div>
       <form onSubmit={addProduct}>
-        <div className="mt-2 flex flex-col">
           <TextField
+            fullWidth
+            sx={{ mb: 3 }}
             required
             label="Nombre"
             name="nombre"
             type="text"
             onChange={handleChange}
-            variant="filled"
           />
-        </div>
-        <div className="my-2 flex flex-col">
           <TextField
+            fullWidth
             required
             label="Existencia"
             name="existencia"
             type="number"
             onChange={handleChange}
-            variant="filled"
           />
-        </div>
         <div className="flex pt-3 gap-3">
           <BtnAgg type="submit" className="btn">
             {loading ? <Loader /> : "Agregar ingrediente"}
@@ -237,36 +234,33 @@ const Ingredientes = () => {
         <h3 className="text-xl font-semibold">Editar ingrediente</h3>
       </div>
       <form onSubmit={editProduct}>
-        <div className="mt-2 flex flex-col">
-          <label>Nombre</label>
-          <input
-            name="nombre"
-            defaultValue={ingrediente.nombre}
-            onChange={handleChange}
-            type="text"
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-          />
-        </div>
-        <div className="my-2 flex flex-col">
-          <label>Existencia</label>
-          <input
-            name="existencia"
-            defaultValue={ingrediente.existencia}
-            onChange={handleChange}
-            type="number"
-            className="border-2 p-1 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino focus:outline-none"
-          />
-        </div>
+        <TextField
+          sx={{ mb: 3 }}
+          fullWidth
+          label="Nombre"
+          name="nombre"
+          defaultValue={ingrediente.nombre}
+          type="text"
+          onChange={handleChange}
+        />
+        <TextField
+          fullWidth
+          label="Existencia"
+          name="existencia"
+          defaultValue={ingrediente.existencia}
+          onChange={handleChange}
+          type="number"
+        />
         <div className="flex pt-3 gap-3">
-          <button type="submit" className="btn">
+          <BtnAgg type="submit" className="btn">
             {loading ? <Loader /> : "Editar ingrediente"}
-          </button>
-          <button
+          </BtnAgg>
+          <BtnDelete
             className="btnCancel"
             onClick={() => abrirCerrarModalEditar()}
           >
             Cancelar
-          </button>
+          </BtnDelete>
         </div>
       </form>
     </Box>
@@ -311,7 +305,6 @@ const Ingredientes = () => {
                       style={{
                         color: "#fff",
                         fontWeight: "bold",
-                        fontFamily: "Montserrat",
                       }}
                       align="center"
                     >
