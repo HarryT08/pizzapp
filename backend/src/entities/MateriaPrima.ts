@@ -2,8 +2,10 @@ import {
     Column,
     Entity,
     BaseEntity,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    ManyToMany
 } from 'typeorm';
+import { Producto } from './Producto';
 
 @Entity('materiaPrima')
 export class MateriaPrima extends BaseEntity{
@@ -16,6 +18,9 @@ export class MateriaPrima extends BaseEntity{
 
     @Column()
     existencia: number;
+
+    @ManyToMany(() => Producto, producto => producto.ingredientes)
+    productos : Producto[];
 
     constructor(){
         super();

@@ -3,14 +3,13 @@ import {
     Entity,
     BaseEntity,
     PrimaryGeneratedColumn,
-    OneToMany
+    ManyToMany,
+    JoinTable,
 } from 'typeorm';
-
-import { Preparacion } from './Preparacion';
+import { MateriaPrima } from './MateriaPrima';
 
 @Entity('producto')
 export class Producto extends BaseEntity{
-        
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,22 +17,29 @@ export class Producto extends BaseEntity{
     nombre: string;
 
     @Column()
-    precio: number;
+    costo : number;
 
     @Column()
-    imagen: string;
-
-    @OneToMany(() => Preparacion, (preparacion) => preparacion.producto)
-    preparaciones: Preparacion[];
+    imagen : string;
 
     constructor(){
         super();
     }
+    @ManyToMany(() => MateriaPrima, materiaPrima => materiaPrima.productos)
+    @JoinTable({
+        name : 'preparacion',
+        joinColumn : {
+            name : 'id_producto',
+        },
+        inverseJoinColumn : {
+            name : 'id_materia',
+        },
+    })
+    ingredientes : MateriaPrima[];
 
-    init(id:number, nombre:string, precio:number, imagen:string){
-        this.id = id;
+    init(nombre:string, costo:number, imagen:string): void{
         this.nombre = nombre;
-        this.precio = precio;
+        this.costo = costo;
         this.imagen = imagen;
     }
 }
