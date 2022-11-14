@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import { Modal, Box, TextField, MenuItem } from "@mui/material";
+import {BtnAgg, BtnDelete} from '../../styles/Button'
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -157,7 +158,6 @@ const TableCuentas = () => {
   //Obtención del id del usuario a editar
   const edit = (cedu) => {
     let user = data.filter((user) => user.cedula === cedu);
-    console.log(user);
     setUsuario(user[0]);
     setEmpleado({
       persona: user[0].persona,
@@ -285,6 +285,7 @@ const TableCuentas = () => {
               label="Categorias"
               select
               name="idRol"
+              value={usuario.idRol}
               onChange={handleChange}
               variant="filled"
               required
@@ -295,12 +296,12 @@ const TableCuentas = () => {
           </div>
         </div>
         <div className="flex pt-3 gap-3">
-          <button type="submit" className="btn">
+          <BtnAgg type="submit" className="btn">
             {loading ? <Loader/> : 'Agregar usuario'}
-          </button>
-          <button className="btnCancel" onClick={() => abrirCerrarModal()}>
+          </BtnAgg>
+          <BtnDelete className="btnCancel" onClick={() => abrirCerrarModal()}>
             Cancelar
-          </button>
+          </BtnDelete>
         </div>
       </form>
     </Box>
@@ -399,12 +400,12 @@ const TableCuentas = () => {
           </div>
         </div>
         <div className="flex pt-3 gap-3">
-          <button className="btn" type="submit">
+          <BtnAgg type="submit">
             {loading ? <Loader/> : 'Editar usuario'}
-          </button>
-          <button className="btnCancel" onClick={() => abrirCerrarModalEditar()}>
+          </BtnAgg>
+          <BtnDelete onClick={() => abrirCerrarModalEditar()}>
             Cancelar
-          </button>
+          </BtnDelete>
         </div>
       </form>
     </Box>
@@ -412,9 +413,9 @@ const TableCuentas = () => {
 
   return (
     <>
-      <button className="btn mb-3" onClick={() => abrirCerrarModal()}>
+      <BtnAgg sx={{marginBottom: 1}} onClick={() => abrirCerrarModal()}>
         Agregar usuario
-      </button>
+      </BtnAgg>
       <ToastContainer />
       <Paper>
         <TableContainer component={Paper}>
@@ -423,7 +424,7 @@ const TableCuentas = () => {
               <p className="text-center">No existen usuarios</p>
             </div>
           )}
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow style={{ background: "#D00000" }}>
                 {columns.map((column) => (

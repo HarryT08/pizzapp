@@ -1,5 +1,6 @@
 import { useStateContext } from "../context/ContextProvider";
 import { FiSearch } from "react-icons/fi";
+import { IoIosArrowDown } from "react-icons/io";
 import {
   Modal,
   Box,
@@ -12,6 +13,9 @@ import {
   TableRow,
   TablePagination,
   Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { toast, ToastContainer } from "react-toastify";
@@ -19,7 +23,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import Loader from "../components/Loader";
 import { useState } from "react";
-import FileUpload from "../components/FileUpload";
+import { instance } from "../api/api";
+import { BtnAgg, BtnEdit, BtnDelete } from "../styles/Button";
+import { useEffect } from "react";
 
 const columns = [
   { id: "nombre", label: "Nombre" },
@@ -31,7 +37,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: 450,
   bgcolor: "background.paper",
   borderRadius: "10px",
   boxShadow: 24,
@@ -41,6 +47,12 @@ const style = {
 const Productos = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [pequeña, setPequeña] = useState(false);
+  const [mediana, setMediana] = useState(false);
+  const [grande, setGrande] = useState(false);
+  const [unico, setUnico] = useState(false);
+  const [ingredientes, setIngredientes] = useState([]);
+  const [carrito, setCarrito] = useState([]);
   const [value, setValue] = useState("1");
   const [modalAgregar, setModalAgregar] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
@@ -51,6 +63,54 @@ const Productos = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const getProducts = async () => {
+    try {
+      const response = await instance.get("/ingredientes");
+      return setIngredientes(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  console.log('Ingredientes', ingredientes);
+
+  // Funciones parar abrir y cerrar los dropdowns
+  const checkPequeña = () => {
+    setPequeña(!pequeña);
+  };
+
+  const checkMediana = () => {
+    setMediana(!mediana);
+  };
+
+  const checkGrande = () => {
+    setGrande(!grande);
+  };
+
+  const checkUnico = () => {
+    setUnico(!unico);
+  };
+
+  // find by id
+  const findProduct = (id) => {
+    const check = carrito.every(item => {
+      return item.id !== id
+    })
+    if (check) {
+      const data = ingredientes.filter(ingrediente => {
+        return ingrediente.id === id
+      })
+      setCarrito([...carrito, ...data])
+    } else {
+      toast.error('El producto ya ha sido agregado.')
+    }
+  }
+
+  console.log('Carrito', carrito);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -107,7 +167,7 @@ const Productos = () => {
           <TabPanel value="1">
             <form>
               <p className="font-semibold text-lg">Sube una imagen</p>
-              <FileUpload />
+              {/* <FileUpload /> */}
               <div className="flex flex-col mt-3">
                 <label className="font-semibold text-lg">Nombre</label>
                 <input
@@ -126,12 +186,12 @@ const Productos = () => {
                 <button type="submit" className="btn">
                   {loading ? <Loader /> : "Agregar ingrediente"}
                 </button>
-                <button
+                <p
                   className="btnCancel"
                   onClick={() => abrirCerrarModalAgregar()}
                 >
                   Cancelar
-                </button>
+                </p>
               </div>
             </form>
           </TabPanel>
@@ -142,25 +202,25 @@ const Productos = () => {
               <div className="flex items-center gap-2">
                 <div className="flex items-center">
                   <label>
-                    <input type="checkbox" />
+                    <input type="checkbox" onClick={() => checkPequeña()} />
                     Pequeña
                   </label>
                 </div>
                 <div className="flex items-center">
                   <label>
-                    <input type="checkbox" />
+                    <input type="checkbox" onClick={() => checkMediana()} />
                     Mediana
                   </label>
                 </div>
                 <div className="flex items-center">
                   <label>
-                    <input type="checkbox" />
+                    <input type="checkbox" onClick={() => checkGrande()} />
                     Grande
                   </label>
                 </div>
                 <div className="flex items-center">
                   <label>
-                    <input type="checkbox" />
+                    <input type="checkbox" onClick={() => checkUnico()} />
                     Unico
                   </label>
                 </div>
@@ -169,22 +229,24 @@ const Productos = () => {
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 300 }}>
                   <TableHead style={{ background: "#D00000" }}>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        style={{
-                          color: "#fff",
-                          fontWeight: "bold",
-                          fontFamily: "Montserrat",
-                        }}
-                        align="center"
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
+                    <TableRow>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.id}
+                          style={{
+                            color: "#fff",
+                            fontWeight: "bold",
+                            fontFamily: "Montserrat",
+                          }}
+                          align="center"
+                        >
+                          {column.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data
+                    {ingredientes
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
@@ -201,7 +263,9 @@ const Productos = () => {
                             style={{ fontFamily: "Montserrat" }}
                             align="center"
                           >
-                            <button className="btn">Agregar</button>
+                            <p onClick={() => findProduct(item.id)}>
+                              Agregar
+                            </p>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -209,15 +273,128 @@ const Productos = () => {
                 </Table>
               </TableContainer>
               <TablePagination
-                rowsPerPageOptions={[3,9, 30, 100]}
+                style={{ width: "100%" }}
+                rowsPerPageOptions={[3, 9, 30, 100]}
                 component="div"
-                count={data.length}
+                count={ingredientes.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </form>
+            {pequeña && (
+              <Accordion>
+                <AccordionSummary
+                  style={{
+                    background: "#D00000",
+                    borderRadius: "5px 5px 0px 0px",
+                  }}
+                  expandIcon={<IoIosArrowDown color="white" />}
+                >
+                  <p className="font-semibold text-white">Pequeña</p>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    border: "1px solid rgba(0,0,0,.2)",
+                    borderRadius: "0px 0px 5px 5px",
+                  }}
+                >
+                  {
+                    carrito.map((item) => (
+                      <div className="flex" key={item.id}>
+                        <p>{item.nombre}</p>
+                        <p>{item.existencia}</p>
+                      </div>
+                    ))
+                  }
+                </AccordionDetails>
+              </Accordion>
+            )}
+            {mediana && (
+              <Accordion>
+                <AccordionSummary
+                  style={{
+                    background: "#D00000",
+                    borderRadius: "5px 5px 0px 0px",
+                  }}
+                  expandIcon={<IoIosArrowDown color="white" />}
+                >
+                  <p className="font-semibold text-white">Mediana</p>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    border: "1px solid rgba(0,0,0,.2)",
+                    borderRadius: "0px 0px 5px 5px",
+                  }}
+                >
+                  {
+                    carrito.map((item) => (
+                      <div className="flex" key={item.id}>
+                        <p>{item.nombre}</p>
+                        <p>{item.existencia}</p>
+                      </div>
+                    ))
+                  }
+                </AccordionDetails>
+              </Accordion>
+            )}
+            {grande && (
+              <Accordion>
+                <AccordionSummary
+                  style={{
+                    background: "#D00000",
+                    borderRadius: "5px 5px 0px 0px",
+                  }}
+                  expandIcon={<IoIosArrowDown color="white" />}
+                >
+                  <p className="font-semibold text-white">Grande</p>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    border: "1px solid rgba(0,0,0,.2)",
+                    borderRadius: "0px 0px 5px 5px",
+                  }}
+                >
+                  {
+                    carrito.map((item) => (
+                      <div className="flex" key={item.id}>
+                        <p>{item.nombre}</p>
+                        <p>{item.existencia}</p>
+                      </div>
+                    ))
+                  }
+                </AccordionDetails>
+              </Accordion>
+            )}
+            {unico && (
+              <Accordion>
+                <AccordionSummary
+                  style={{
+                    background: "#D00000",
+                    borderRadius: "5px 5px 0px 0px",
+                  }}
+                  expandIcon={<IoIosArrowDown color="white" />}
+                >
+                  <p className="font-semibold text-white">Unico</p>
+                </AccordionSummary>
+                <AccordionDetails
+                  style={{
+                    border: "1px solid rgba(0,0,0,.2)",
+                    borderRadius: "0px 0px 5px 5px",
+                  }}
+                >
+                  {
+                    carrito.map((item) => (
+                      <div className="flex" key={item.id}>
+                        <p>{item.nombre}</p>
+                        <p>{item.existencia}</p>
+                      </div>
+                    ))
+                  }
+                </AccordionDetails>
+              </Accordion>
+            )}
           </TabPanel>
         </TabContext>
       </Box>
@@ -246,9 +423,9 @@ const Productos = () => {
 
       {/* Boton agg ingredientes */}
       <div className="mt-8">
-        <button className="btn" onClick={() => abrirCerrarModalAgregar()}>
+        <BtnAgg className="btn" onClick={() => abrirCerrarModalAgregar()}>
           Agregar ingrediente
-        </button>
+        </BtnAgg>
       </div>
 
       <div className="mt-8">
@@ -256,35 +433,34 @@ const Productos = () => {
           {filterData().length === 0
             ? "No se encontraron productos"
             : filterData().map((item) => (
-                <div key={item.id} className="card-producto">
-                  <div className="container-img">
-                    <img
-                      src={item.img}
-                      alt="Foto producto"
-                      className="w-full h-48 object-cover rounded-t-lg"
-                    />
-                    <hr className="border-2 border-rojo-fuerte" />
-                  </div>
-                  <div className="card-body">
-                    <h1 className="text-xl font-extrabold text-center">
-                      {item.nombre}
-                    </h1>
-                    <p className="mt-1 text-center px-2 py-1 bg-verde-profundo w-max text-white font-semibold text-lg rounded-lg">
-                      {item.precio}
-                    </p>
-                  </div>
-                  <div className="card-buttons flex justify-center gap-5 py-3">
-                    <button className="editar">Editar</button>
-                    <button
-                      className="eliminar"
-                      onClick={() => showAlert(item.id)}
-                    >
-                      {" "}
-                      Eliminar{" "}
-                    </button>
-                  </div>
+              <div key={item.id} className="card-producto">
+                <div className="container-img">
+                  <img
+                    src={item.img}
+                    alt="Foto producto"
+                    className="w-full h-48 object-cover rounded-t-lg"
+                  />
+                  <hr className="border-2 border-rojo-fuerte" />
                 </div>
-              ))}
+                <div className="card-body">
+                  <h1 className="text-xl font-extrabold text-center">
+                    {item.nombre}
+                  </h1>
+                  <p className="mt-1 text-center px-2 py-1 bg-verde-profundo w-max text-white font-semibold text-lg rounded-lg">
+                    {item.precio}
+                  </p>
+                </div>
+                <div className="card-buttons flex justify-center gap-5 py-3">
+                  <BtnEdit className="editar">Editar</BtnEdit>
+                  <BtnDelete
+                    className="eliminar"
+                    onClick={() => showAlert(item.id)}
+                  >
+                    Eliminar
+                  </BtnDelete>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
       <Modal open={modalAgregar} onClose={abrirCerrarModalAgregar}>
