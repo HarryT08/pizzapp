@@ -6,7 +6,6 @@ export const createIngredient = async(req : Request , res : Response) => {
     const materiaPrima = new MateriaPrima();
     materiaPrima.init(nombre, existencia);
     const saved = await materiaPrima.save();
-    console.log(saved);
     return res.json({...saved});
 }
 
@@ -18,7 +17,6 @@ export const updateIngredient = async (req : Request , res : Response) => {
     if(materiaPrima){
         materiaPrima.nombre = nombre;
         materiaPrima.existencia += parseInt(existencia);
-        //Esto no me crea otro registro?
         await materiaPrima.save();
         return res.send("Ingrediente actualizado");
     }
