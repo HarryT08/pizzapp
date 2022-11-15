@@ -23,10 +23,8 @@ export const createProduct = async (req: Request, res: Response) => {
   const producto = new Producto();
   producto.init(nombre, precio, "proof image");
   const saved = await producto.save(); //Producto guardado y ya tengo el ID
-  const data : Preparacion[] = await createPreparation(saved.id, presentaciones);
-  const ingredientes = await MateriaPrima.findByIds(data.map((preparacion) => preparacion.id_materia));
-  saved.ingredientes = ingredientes
-  return res.json(ingredientes);
+  createPreparation(saved.id, presentaciones);
+  return res.json('Producto creado');
 };
 
 const createPreparation =  (idProducto: number, presentaciones: any) => {
@@ -39,9 +37,7 @@ const createPreparation =  (idProducto: number, presentaciones: any) => {
       const preparacion = new Preparacion();
       preparacion.init(idProducto, idMateria, size, cantidad);
       data.push(preparacion)
-      preparacion.save();
     })
   })
-  return data
+  Preparacion.save(data);
 }
-
