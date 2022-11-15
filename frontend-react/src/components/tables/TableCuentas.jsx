@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import { Modal, Box, TextField, MenuItem } from "@mui/material";
-import {BtnAgg, BtnDelete} from '../../styles/Button'
+import { BtnAgg, BtnDelete } from "../../styles/Button";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -117,16 +117,16 @@ const TableCuentas = () => {
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await instance.post("/usuarios", usuario);
       getUsers();
       setModalInsertar(false);
       toast.success("Usuario registrado con exito");
       setUsuario({ nombre: "", apellido: "", celular: "", idRol: "1" });
-      setLoading(false)
+      setLoading(false);
     } catch (err) {
       console.log(err);
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -134,7 +134,7 @@ const TableCuentas = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await instance.put("/usuarios", usuario);
       getUsers();
       setModalEditar(false);
@@ -148,10 +148,10 @@ const TableCuentas = () => {
         username: "",
         cedula: "",
       });
-      setLoading(false)
+      setLoading(false);
     } catch (err) {
       console.log(err);
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -222,7 +222,6 @@ const TableCuentas = () => {
               type="number"
               onChange={handleChange}
               onBlur={getPerson}
-              variant="filled"
             />
           </div>
           <div className="mt-2">
@@ -234,7 +233,6 @@ const TableCuentas = () => {
               value={usuario.nombre}
               className="inp"
               disabled={usuario.found}
-              variant="filled"
               required
             />
           </div>
@@ -246,7 +244,6 @@ const TableCuentas = () => {
               onChange={handleChange}
               value={usuario.apellido}
               disabled={usuario.found}
-              variant="filled"
               required
             />
           </div>
@@ -257,7 +254,6 @@ const TableCuentas = () => {
               name="celular"
               onChange={handleChange}
               value={usuario.celular}
-              variant="filled"
               required
             />
           </div>
@@ -267,7 +263,6 @@ const TableCuentas = () => {
               type="password"
               name="password"
               onChange={handleChange}
-              variant="filled"
             />
           </div>
           <div className="mt-2">
@@ -276,7 +271,6 @@ const TableCuentas = () => {
               type="text"
               name="username"
               onChange={handleChange}
-              variant="filled"
               required
             />
           </div>
@@ -287,7 +281,6 @@ const TableCuentas = () => {
               name="idRol"
               value={usuario.idRol}
               onChange={handleChange}
-              variant="filled"
               required
             >
               <MenuItem value="1">Mesero</MenuItem>
@@ -297,7 +290,7 @@ const TableCuentas = () => {
         </div>
         <div className="flex pt-3 gap-3">
           <BtnAgg type="submit" className="btn">
-            {loading ? <Loader/> : 'Agregar usuario'}
+            {loading ? <Loader /> : "Agregar usuario"}
           </BtnAgg>
           <BtnDelete className="btnCancel" onClick={() => abrirCerrarModal()}>
             Cancelar
@@ -311,7 +304,7 @@ const TableCuentas = () => {
   const bodyEditar = (
     <Box sx={style}>
       <div className="header-modal">
-        <h3 className='text-xl font-semibold'>Modificar Usuario</h3>
+        <h3 className="text-xl font-semibold">Modificar Usuario</h3>
       </div>
       <form onSubmit={updateUser}>
         <div className="grid grid-cols-2 gap-4">
@@ -322,7 +315,6 @@ const TableCuentas = () => {
               name="cedula"
               onChange={handleChange}
               value={usuario && usuario.cedula}
-              variant="filled"
               disabled
             />
           </div>
@@ -333,7 +325,6 @@ const TableCuentas = () => {
               name="nombre"
               onChange={handleChange}
               defaultValue={empleado && empleado.persona.nombre}
-              variant="filled"
             />
           </div>
           <div className="mt-2">
@@ -343,7 +334,6 @@ const TableCuentas = () => {
               name="apellido"
               onChange={handleChange}
               defaultValue={empleado && empleado.persona.apellido}
-              variant="filled"
             />
           </div>
           <div className="mt-2">
@@ -353,7 +343,6 @@ const TableCuentas = () => {
               name="celular"
               onChange={handleChange}
               defaultValue={empleado && empleado.persona.celular}
-              variant="filled"
             />
           </div>
           <div className="mt-2">
@@ -362,7 +351,6 @@ const TableCuentas = () => {
               type="password"
               name="password"
               onChange={handleChange}
-              variant="filled"
             />
           </div>
           <div className="mt-2">
@@ -372,7 +360,6 @@ const TableCuentas = () => {
               name="username"
               onChange={handleChange}
               defaultValue={usuario && usuario.username}
-              variant="filled"
             />
           </div>
           <div className="flex flex-col mt-2">
@@ -382,7 +369,6 @@ const TableCuentas = () => {
               value={usuario && usuario.idRol}
               name="idRol"
               onChange={handleChange}
-              variant="filled"
             >
               <MenuItem
                 value="1"
@@ -401,7 +387,7 @@ const TableCuentas = () => {
         </div>
         <div className="flex pt-3 gap-3">
           <BtnAgg type="submit">
-            {loading ? <Loader/> : 'Editar usuario'}
+            {loading ? <Loader /> : "Editar usuario"}
           </BtnAgg>
           <BtnDelete onClick={() => abrirCerrarModalEditar()}>
             Cancelar
@@ -413,7 +399,7 @@ const TableCuentas = () => {
 
   return (
     <>
-      <BtnAgg sx={{marginBottom: 1}} onClick={() => abrirCerrarModal()}>
+      <BtnAgg sx={{ marginBottom: 1 }} onClick={() => abrirCerrarModal()}>
         Agregar usuario
       </BtnAgg>
       <ToastContainer />
