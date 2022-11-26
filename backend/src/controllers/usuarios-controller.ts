@@ -32,8 +32,6 @@ export const createUser = async (req: Request, res: Response) => {
 Metodo para buscar todos los usuarios, usando el ORM de typeorm
 */
 export const getUsers = async (req: Request, res: Response) => {
-  //!PARA SOCIALIZAR
-  //if( req.body.mi_rol != 'admin') return res.status(400).json({message: "No tienes permisos para realizar esta accion"});
   try {
     const users = await User.find({relations: ["rol", "persona"]});
     if(users.length > 0)

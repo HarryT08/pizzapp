@@ -14,7 +14,9 @@ export const getProduct = async (req: Request, res: Response) => {
   const parseId = {
     id: Number(id),
   };
-  const product = await Producto.findOne({ where: parseId });
+  const product = await Producto.findOne({
+    where: parseId
+  });
   return res.json(product);
 };
 
@@ -22,8 +24,8 @@ export const createProduct = async (req: Request, res: Response) => {
   let { nombre, precio, presentaciones } = req.body;
   const producto = new Producto();
   producto.init(nombre, precio, "proof image");
-  const saved = await producto.save(); //Producto guardado y ya tengo el ID
-  createPreparation(saved.id, presentaciones);
+  const saved = await producto.save();         // Producto guardado y ya tengo el ID
+  createPreparation(saved.id, presentaciones); // Depronto aqui se podria poner await
   return res.json('Producto creado');
 };
 
@@ -39,5 +41,6 @@ const createPreparation =  (idProducto: number, presentaciones: any) => {
       data.push(preparacion)
     })
   })
+  console.log(data);
   Preparacion.save(data);
 }
