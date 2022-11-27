@@ -66,7 +66,7 @@ const Mesas = () => {
   return (
     <div className="w-full">
       <div className="mt-3">
-        <BtnAgg onClick={abrirCerrarModal}>Agregar mesa</BtnAgg>
+        <button className="btn" onClick={abrirCerrarModal}>Agregar mesa</button>
       </div>
       <div className="mt-3">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">

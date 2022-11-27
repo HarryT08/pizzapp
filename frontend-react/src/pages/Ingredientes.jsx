@@ -289,9 +289,9 @@ const Ingredientes = () => {
 
       {/* Boton agg ingredientes */}
       <div className="mt-3">
-        <BtnAgg onClick={() => abrirCerrarModalAgregar()}>
+        <button className='btn' onClick={() => abrirCerrarModalAgregar()}>
           Agregar ingrediente
-        </BtnAgg>
+        </button>
       </div>
       <div className="mt-3">
         <Paper>

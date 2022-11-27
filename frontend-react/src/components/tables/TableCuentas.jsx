@@ -399,9 +399,9 @@ const TableCuentas = () => {
 
   return (
     <>
-      <BtnAgg sx={{ marginBottom: 1 }} onClick={() => abrirCerrarModal()}>
+      <button className="btn mb-3" sx={{ marginBottom: 1 }} onClick={() => abrirCerrarModal()}>
         Agregar usuario
-      </BtnAgg>
+      </button>
       <ToastContainer />
       <Paper>
         <TableContainer component={Paper}>
