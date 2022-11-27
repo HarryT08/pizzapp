@@ -1,9 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
 }
 
 @tailwind base;
@@ -86,7 +84,7 @@
   }
 
   .drop-file-input input {
-    @apply top-0 left-0 absolute w-full h-full opacity-0 cursor-pointer hover: opacity-5;
+    @apply top-0 left-0 absolute w-full h-full opacity-0 cursor-pointer hover:opacity-5;
   }
 
   .drop-file-input__label {

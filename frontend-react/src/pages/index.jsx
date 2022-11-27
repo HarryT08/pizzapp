@@ -1,3 +1,5 @@
+export {default as Dashboard} from './Dashboard'
+export {default as Login} from './Login'
 export {default as Inicio} from './Inicio'
 export {default as Productos} from './Productos'
 export {default as Ingredientes} from './Ingredientes'

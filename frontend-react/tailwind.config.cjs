@@ -1,10 +1,21 @@
-/** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}"
+    './index.html',
+    './src/**/*.{js,jsx,ts,tsx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
+      screens: {
+        'movilM': '360px',
+        'movilL': '425px',
+        'tableta': '768px',
+        'portatil': '1024px',
+        'portatilL': '1440px',
+        'monitor': '2560px'
+      },
       backgroundImage: {
         'loginBanner': "url('./src/assets/img/bgLoginGrande.jpg')"
       },
@@ -20,7 +31,22 @@ module.exports = {
         'naranja-vivido': '#FFA500',
         'rojo-fuerte': '#D00000'
       },
+      minWidth: {
+        44: '11rem',
+      },
+      maxWidth: {
+        '9xl': '96rem',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    // eslint-disable-next-line global-require
+    require('@tailwindcss/forms'),
+    // add custom variant for expanding sidebar
+    plugin(({ addVariant, e }) => {
+      addVariant('sidebar-expanded', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => `.sidebar-expanded .${e(`sidebar-expanded${separator}${className}`)}`);
+      });
+    }),
+  ],
 }

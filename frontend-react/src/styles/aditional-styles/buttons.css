@@ -1,0 +1,22 @@
+.btn {
+    @apply rounded-md py-2 px-8 text-sm border-2 border-azul-marino/20 bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white;
+  }
+
+  .btnCancel {
+    @apply rounded-md py-2 px-8 text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white;
+  }
+
+  .btnLogin {
+    @apply w-full bg-naranja-vivido hover:bg-white hover:text-naranja-vivido border-2 border-naranja-vivido rounded-md text-white font-semibold text-sm md:text-base 2xl:text-2xl px-3 py-2 transition duration-300 ease-in-out;
+  }
+  .btn-close {
+    @apply border-none bg-none transition duration-200 ease-in rounded-md text-rojo-fuerte hover:bg-rojo-fuerte hover:text-white text-xl;
+  }
+
+  .editar {
+    @apply rounded-lg py-2 px-3 border-2 border-naranja-vivido/20 bg-naranja-vivido/20 text-naranja-vivido font-bold text-sm transition duration-300 ease-in-out hover:bg-naranja-vivido hover:text-white;
+  }
+
+  .eliminar {
+    @apply rounded-lg py-2 px-3 border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold text-sm transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white;
+  }

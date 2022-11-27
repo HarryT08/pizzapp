@@ -3,7 +3,6 @@ import { dataProductos} from "../data/datos";
 const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const [activeMenu, setActiveMenu] = useState(true);
   const [data, setData] = useState(dataProductos);
 
   const handleDelete = (id) => {
@@ -17,8 +16,6 @@ export const ContextProvider = ({ children }) => {
   return (
     <StateContext.Provider
       value={{
-        activeMenu,
-        setActiveMenu,
         handleDelete,
         handleDeleteAccount,
         data,

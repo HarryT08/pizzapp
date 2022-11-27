@@ -1,10 +1,7 @@
-import Dashboard from "./components/Dashboard";
 import { Route, Routes } from 'react-router-dom';
-import Login from './components/Login';
-import "./App.css";
+import {Dashboard, Login} from "./pages";
 import { DASHBOARD, HOME, LOGIN } from "./routes/paths";
-import RutasPrivadas from "./components/RutasPrivadas";
-import RutasPublicas from "./components/RutasPublicas";
+import { RutasPrivadas, RutasPublicas } from "./routes";
 
 function App() {
 

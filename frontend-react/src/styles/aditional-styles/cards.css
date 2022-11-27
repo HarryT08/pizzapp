@@ -1,0 +1,13 @@
+.card-producto {
+    @apply rounded-lg shadow-2xl drop-shadow-3xl bg-white w-80
+    md:w-72 2xl:w-80
+    ;
+  }
+
+  .container-img {
+    @apply w-full h-48;
+  }
+
+  .card-body {
+    @apply flex flex-col items-center p-3;
+  }
