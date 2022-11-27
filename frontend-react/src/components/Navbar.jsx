@@ -1,3 +1,5 @@
+import {UserMenu} from ".";
+
 const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
@@ -35,8 +37,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* <ButtonMode/> */}
           {/*  Divider */}
           <hr className="w-px h-6 bg-slate-200 mx-3" />
-          <span>Usuario</span>
-            {/* <UserMenu /> */}
+            <UserMenu />
         </div>
       </div>
     </div>

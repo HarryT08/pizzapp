@@ -7,8 +7,8 @@ const Facturar = () => {
   const [mesas2, setMesas2] = useState(mesas)
 
   return (
-    <div className='w-full p-3'>
-      <div className="mt-8">
+    <div className='w-full'>
+      <div className="mt-3">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
           {
             mesas2.map((item) => (

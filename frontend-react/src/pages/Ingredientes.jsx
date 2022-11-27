@@ -267,10 +267,10 @@ const Ingredientes = () => {
   );
 
   return (
-    <div className="w-full p-3">
+    <div className="w-full">
       <ToastContainer />
       {/* Barra busqueda */}
-      <div className="flex justify-between py-3 border-b-2">
+      <div className="flex justify-between pb-3 border-b-2">
         <form action="">
           <div className="relative flex items-center text-gray-400 focus-within:text-azul-marino border-2 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino">
             <input
@@ -288,12 +288,12 @@ const Ingredientes = () => {
       </div>
 
       {/* Boton agg ingredientes */}
-      <div className="mt-8">
+      <div className="mt-3">
         <BtnAgg onClick={() => abrirCerrarModalAgregar()}>
           Agregar ingrediente
         </BtnAgg>
       </div>
-      <div className="mt-8">
+      <div className="mt-3">
         <Paper>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }}>

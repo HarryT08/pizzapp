@@ -91,8 +91,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </button>
           {/* Logo */}
           <NavLink end to="/" className="block">
-            <img src={logoBohemia} alt="Logo" width={32} height={32}/>
-            {/* <span className="text-white">Logo</span> */}
+            <img src={logoBohemia} alt="Logo" width={100} height={100}/>
           </NavLink>
         </div>
         {/* Links */}

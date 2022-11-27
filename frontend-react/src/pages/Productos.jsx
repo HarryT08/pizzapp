@@ -417,10 +417,10 @@ const Productos = () => {
   );
 
   return (
-    <div className="w-full p-3">
+    <div className="w-full">
       {/* Barra busqueda */}
-      <div className="flex justify-between py-3 border-b-2">
-        <form action="">
+      <div className="flex justify-between pb-3 border-b-2">
+        <form>
           <div className="relative flex items-center text-gray-400 focus-within:text-azul-marino border-2 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino">
             <input
               type="text"
@@ -437,14 +437,14 @@ const Productos = () => {
       </div>
 
       {/* Boton agg ingredientes */}
-      <div className="mt-8">
+      <div className="mt-3">
         <BtnAgg className="btn" onClick={() => abrirCerrarModalAgregar()}>
           Agregar ingrediente
         </BtnAgg>
       </div>
 
       {/* DataTable Productos */}
-      <div className="mt-8">
+      <div className="mt-3">
         <Paper>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }}>
