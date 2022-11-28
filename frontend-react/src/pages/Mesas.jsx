@@ -1,30 +1,12 @@
 import { useState } from "react";
-import {TextField} from '@mui/material'
 import { mesas } from "../data/datos";
 import { GiKnifeFork } from "react-icons/gi";
-import { Modal, Box } from "@mui/material";
-import { BtnAgg, BtnDelete } from "../styles/Button";
+import { ModalAggMesa } from "../components";
 import Swal from "sweetalert2";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "10px",
-  boxShadow: 24,
-  p: 4,
-};
-
 const Mesas = () => {
+  const [modalAdd, setModalAdd] = useState(false);
   const [mesas2, setMesas2] = useState(mesas);
-  const [modal, setModal] = useState(false);
-
-  const abrirCerrarModal = () => {
-    setModal(!modal);
-  };
 
   const deleteMesa = (id) => {
     Swal.fire({
@@ -41,32 +23,22 @@ const Mesas = () => {
         setMesas2(mesas2.filter((mesa) => mesa.id !== id));
         Swal.fire("Eliminado", "La mesa ha sido eliminada", "success");
       }
-    })
-  }
-
-  const bodyModal = (
-    <Box sx={style}>
-      <div className="header-modal">
-        <h3 className="text-xl font-semibold">Agregar mesas</h3>
-      </div>
-      <form>
-        <div className="my-2">
-          <TextField fullWidth label='Numero de la mesa'  type='number'/>
-        </div>
-        <div className="flex pt-3 gap-3">
-          <BtnAgg type="submit" className="btn">
-            Agregar mesa
-          </BtnAgg>
-          <BtnDelete onClick={() => abrirCerrarModal()}>Cancelar</BtnDelete>
-        </div>
-      </form>
-    </Box>
-  );
+    });
+  };
 
   return (
     <div className="w-full">
       <div className="mt-3">
-        <button className="btn" onClick={abrirCerrarModal}>Agregar mesa</button>
+        <button
+          aria-controls="modal-addMesa"
+          className={`btn ${modalAdd && "bg-slate-200"}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setModalAdd(true);
+          }}
+        >
+          Agregar mesa
+        </button>
       </div>
       <div className="mt-3">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
@@ -92,15 +64,15 @@ const Mesas = () => {
                 </p>
               </div>
               <div className="flex justify-center mb-5">
-                <BtnDelete onClick={() => deleteMesa(item.id)}>Eliminar</BtnDelete>
+                <button className='btnCancel' onClick={() => deleteMesa(item.id)}>
+                  Eliminar
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
-      <Modal open={modal} onClose={abrirCerrarModal}>
-        {bodyModal}
-      </Modal>
+      <ModalAggMesa id="modal-addMesa" modalOpen={modalAdd} setModalOpen={setModalAdd}/>
     </div>
   );
 };

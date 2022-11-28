@@ -31,7 +31,7 @@ const Productos = () => {
       <div className="mt-3">
         <button
           aria-controls="modal-addProduct"
-          className={`btn font-medium px-3 py-2 text-sm movilM:text-base rounded-lg ${
+          className={`btn ${
             modalAdd && "bg-slate-200"
           }`}
           onClick={(e) => {
