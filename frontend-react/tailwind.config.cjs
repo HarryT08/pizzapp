@@ -17,7 +17,8 @@ module.exports = {
         'monitor': '2560px'
       },
       backgroundImage: {
-        'loginBanner': "url('./src/assets/img/bgLoginGrande.jpg')"
+        'loginBanner': "url('./src/assets/img/bgLoginGrande.png')",
+        'loginForm' : "url('./src/assets/img/bgFormLogin.png')"
       },
       dropShadow: {
         '3xl': '5px 5px 10px rgba(0, 0, 0, 0.25)'

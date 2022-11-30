@@ -2,10 +2,7 @@ import { useState } from "react";
 import { instance } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { TextField } from "@mui/material";
-import { BtnEdit } from "../styles/Button";
 import "react-toastify/dist/ReactToastify.css";
-import logoBohemia from "../assets/img/logoBohemiaLogin.png";
 import Loader from "./Loader";
 
 const FormLogin = () => {
@@ -36,40 +33,35 @@ const FormLogin = () => {
 
   return (
     <div className="w-full rounded-md p-3 h-100">
-      <div className="flex justify-center  h-36">
-        <img src={logoBohemia} alt="Logo bohemia" />
-      </div>
       <div>
-        <h1 className="text-xl text-black md:text-2xl 2xl:text-2xl font-medium pb-2">
+        <h1 className="text-xl text-black md:text-2xl 2xl:text-2xl font-bold pb-2">
           Iniciar sesion
         </h1>
-        <p>Bienvenido a Pizza Bohemia.</p>
+        <p>Bienvenido a <b>Pizza Bohemia.</b></p>
       </div>
 
-      <form className="mt-6" onSubmit={iniciarSesion}>
-        <div>
-          <TextField
-            fullWidth
-            label="Usuario"
+      <form className="mt-3" onSubmit={iniciarSesion}>
+        <div className="flex flex-col">
+          <label className="block text-base font-medium">Usuario</label>
+          <input
             type="text"
+            className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             onChange={(e) => setUsername(e.target.value)}
             autoFocus
             autoComplete=""
-            variant="filled"
           />
         </div>
-        <div className="mt-4">
-          <TextField
-            fullWidth
-            label="Contraseña"
+        <div className="mt-4 flex flex-col">
+          <label className="block text-base font-medium">Contraseña</label>
+          <input
             type="password"
+            className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             onChange={(e) => setPassword(e.target.value)}
-            variant="filled"
           />
         </div>
         <ToastContainer />
         <div className="mt-6">
-          <BtnEdit fullWidth type="submit">
+          <button className="btnLogin" type="submit">
             {loading ? (
               <>
                 <Loader />
@@ -77,10 +69,10 @@ const FormLogin = () => {
             ) : (
               <>Iniciar sesion</>
             )}
-          </BtnEdit>
+          </button>
         </div>
       </form>
-      <p className="pt-12 text-sm text-black/50">
+      <p className="pt-3 text-sm text-black/50 font-semibold">
         © 2022 Pizza Bohemia. Todos los derechos reservados
       </p>
     </div>
