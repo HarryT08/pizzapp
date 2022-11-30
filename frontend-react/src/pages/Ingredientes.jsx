@@ -187,7 +187,6 @@ const Ingredientes = () => {
 
   const abrirCerrarModalEditar = () => {
     setModalEditar(!modalEditar);
-    console.log(ingrediente.id, "modal");
   };
 
   const bodyModalAgregar = (

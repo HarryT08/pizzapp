@@ -12,7 +12,7 @@ import TableIngredientesTab from "./tables/TableIngredientesTab";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { instance } from "../api/api";
 
-const Tap = () => {
+const Tap = ({setModalOpen}) => {
   const [carritoPequeño, setCarritoPequeño] = useState([]);
   const [carritoMediano, setCarritoMediano] = useState([]);
   const [carritoGrande, setCarritoGrande] = useState([]);
@@ -397,7 +397,7 @@ const Tap = () => {
             <button type="submit" className="btn">
               Enviar
             </button>
-            <button className="btn">Cancelar</button>
+            <button type="reset" className="btn" onClick={() => setModalOpen(false)}>Cancelar</button>
           </div>
         </form>
       </TabContext>

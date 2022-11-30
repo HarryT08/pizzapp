@@ -37,7 +37,7 @@ const ModalAggProducto = ({ id, modalOpen, setModalOpen }) => {
             >
                 <Transition
                     id={id}
-                    className="fixed inset-0 z-50 overflow-hidden flex items-start top-20 mb-4 justify-center transform px-4 sm:px-6"
+                    className="fixed inset-0 z-50 overflow-hidden flex items-center top-20 mb-4 justify-center transform px-4 sm:px-6"
                     role="dialog"
                     aria-modal="true"
                     show={modalOpen}
@@ -52,7 +52,7 @@ const ModalAggProducto = ({ id, modalOpen, setModalOpen }) => {
                         ref={modalContent}
                         className="bg-white dark:bg-[#191919]/95 border border-slate-700 dark:border-gray-700 overflow-auto max-w-2xl p-3 max-h-full rounded shadow-lg"
                     >
-                        <Tap/>
+                        <Tap setModalOpen={setModalOpen} />
                     </div>
                 </Transition>
             </Transition>

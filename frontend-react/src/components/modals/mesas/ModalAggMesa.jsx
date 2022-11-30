@@ -1,27 +1,8 @@
-import { useRef, useEffect } from "react";
-import { Transition, Tap } from "..";
+import { useRef } from "react";
+import { Transition, Tap } from "../..";
 
 const ModalAggMesa = ({ id, modalOpen, setModalOpen }) => {
     const modalContent = useRef(null);
-    // Cerrar modal fuera del contenido
-    useEffect(() => {
-        const clickHandler = ({ target }) => {
-            if (!modalOpen || modalContent.current.contains(target)) return;
-            setModalOpen(false);
-        };
-        document.addEventListener("click", clickHandler);
-        return () => document.removeEventListener("click", clickHandler);
-    });
-
-    // Cerrar modal con ESC
-    useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
-            if (!modalOpen || keyCode !== 27) return;
-            setModalOpen(false);
-        };
-        document.addEventListener("keydown", keyHandler);
-        return () => document.removeEventListener("keydown", keyHandler);
-    });
 
     return (
         <Transition
@@ -37,7 +18,7 @@ const ModalAggMesa = ({ id, modalOpen, setModalOpen }) => {
         >
             <Transition
                 id={id}
-                className="fixed inset-0 z-50 overflow-hidden flex items-start top-20 mb-4 justify-center transform px-4 sm:px-6"
+                className="fixed inset-0 z-50 overflow-hidden flex items-center top-20 mb-4 justify-center transform px-4 sm:px-6"
                 role="dialog"
                 aria-modal="true"
                 show={modalOpen}

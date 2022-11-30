@@ -34,7 +34,7 @@
   }
 
   .btnLogin {
-    @apply w-full bg-naranja-vivido hover:bg-white hover:text-naranja-vivido border-2 border-naranja-vivido rounded-md text-white font-semibold text-sm md:text-base 2xl:text-2xl px-3 py-2 transition duration-300 ease-in-out;
+    @apply w-full bg-naranja-vivido hover:bg-white hover:text-naranja-vivido border-2 border-naranja-vivido rounded-md text-white font-semibold text-base px-3 py-2 transition duration-300 ease-in-out;
   }
 
   /* Cards */
@@ -63,7 +63,7 @@
   }
 
   .header-modal {
-    @apply flex items-center justify-between mb-5 pb-5 border-b-2 border-[#e8e8e8];
+    @apply flex items-center justify-between gap-7 mb-5 pb-5 border-b-2 border-[#e8e8e8];
   }
 
   .btn-close {
