@@ -11,6 +11,10 @@
 @layer components {
   /* Estados */
 
+  input:disabled {
+    @apply bg-gray-200;
+  }
+
   .Terminado {
     @apply bg-verde-profundo/20 rounded-md p-1 text-verde-profundo;
   }
@@ -51,6 +55,16 @@
 
   .card-body {
     @apply flex flex-col items-center p-3;
+  }
+
+  .modal{
+    @apply bg-white rounded-lg shadow-2xl drop-shadow-3xl
+    max-w-2xl p-3 max-h-full overflow-auto w-72 h-96
+    absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+    transition-all
+
+    /* Responsive */
+    movilM:w-80 movilM:h-max movilL:w-96 movilL:h-max  tableta:h-max
   }
 
   /* Modal */

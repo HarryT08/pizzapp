@@ -208,198 +208,215 @@ const TableCuentas = () => {
 
   // Contenido modal agregar
   const bodyInsertar = (
-    <Box sx={style}>
+    <div className="modal">
       <div className="header-modal">
         <h3 className="text-xl font-semibold">Agregar Usuario</h3>
       </div>
       <form onSubmit={registerUser}>
         <div className="grid grid-cols-2 gap-4">
           <div className="mt-2">
-            <TextField
-              required
-              name="cedula"
-              label="Cedula"
+            <label className="block text-base font-medium">Cedula</label>
+            <input
               type="number"
+              name="cedula"
+              placeholder="Cedula"
               onChange={handleChange}
               onBlur={getPerson}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="nombre"
+            <label className="block text-base font-medium">Nombre</label>
+            <input
               type="text"
               name="nombre"
+              placeholder="Nombre"
               onChange={handleChange}
               value={usuario.nombre}
-              className="inp"
               disabled={usuario.found}
+              className={`form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm `}
               required
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Apellido"
+            <label className="block text-base font-medium">Apellido</label>
+            <input
               type="text"
               name="apellido"
+              placeholder="Apellido"
               onChange={handleChange}
               value={usuario.apellido}
               disabled={usuario.found}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
               required
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Telefono"
+            <label className="block text-base font-medium">Telefono</label>
+            <input
               type="number"
               name="celular"
+              placeholder="Telefono"
               onChange={handleChange}
               value={usuario.celular}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
               required
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Contraseña"
+            <label className="block text-base font-medium">Contraseña</label>
+            <input
               type="password"
               name="password"
+              placeholder="Contraseña"
               onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Usuario"
+            <label className="block text-base font-medium">Usuario</label>
+            <input
               type="text"
               name="username"
+              placeholder="Usuario"
               onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
               required
             />
           </div>
           <div className="flex flex-col mt-2">
-            <TextField
-              label="Categorias"
-              select
+            <label className="block text-base font-medium">Cargo</label>
+            <select
               name="idRol"
-              value={usuario.idRol}
               onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
               required
             >
-              <MenuItem value="1">Mesero</MenuItem>
-              <MenuItem value="2">Admin</MenuItem>
-            </TextField>
+              <option value="1">Mesero</option>
+              <option value="2">Admin</option>
+            </select>
           </div>
         </div>
         <div className="flex pt-3 gap-3">
-          <BtnAgg type="submit" className="btn">
+          <button className="btn" type="submit">
             {loading ? <Loader /> : "Agregar usuario"}
-          </BtnAgg>
-          <BtnDelete className="btnCancel" onClick={() => abrirCerrarModal()}>
+          </button>
+          <button className="btnCancel" onClick={() => abrirCerrarModal()}>
             Cancelar
-          </BtnDelete>
+          </button>
         </div>
       </form>
-    </Box>
+    </div>
   );
 
   // Contenido modal editar
   const bodyEditar = (
-    <Box sx={style}>
+    <div className="modal">
       <div className="header-modal">
         <h3 className="text-xl font-semibold">Modificar Usuario</h3>
       </div>
       <form onSubmit={updateUser}>
         <div className="grid grid-cols-2 gap-4">
           <div className="mt-2">
-            <TextField
-              label="Cedula"
+            <label className="block text-base font-medium">Cedula</label>
+            <input
               type="number"
               name="cedula"
-              onChange={handleChange}
               value={usuario && usuario.cedula}
+              onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
               disabled
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Nombre"
+            <label className="block text-base font-medium">Nombre</label>
+            <input
               type="text"
               name="nombre"
-              onChange={handleChange}
               defaultValue={empleado && empleado.persona.nombre}
+              onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Apellido"
+            <label className="block text-base font-medium">Apellido</label>
+            <input
               type="text"
               name="apellido"
-              onChange={handleChange}
               defaultValue={empleado && empleado.persona.apellido}
+              onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Telefono"
+            <label className="block text-base font-medium">Telefono</label>
+            <input
               type="number"
               name="celular"
-              onChange={handleChange}
               defaultValue={empleado && empleado.persona.celular}
+              onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Contraseña"
+            <label className="block text-base font-medium">Contraseña</label>
+            <input
               type="password"
               name="password"
+              placeholder="Contraseña"
               onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             />
           </div>
           <div className="mt-2">
-            <TextField
-              label="Usuario"
+            <label className="block text-base font-medium">Usuario</label>
+            <input
               type="text"
               name="username"
-              onChange={handleChange}
               defaultValue={usuario && usuario.username}
+              onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             />
           </div>
           <div className="flex flex-col mt-2">
-            <TextField
-              label={empleado && empleado.rol.nombre}
-              select
-              value={usuario && usuario.idRol}
-              name="idRol"
-              onChange={handleChange}
-            >
-              <MenuItem
+            <label className="block text-base font-medium">Cargo</label>
+            <select name="idRol" onChange={handleChange} className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm">
+              <option
                 value="1"
                 selected={empleado.rol.id === 1 ? true : false}
               >
                 Mesero
-              </MenuItem>
-              <MenuItem
+              </option>
+              <option
                 value="2"
                 selected={empleado.rol.id === 2 ? true : false}
               >
                 Admin
-              </MenuItem>
-            </TextField>
+              </option>
+            </select>
           </div>
         </div>
         <div className="flex pt-3 gap-3">
-          <BtnAgg type="submit">
+          <button className="btn" type="submit">
             {loading ? <Loader /> : "Editar usuario"}
-          </BtnAgg>
-          <BtnDelete onClick={() => abrirCerrarModalEditar()}>
+          </button>
+          <button
+            className="btnCancel"
+            onClick={() => abrirCerrarModalEditar()}
+          >
             Cancelar
-          </BtnDelete>
+          </button>
         </div>
       </form>
-    </Box>
+    </div>
   );
 
   return (
     <>
-      <button className="btn mb-3" sx={{ marginBottom: 1 }} onClick={() => abrirCerrarModal()}>
+      <button
+        className="btn mb-3"
+        onClick={() => abrirCerrarModal()}
+      >
         Agregar usuario
       </button>
       <ToastContainer />

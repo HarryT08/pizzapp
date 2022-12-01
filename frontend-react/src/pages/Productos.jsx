@@ -12,7 +12,7 @@ const Productos = () => {
       {/* Barra busqueda */}
       <div className="flex justify-between pb-3 border-b-2">
         <form>
-          <div className="relative flex items-center text-gray-400 focus-within:text-azul-marino border-2 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino">
+        <div className="flex">
             <input
               type="text"
               placeholder="Busqueda"
@@ -20,9 +20,13 @@ const Productos = () => {
               onChange={(event) => {
                 setSearch(event.target.value);
               }}
-              className="px-3 py-2 placeholder-gray-500 text-black rounded-lg border-none focus:outline-none"
+              className="px-2 movilM:px-2.5 py-1 movilM:py-2 placeholder-gray-500 text-black rounded-l-lg border-2 border-azul-marino/20 focus-within:border-azul-marino dark:focus-within:border-white focus:outline-none"
             />
-            <FiSearch className="w-5 h-5 mr-3" />
+            <div className="inline-flex">
+              <button className="bg-azul-marino dark:bg-black text-white border-2 border-azul-marino dark:border-black/20 transition duration-500 px-2 movilM:px-2.5 rounded-r-lg hover:bg-white  hover:text-azul-marino dark:hover:text-black dark:hover:bg-white">
+                <FiSearch size={20} />
+              </button>
+            </div>
           </div>
         </form>
       </div>

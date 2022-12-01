@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "./Loader";
+import bgFormLogin from '../assets/img/bgFormLogin.png'
+
 
 const FormLogin = () => {
   const [username, setUsername] = useState("");

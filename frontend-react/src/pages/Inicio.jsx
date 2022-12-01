@@ -7,13 +7,13 @@ const Inicio = () => {
 
   return (
     <div className='p-3 flex flex-wrap justify-center gap-10 w-full'>
-      <div className='bg-white rounded-lg drop-shadow-3xl w-[60rem] 2xl:w-[40rem] lg:w-[60rem]'>
+      <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-full portatil:w-[30rem] portatilL:w-[44rem]'>
         <LineChart/>
       </div>
-      <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-[60rem] 2xl:w-[40rem] lg:w-[60rem]'>
+      <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-full portatil:w-[30rem] portatilL:w-[44rem]'>
         <LineCharts/>
       </div>
-      <div className='p-3 bg-white rounded-lg drop-shadow-3xl '>
+      <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-[16.5rem] movilM:w-[20rem] movilL:w-[25rem] tableta:w-full portatil:w-[42.5rem]'>
         <TableInicio/>
       </div>
     </div>

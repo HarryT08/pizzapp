@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,76 +19,61 @@ const rows = [
   createData(5, "20-08-2022", "$150000", "Cancelado"),
 ];
 
-const TableInicio = () => {
+const columns = [
+  { id: 1, label: "#Orden" },
+  { id: 2, label: "Fecha" },
+  { id: 3, label: "Total orden" },
+  { id: 4, label: "Estado" },
+];
 
+const TableInicio = () => {
   const [order, setOrder] = useState(rows);
 
   const ordernarUltimos = () => {
-    return order.sort((a,b) => {
+    return order.sort((a, b) => {
       return b.id - a.id;
-    })
-  }
+    });
+  };
 
   return (
     <>
       <h1 className="font-bold text-base pb-2">Ordenes del dia</h1>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650}} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }}>
           <TableHead>
-            <TableRow style={{background: '#D00000'}}>
-              <TableCell
-                style={{
-                  color: "#fff",
-                  fontWeight: "bold",
-                  fontFamily: "Montserrat",
-                }}
-                align="center"
-              >
-                #Orden
-              </TableCell>
-              <TableCell
-                style={{
-                  color: "#fff",
-                  fontWeight: "bold",
-                  fontFamily: "Montserrat",
-                }}
-                align="center"
-              >
-                Fecha
-              </TableCell>
-              <TableCell
-                style={{
-                  color: "#fff",
-                  fontWeight: "bold",
-                  fontFamily: "Montserrat",
-                }}
-                align="center"
-              >
-                Total orden
-              </TableCell>
-              <TableCell
-                style={{
-                  color: "#fff",
-                  fontWeight: "bold",
-                  fontFamily: "Montserrat",
-                }}
-                align="center"
-              >
-                Estado
-              </TableCell>
+            <TableRow style={{ background: "#D00000" }}>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  style={{ color: "#fff", fontWeight: "bold" }}
+                  align="center"
+                >
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {ordernarUltimos().map((row) => (
-              <TableRow
-                key={row.id}
-              >
-                <TableCell style={{fontFamily: "Montserrat"}} align="center" component="th" scope="row">
+              <TableRow key={row.id}>
+                <TableCell
+                  style={{ fontFamily: "Montserrat" }}
+                  align="center"
+                  component="th"
+                  scope="row"
+                >
                   {row.id}
                 </TableCell>
-                <TableCell style={{fontFamily: "Montserrat"}} align="center">{row.fecha}</TableCell>
-                <TableCell style={{fontFamily: "Montserrat"}} align="center">{row.totalOrden}</TableCell>
-                <TableCell style={{fontFamily: "Montserrat"}} align="center"> <p className={`${row.estado}`}>{row.estado}</p> </TableCell>
+                <TableCell style={{ fontFamily: "Montserrat" }} align="center">
+                  {row.fecha}
+                </TableCell>
+                <TableCell style={{ fontFamily: "Montserrat" }} align="center">
+                  {row.totalOrden}
+                </TableCell>
+                <TableCell style={{ fontFamily: "Montserrat" }} align="center">
+                  {" "}
+                  <p className={`${row.estado}`}>{row.estado}</p>{" "}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

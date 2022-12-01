@@ -190,79 +190,90 @@ const Ingredientes = () => {
   };
 
   const bodyModalAgregar = (
-    <Box sx={style}>
+    <div className="modal">
       <div className="header-modal">
         <h3 className="text-xl font-semibold">Agregar ingrediente</h3>
       </div>
       <form onSubmit={addProduct}>
-          <TextField
-            fullWidth
-            sx={{ mb: 3 }}
+        <div>
+          <label className="block text-base font-medium">Nombre</label>
+          <input
             required
-            label="Nombre"
             name="nombre"
             type="text"
+            placeholder="Nombre"
+            className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             onChange={handleChange}
           />
-          <TextField
-            fullWidth
+        </div>
+        <div className="mt-3">
+          <label className="block text-base font-medium">Existencia</label>
+          <input
             required
-            label="Existencia"
             name="existencia"
             type="number"
+            placeholder="Existencia"
+            className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             onChange={handleChange}
           />
-        <div className="flex pt-3 gap-3">
-          <BtnAgg type="submit" className="btn">
+        </div>
+        <div className="flex mt-3 gap-3">
+          <button
+            type="submit"
+            className="rounded-md py-2 px-8 text-[10px] movilM:text-sm border-2 border-azul-marino/20 bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white"
+          >
             {loading ? <Loader /> : "Agregar ingrediente"}
-          </BtnAgg>
-          <BtnDelete
-            className="btnCancel"
+          </button>
+          <button
+            className="rounded-md py-2 px-8 text-[10px] movilM:text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white"
             onClick={() => abrirCerrarModalAgregar()}
           >
             Cancelar
-          </BtnDelete>
+          </button>
         </div>
       </form>
-    </Box>
+    </div>
   );
 
   const bodyModalEditar = (
-    <Box sx={style}>
+    <div className="modal">
       <div className="header-modal">
         <h3 className="text-xl font-semibold">Editar ingrediente</h3>
       </div>
       <form onSubmit={editProduct}>
-        <TextField
-          sx={{ mb: 3 }}
-          fullWidth
-          label="Nombre"
-          name="nombre"
-          defaultValue={ingrediente.nombre}
-          type="text"
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          label="Existencia"
-          name="existencia"
-          defaultValue={ingrediente.existencia}
-          onChange={handleChange}
-          type="number"
-        />
+        <div>
+          <label className="block text-base font-medium">Nombre</label>
+          <input
+            type="text"
+            name="nombre"
+            defaultValue={ingrediente.nombre}
+            onChange={handleChange}
+            className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
+          />
+        </div>
+        <div className='mt-3'>
+          <label className="block text-base font-medium">Existencia</label>
+          <input
+            type="number"
+            name="existencia"
+            defaultValue={ingrediente.existencia}
+            onChange={handleChange}
+            className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
+          />
+        </div>
         <div className="flex pt-3 gap-3">
-          <BtnAgg type="submit" className="btn">
+          <button type="submit" className="rounded-md py-2 px-8 text-[10px] movilM:text-sm border-2 border-azul-marino/20 bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white">
             {loading ? <Loader /> : "Editar ingrediente"}
-          </BtnAgg>
-          <BtnDelete
-            className="btnCancel"
+          </button>
+          <button
+            className="rounded-md py-2 px-8 text-[10px] movilM:text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white"
             onClick={() => abrirCerrarModalEditar()}
           >
             Cancelar
-          </BtnDelete>
+          </button>
         </div>
       </form>
-    </Box>
+    </div>
   );
 
   return (
@@ -270,8 +281,8 @@ const Ingredientes = () => {
       <ToastContainer />
       {/* Barra busqueda */}
       <div className="flex justify-between pb-3 border-b-2">
-        <form action="">
-          <div className="relative flex items-center text-gray-400 focus-within:text-azul-marino border-2 bg-white rounded-lg border-azul-marino/60 focus-within:border-azul-marino">
+        <form>
+          <div className="flex">
             <input
               type="text"
               placeholder="Busqueda"
@@ -279,16 +290,20 @@ const Ingredientes = () => {
               onChange={(event) => {
                 setSearch(event.target.value);
               }}
-              className="px-3 py-2 placeholder-gray-500 text-black rounded-lg border-none focus:outline-none"
+              className="px-2 movilM:px-2.5 py-1 movilM:py-2 placeholder-gray-500 text-black rounded-l-lg border-2 border-azul-marino/20 focus-within:border-azul-marino dark:focus-within:border-white focus:outline-none"
             />
-            <FiSearch className="w-5 h-5 mr-3" />
+            <div className="inline-flex">
+              <button className="bg-azul-marino dark:bg-black text-white border-2 border-azul-marino dark:border-black/20 transition duration-500 px-2 movilM:px-2.5 rounded-r-lg hover:bg-white  hover:text-azul-marino dark:hover:text-black dark:hover:bg-white">
+                <FiSearch size={20} />
+              </button>
+            </div>
           </div>
         </form>
       </div>
 
       {/* Boton agg ingredientes */}
       <div className="mt-3">
-        <button className='btn' onClick={() => abrirCerrarModalAgregar()}>
+        <button className="btn" onClick={() => abrirCerrarModalAgregar()}>
           Agregar ingrediente
         </button>
       </div>

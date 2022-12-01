@@ -112,7 +112,7 @@ const Tap = ({setModalOpen}) => {
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange}>
             <Tab label="Producto" value="1" />
             <Tab label="Ingredientes" value="2" />
           </TabList>
@@ -120,31 +120,34 @@ const Tap = ({setModalOpen}) => {
         <form onSubmit={enviarDatos}>
           <TabPanel value="1">
             <div className="flex flex-col">
-              <label>Nombre</label>
+              <label className="block text-base font-medium">Nombre</label>
               <input
                 required
                 name="nombre"
                 type="text"
                 placeholder="Nombre"
+                className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-            <div className="flex flex-col my-2">
-              <label>Precio</label>
+            <div className="flex flex-col mt-2">
+              <label className="block text-base font-medium">Precio</label>
               <input
                 required
                 name="costo"
                 type="number"
                 placeholder="Precio"
+                className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
                 onChange={(e) => setPrecio(e.target.value)}
               />
             </div>
           </TabPanel>
           <TabPanel value="2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mb-2">
               <div className="flex items-center">
-                <label>
+                <label className='text-xs movilL:text-base'>
                   <input
+                    className="w-3 h-3"
                     value={pequeña}
                     defaultChecked={pequeña}
                     disabled={unico ? true : false}
@@ -155,8 +158,9 @@ const Tap = ({setModalOpen}) => {
                 </label>
               </div>
               <div className="flex items-center">
-                <label>
+                <label className="text-xs movilL:text-base">
                   <input
+                    className="w-3 h-3"
                     value={mediana}
                     defaultChecked={mediana}
                     type="checkbox"
@@ -167,8 +171,9 @@ const Tap = ({setModalOpen}) => {
                 </label>
               </div>
               <div className="flex items-center">
-                <label>
+                <label className="text-xs movilL:text-base">
                   <input
+                    className="w-3 h-3"
                     value={grande}
                     defaultChecked={grande}
                     type="checkbox"
@@ -179,8 +184,9 @@ const Tap = ({setModalOpen}) => {
                 </label>
               </div>
               <div className="flex items-center">
-                <label>
+                <label className="text-xs movilL:text-base">
                   <input
+                    className="w-3 h-3"
                     type="checkbox"
                     onChange={() => {
                       setGrande(false);
@@ -224,7 +230,7 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carritoPequeño.map((item) => (
-                      <div className="flex mb-1 gap-2" key={item.id}>
+                      <div className="flex items-center mb-1 gap-1 overflow-x-auto" key={item.id}>
                         <p>{item.nombre}</p>
                         <input
                           required
@@ -240,7 +246,7 @@ const Tap = ({setModalOpen}) => {
                           defaultValue={item.cantidad}
                           name="cantidad"
                           type="text"
-                          className="px-1 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
+                          className="w-32 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
                         />
                         <div className="flex items-center">
                           <AiFillCloseCircle
@@ -271,7 +277,7 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carritoMediano.map((item) => (
-                      <div className="flex mb-1 gap-2" key={item.id}>
+                      <div className="flex items-center mb-1 gap-2 overflow-x-auto" key={item.id}>
                         <p>{item.nombre}</p>
                         <input
                           required
@@ -286,9 +292,9 @@ const Tap = ({setModalOpen}) => {
                           }}
                           defaultValue={item.cantidad}
                           type="text"
-                          className="px-1 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
+                          className="w-32 px-1 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
                         />
-                        <div className="flex items-center">
+                        <div className="">
                           <AiFillCloseCircle
                             onClick={() => deleteProduct(item.id)}
                             className="text-rojo-fuerte/50 hover:text-rojo-fuerte cursor-pointer"
@@ -317,7 +323,7 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carritoGrande.map((item) => (
-                      <div className="flex mb-1 gap-2" key={item.id}>
+                      <div className="flex items-center overflow-x-auto mb-1 gap-2" key={item.id}>
                         <p>{item.nombre}</p>
                         <input
                           required
@@ -332,7 +338,7 @@ const Tap = ({setModalOpen}) => {
                           }}
                           defaultValue={item.cantidad}
                           type="text"
-                          className="px-1 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
+                          className="w-32 px-1 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
                         />
                         <div className="flex items-center">
                           <AiFillCloseCircle
@@ -363,7 +369,7 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carrito.map((item) => (
-                      <div className="flex mb-1 gap-2" key={item.id}>
+                      <div className="flex items-center overflow-x-auto mb-1 gap-2" key={item.id}>
                         <p>{item.nombre}</p>
                         <input
                           onChange={(e) => {
@@ -378,7 +384,7 @@ const Tap = ({setModalOpen}) => {
                           required
                           defaultValue={item.cantidad}
                           type="text"
-                          className="px-1 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
+                          className="w-32 px-1 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
                         />
                         <div className="flex items-center">
                           <AiFillCloseCircle
@@ -393,11 +399,11 @@ const Tap = ({setModalOpen}) => {
               )}
             </div>
           </TabPanel>
-          <div className="flex gap-5">
+          <div className="flex gap-3">
             <button type="submit" className="btn">
               Enviar
             </button>
-            <button type="reset" className="btn" onClick={() => setModalOpen(false)}>Cancelar</button>
+            <button type="reset" className="btnCancel" onClick={() => setModalOpen(false)}>Cancelar</button>
           </div>
         </form>
       </TabContext>
