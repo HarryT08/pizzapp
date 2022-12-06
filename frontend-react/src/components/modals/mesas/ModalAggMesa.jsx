@@ -1,9 +1,14 @@
 import { useRef } from "react";
-import { Transition, Tap } from "../..";
+import { Transition } from "../..";
 
 const ModalAggMesa = ({ id, modalOpen, setModalOpen }) => {
     const modalContent = useRef(null);
+    const numeroInput = useRef(null);
 
+    const cleanButtonCancel = () => {
+        setModalOpen(false);
+        numeroInput.current.value = "";
+    }
     return (
         <Transition
             className="fixed inset-0 bg-slate-900 bg-opacity-30 z-50 transition-opacity"
@@ -39,13 +44,13 @@ const ModalAggMesa = ({ id, modalOpen, setModalOpen }) => {
                     <form onSubmit={(e) => e.preventDefault()}>
                         <div className="my-2 flex flex-col">
                             <label className="block text-base font-medium">Numero de la mesa</label>
-                            <input type="number" placeholder="Numero" className="block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"/>
+                            <input ref={numeroInput} type="number" placeholder="Numero" className="block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"/>
                         </div>
                         <div className="flex pt-3 gap-3">
                             <button className="btn">Agregar</button>
-                            <button className="btnCancel" onClick={() => setModalOpen(false)}>
+                            <span className="btnCancel cursor-pointer" onClick={cleanButtonCancel}>
                                 Cancelar
-                            </button>
+                            </span>
                         </div>
                     </form>
                 </div>

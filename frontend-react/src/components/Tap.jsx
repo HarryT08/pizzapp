@@ -8,7 +8,7 @@ import {
   AccordionDetails,
   AccordionSummary,
 } from "@mui/material";
-import TableIngredientesTab from "./tables/TableIngredientesTab";
+import TableIngredientesTab from "./tables/productos/tab/TableIngredientesTab";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { instance } from "../api/api";
 
@@ -108,6 +108,12 @@ const Tap = ({setModalOpen}) => {
     setCarritoMediano(newProductsMediano);
     setCarritoGrande(newProductsGrande);
   };
+
+  const handleReset = () => {
+    document.getElementById("form").reset();
+    setModalOpen(false)
+  }
+
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
@@ -117,7 +123,7 @@ const Tap = ({setModalOpen}) => {
             <Tab label="Ingredientes" value="2" />
           </TabList>
         </Box>
-        <form onSubmit={enviarDatos}>
+        <form id='form' onSubmit={enviarDatos}>
           <TabPanel value="1">
             <div className="flex flex-col">
               <label className="block text-base font-medium">Nombre</label>
@@ -403,7 +409,7 @@ const Tap = ({setModalOpen}) => {
             <button type="submit" className="btn">
               Enviar
             </button>
-            <button type="reset" className="btnCancel" onClick={() => setModalOpen(false)}>Cancelar</button>
+            <span className="btnCancel cursor-pointer" onClick={handleReset}>Cancelar</span>
           </div>
         </form>
       </TabContext>

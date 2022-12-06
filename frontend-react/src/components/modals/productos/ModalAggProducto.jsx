@@ -1,27 +1,9 @@
-import { useRef, useEffect } from "react";
-import { Transition, Tap} from "..";
+import { useRef } from "react";
+import { Transition, Tap} from "../..";
 
 const ModalAggProducto = ({ id, modalOpen, setModalOpen }) => {
     const modalContent = useRef(null);
-    // Cerrar modal fuera del contenido
-    useEffect(() => {
-        const clickHandler = ({ target }) => {
-            if (!modalOpen || modalContent.current.contains(target)) return;
-            setModalOpen(false);
-        };
-        document.addEventListener("click", clickHandler);
-        return () => document.removeEventListener("click", clickHandler);
-    },[]);
 
-    // Cerrar modal con ESC
-    useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
-            if (!modalOpen || keyCode !== 27) return;
-            setModalOpen(false);
-        };
-        document.addEventListener("keydown", keyHandler);
-        return () => document.removeEventListener("keydown", keyHandler);
-    },[]);
     return (
         <>
             <Transition

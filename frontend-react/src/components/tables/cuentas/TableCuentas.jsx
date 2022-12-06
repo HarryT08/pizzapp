@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { instance } from "../../api/api";
+import { instance } from "../../../api/api";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,12 +8,11 @@ import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
-import { Modal, Box, TextField, MenuItem } from "@mui/material";
-import { BtnAgg, BtnDelete } from "../../styles/Button";
+import { Modal } from "@mui/material";
 import Swal from "sweetalert2";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../Loader";
+import Loader from "../../Loader";
 
 const columns = [
   { id: "id", label: "Id" },
@@ -22,23 +21,8 @@ const columns = [
   { id: "acciones", label: "Acciones" },
 ];
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "10px",
-  boxShadow: 24,
-  p: 4,
-};
-
-const TableCuentas = () => {
-  const [data, setData] = useState([]);
-  const [modalInsertar, setModalInsertar] = useState(false);
+const TableCuentas = ({error, data, getUsers}) => {
   const [modalEditar, setModalEditar] = useState(false);
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [empleado, setEmpleado] = useState({
     persona: {
@@ -69,65 +53,6 @@ const TableCuentas = () => {
       ...prevState,
       [name]: value,
     }));
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  // Peticion GET
-  const getUsers = async () => {
-    try {
-      const response = await instance.get("/usuarios");
-      setError(false);
-      return setData(response.data);
-    } catch (err) {
-      setError(true);
-      setData([]);
-    }
-  };
-
-  // Peticion GET by ID
-  const getPerson = async (e) => {
-    e.preventDefault();
-    try {
-      let cedu = usuario.cedula;
-      if (cedu.length >= 1) {
-        const response = await instance.get(`/personas/${cedu}`);
-        if (response.data) {
-          return setUsuario({
-            ...response.data,
-            found: true,
-          });
-        }
-      }
-      return setUsuario({
-        nombre: "",
-        apellido: "",
-        cedula: usuario.cedula,
-        celular: "",
-        idRol: "1",
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // Peticion POST
-  const registerUser = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await instance.post("/usuarios", usuario);
-      getUsers();
-      setModalInsertar(false);
-      toast.success("Usuario registrado con exito");
-      setUsuario({ nombre: "", apellido: "", celular: "", idRol: "1" });
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
   };
 
   // Peticion PUT
@@ -193,11 +118,6 @@ const TableCuentas = () => {
     });
   };
 
-  const abrirCerrarModal = () => {
-    setModalInsertar(!modalInsertar);
-    setUsuario({ nombre: "", apellido: "", celular: "", idRol: "1" });
-  };
-
   const abrirCerrarModalEditar = () => {
     setModalEditar(!modalEditar);
     setEmpleado({
@@ -205,109 +125,6 @@ const TableCuentas = () => {
       rol: { id: "", nombre: "" },
     });
   };
-
-  // Contenido modal agregar
-  const bodyInsertar = (
-    <div className="modal">
-      <div className="header-modal">
-        <h3 className="text-xl font-semibold">Agregar Usuario</h3>
-      </div>
-      <form onSubmit={registerUser}>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="mt-2">
-            <label className="block text-base font-medium">Cedula</label>
-            <input
-              type="number"
-              name="cedula"
-              placeholder="Cedula"
-              onChange={handleChange}
-              onBlur={getPerson}
-              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-            />
-          </div>
-          <div className="mt-2">
-            <label className="block text-base font-medium">Nombre</label>
-            <input
-              type="text"
-              name="nombre"
-              placeholder="Nombre"
-              onChange={handleChange}
-              value={usuario.nombre}
-              disabled={usuario.found}
-              className={`form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm `}
-              required
-            />
-          </div>
-          <div className="mt-2">
-            <label className="block text-base font-medium">Apellido</label>
-            <input
-              type="text"
-              name="apellido"
-              placeholder="Apellido"
-              onChange={handleChange}
-              value={usuario.apellido}
-              disabled={usuario.found}
-              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-              required
-            />
-          </div>
-          <div className="mt-2">
-            <label className="block text-base font-medium">Telefono</label>
-            <input
-              type="number"
-              name="celular"
-              placeholder="Telefono"
-              onChange={handleChange}
-              value={usuario.celular}
-              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-              required
-            />
-          </div>
-          <div className="mt-2">
-            <label className="block text-base font-medium">Contraseña</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Contraseña"
-              onChange={handleChange}
-              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-            />
-          </div>
-          <div className="mt-2">
-            <label className="block text-base font-medium">Usuario</label>
-            <input
-              type="text"
-              name="username"
-              placeholder="Usuario"
-              onChange={handleChange}
-              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-              required
-            />
-          </div>
-          <div className="flex flex-col mt-2">
-            <label className="block text-base font-medium">Cargo</label>
-            <select
-              name="idRol"
-              onChange={handleChange}
-              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-              required
-            >
-              <option value="1">Mesero</option>
-              <option value="2">Admin</option>
-            </select>
-          </div>
-        </div>
-        <div className="flex pt-3 gap-3">
-          <button className="btn" type="submit">
-            {loading ? <Loader /> : "Agregar usuario"}
-          </button>
-          <button className="btnCancel" onClick={() => abrirCerrarModal()}>
-            Cancelar
-          </button>
-        </div>
-      </form>
-    </div>
-  );
 
   // Contenido modal editar
   const bodyEditar = (
@@ -413,13 +230,6 @@ const TableCuentas = () => {
 
   return (
     <>
-      <button
-        className="btn mb-3"
-        onClick={() => abrirCerrarModal()}
-      >
-        Agregar usuario
-      </button>
-      <ToastContainer />
       <Paper>
         <TableContainer component={Paper}>
           {error && (
@@ -488,10 +298,6 @@ const TableCuentas = () => {
           </Table>
         </TableContainer>
       </Paper>
-
-      <Modal open={modalInsertar} onClose={abrirCerrarModal}>
-        {bodyInsertar}
-      </Modal>
 
       <Modal open={modalEditar} onClose={abrirCerrarModalEditar}>
         {bodyEditar}

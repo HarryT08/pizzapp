@@ -1,7 +1,4 @@
-import React from 'react'
-import LineChart from '../components/charts/LineChart';
-import LineCharts from '../components/charts/LineCharts';
-import TableInicio from '../components/tables/TableInicio';
+import {TableInicio, LineCharts, LineChart} from '../components';
 
 const Inicio = () => {
 

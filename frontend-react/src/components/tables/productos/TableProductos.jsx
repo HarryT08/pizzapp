@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useStateContext } from "../../context/ContextProvider";
+import { useStateContext } from "../../../context/ContextProvider";
 import {
     Table,
     TableBody,

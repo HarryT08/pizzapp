@@ -9,7 +9,7 @@ import {
     TableBody,
     TablePagination,
 } from "@mui/material";
-import { instance } from "../../api/api";
+import { instance } from "../../../../api/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
