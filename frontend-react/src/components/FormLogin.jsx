@@ -47,6 +47,7 @@ const FormLogin = () => {
           <label className="block text-base font-medium">Usuario</label>
           <input
             type="text"
+            placeholder="Usuario"
             className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             onChange={(e) => setUsername(e.target.value)}
             autoFocus
@@ -57,6 +58,7 @@ const FormLogin = () => {
           <label className="block text-base font-medium">Contraseña</label>
           <input
             type="password"
+            placeholder="Contraseña"
             className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
             onChange={(e) => setPassword(e.target.value)}
           />

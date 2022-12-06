@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 
 const RutasPublicas = ({ children }) => {
   if (localStorage.getItem("Authorization")) {
-    return <Navigate to="/dashboard/inicio" />;
+    return <Navigate to="/admin/inicio" />;
   }
 
   return <>{children}</>;
