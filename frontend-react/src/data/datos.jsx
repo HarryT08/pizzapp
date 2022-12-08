@@ -1,5 +1,5 @@
 import { AiFillHome } from "react-icons/ai";
-import { BsPeopleFill } from "react-icons/bs";
+import { BsPeopleFill, BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
 import { GiPaperBagFolded } from "react-icons/gi";
 import { IoMdPizza } from "react-icons/io";
 import { ImSpoonKnife } from "react-icons/im";
@@ -54,6 +54,46 @@ export const dataSidebar = [
     icon: <GiPaperBagFolded />,
   },
 ];
+
+export const dataSidebarMesero = [
+  {
+    path: 'realizar-pedido',
+    titulo: 'Realizar pedido',
+    icon: <BsFillPersonCheckFill/>
+  },
+  {
+    path: 'editar-pedido',
+    titulo: 'Editar pedido',
+    icon: <BsFillPersonDashFill/>
+  }
+]
+
+export const productos = [
+  {
+    id: 1,
+    nombre: 'Hamburguesa especial',
+  },
+  {
+    id: 2,
+    nombre: 'Pizza',
+  },
+  {
+    id: 3,
+    nombre: 'Hamburguesa mini',
+  },
+  {
+    id: 4,
+    nombre: 'Pizza BBQ',
+  },
+  {
+    id: 5,
+    nombre: 'Salchipapa',
+  },
+  {
+    id: 6,
+    nombre: 'Limonada',
+  },
+]
 
 export const mesas = [
   {

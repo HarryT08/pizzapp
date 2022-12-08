@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { dataSidebar } from "../data/datos";
 import logoBohemia from "../assets/img/logoBohemia.png";
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen, children }) => {
   const trigger = useRef(null);
   const sidebar = useRef(null);
 
@@ -46,11 +45,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       document.querySelector("body").classList.remove("sidebar-expanded");
     }
   }, [sidebarExpanded]);
-
-  const activeLink =
-    "flex font-semibold items-center gap-7 pl-4 pt-3 pb-2.5 rounded-lg text-md text-dark dark:text-[#181818] dark:hover:text-[#181818] bg-white m-2";
-  const normalLink =
-    "flex font-semibold items-center gap-7 pl-4 pt-3 pb-2.5 rounded-lg text-md text-white dark:text-white dark:hover:text-[#181818] hover:bg-white hover:text-black m-2";
 
   return (
     <div>
@@ -106,23 +100,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <hr className=" border-slate-200/50" />
             <ul className="mt-3">
               {/* Inbox */}
-              {dataSidebar.map((item, index) => (
-                <li key={index}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    <div className="flex items-center">
-                      <i>{item.icon}</i>
-                      <span className="text-base font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                        {item.titulo}
-                      </span>
-                    </div>
-                  </NavLink>
-                </li>
-              ))}
+              {children}
             </ul>
           </div>
         </div>

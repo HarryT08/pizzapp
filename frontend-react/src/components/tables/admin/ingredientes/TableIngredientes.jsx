@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Modal,
     Table,
@@ -8,12 +9,11 @@ import {
     TableRow,
     Paper,
 } from "@mui/material";
-import { useState } from "react";
+import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
+import { instance } from "../../../../api/api";
+import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
-import { instance } from "../../../api/api";
-import Swal from "sweetalert2";
 
 const columns = [
     { id: "nombre", label: "Nombre" },

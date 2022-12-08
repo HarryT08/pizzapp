@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";
-import { instance } from "../../../api/api";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import TableHead from "@mui/material/TableHead";
-import Paper from "@mui/material/Paper";
+import { useState } from "react";
+import { instance } from "../../../../api/api";
+import { Loader } from "../../../";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TableHead,
+  Paper,
+} from "@mui/material";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import { Modal } from "@mui/material";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../../Loader";
 
 const columns = [
   { id: "id", label: "Id" },
@@ -21,7 +23,7 @@ const columns = [
   { id: "acciones", label: "Acciones" },
 ];
 
-const TableCuentas = ({error, data, getUsers}) => {
+const TableCuentas = ({ error, data, getUsers }) => {
   const [modalEditar, setModalEditar] = useState(false);
   const [loading, setLoading] = useState(false);
   const [empleado, setEmpleado] = useState({
@@ -197,17 +199,15 @@ const TableCuentas = ({error, data, getUsers}) => {
           </div>
           <div className="flex flex-col mt-2">
             <label className="block text-base font-medium">Cargo</label>
-            <select name="idRol" onChange={handleChange} className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm">
-              <option
-                value="1"
-                selected={empleado.rol.id === 1 ? true : false}
-              >
+            <select
+              name="idRol"
+              onChange={handleChange}
+              className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
+            >
+              <option value="1" selected={empleado.rol.id === 1 ? true : false}>
                 Mesero
               </option>
-              <option
-                value="2"
-                selected={empleado.rol.id === 2 ? true : false}
-              >
+              <option value="2" selected={empleado.rol.id === 2 ? true : false}>
                 Admin
               </option>
             </select>

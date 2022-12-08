@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { instance } from "../api/api";
-import { ModalAggCuenta, TableCuentas } from "../components";
+import { instance } from "../../api/api";
+import { ModalAggCuenta, TableCuentas } from "../../components";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { instance } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import {Loader} from "../components";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "./Loader";
-import bgFormLogin from '../assets/img/bgFormLogin.png'
-
 
 const FormLogin = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +22,7 @@ const FormLogin = () => {
       });
       localStorage.setItem("Authorization", response.data.token);
       console.log(response);
-      navigate("/dashboard/");
+      navigate("/admin/");
 
       setLoading(false);
     } catch (err) {

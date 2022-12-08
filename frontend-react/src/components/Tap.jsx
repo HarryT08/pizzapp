@@ -11,8 +11,9 @@ import {
 import TableIngredientesTab from "./tables/productos/tab/TableIngredientesTab";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { instance } from "../api/api";
+import "../styles/aditional-styles/checkbox.css";
 
-const Tap = ({setModalOpen}) => {
+const Tap = ({ setModalOpen }) => {
   const [carritoPequeño, setCarritoPequeño] = useState([]);
   const [carritoMediano, setCarritoMediano] = useState([]);
   const [carritoGrande, setCarritoGrande] = useState([]);
@@ -111,8 +112,8 @@ const Tap = ({setModalOpen}) => {
 
   const handleReset = () => {
     document.getElementById("form").reset();
-    setModalOpen(false)
-  }
+    setModalOpen(false);
+  };
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
@@ -123,7 +124,7 @@ const Tap = ({setModalOpen}) => {
             <Tab label="Ingredientes" value="2" />
           </TabList>
         </Box>
-        <form id='form' onSubmit={enviarDatos}>
+        <form id="form" onSubmit={enviarDatos}>
           <TabPanel value="1">
             <div className="flex flex-col">
               <label className="block text-base font-medium">Nombre</label>
@@ -149,60 +150,89 @@ const Tap = ({setModalOpen}) => {
             </div>
           </TabPanel>
           <TabPanel value="2">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="flex items-center">
-                <label className='text-xs movilL:text-base'>
-                  <input
-                    className="w-3 h-3"
-                    value={pequeña}
-                    defaultChecked={pequeña}
-                    disabled={unico ? true : false}
-                    type="checkbox"
-                    onClick={() => checkPequeña()}
-                  />
-                  Pequeña
-                </label>
+            <div className="flex items-center gap-2 mb-2 overflow-x-auto">
+              <div className="container">
+                <ul className="ks-cboxtags">
+                  <li>
+                    <input
+                      id="pequeña"
+                      className="w-3 h-3"
+                      value={pequeña}
+                      defaultChecked={pequeña}
+                      disabled={unico ? true : false}
+                      type="checkbox"
+                      onClick={() => checkPequeña()}
+                    />
+                    <label
+                      htmlFor="pequeña"
+                      className="text-xs movilL:text-base"
+                    >
+                      Pequeña
+                    </label>
+                  </li>
+                </ul>
               </div>
-              <div className="flex items-center">
-                <label className="text-xs movilL:text-base">
-                  <input
-                    className="w-3 h-3"
-                    value={mediana}
-                    defaultChecked={mediana}
-                    type="checkbox"
-                    disabled={unico ? true : false}
-                    onClick={() => checkMediana()}
-                  />
-                  Mediana
-                </label>
+              <div className="container">
+                <ul className="ks-cboxtags">
+                  <li>
+                    <input
+                      id="mediana"
+                      className="w-3 h-3"
+                      value={mediana}
+                      defaultChecked={mediana}
+                      type="checkbox"
+                      disabled={unico ? true : false}
+                      onClick={() => checkMediana()}
+                    />
+                    <label
+                      htmlFor="mediana"
+                      className="text-xs movilL:text-base"
+                    >
+                      Mediana
+                    </label>
+                  </li>
+                </ul>
               </div>
-              <div className="flex items-center">
-                <label className="text-xs movilL:text-base">
-                  <input
-                    className="w-3 h-3"
-                    value={grande}
-                    defaultChecked={grande}
-                    type="checkbox"
-                    disabled={unico ? true : false}
-                    onClick={() => checkGrande()}
-                  />
-                  Grande
-                </label>
+              <div className="container">
+                <ul className="ks-cboxtags">
+                  <li>
+                    <input
+                      id="grande"
+                      className="w-3 h-3"
+                      value={grande}
+                      defaultChecked={grande}
+                      type="checkbox"
+                      disabled={unico ? true : false}
+                      onClick={() => checkGrande()}
+                    />
+                    <label
+                      htmlFor="grande"
+                      className="text-xs movilL:text-base"
+                    >
+                      Grande
+                    </label>
+                  </li>
+                </ul>
               </div>
-              <div className="flex items-center">
-                <label className="text-xs movilL:text-base">
-                  <input
-                    className="w-3 h-3"
-                    type="checkbox"
-                    onChange={() => {
-                      setGrande(false);
-                      setMediana(false);
-                      setPequeña(false);
-                    }}
-                    onClick={() => checkUnico()}
-                  />
-                  Unico
-                </label>
+              <div className="container">
+                <ul className="ks-cboxtags">
+                  <li>
+                      <input
+                        id="unicos"
+                        className="w-3 h-3"
+                        type="checkbox"
+                        onChange={() => {
+                          setGrande(false);
+                          setMediana(false);
+                          setPequeña(false);
+                        }}
+                        onClick={() => checkUnico()}
+                      />
+                    <label htmlFor='unicos' className="text-xs movilL:text-base">
+                      Unico
+                    </label>
+                  </li>
+                </ul>
               </div>
             </div>
             <TableIngredientesTab
@@ -236,7 +266,10 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carritoPequeño.map((item) => (
-                      <div className="flex items-center mb-1 gap-1 overflow-x-auto" key={item.id}>
+                      <div
+                        className="flex items-center mb-1 gap-1 overflow-x-auto"
+                        key={item.id}
+                      >
                         <p>{item.nombre}</p>
                         <input
                           required
@@ -283,7 +316,10 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carritoMediano.map((item) => (
-                      <div className="flex items-center mb-1 gap-2 overflow-x-auto" key={item.id}>
+                      <div
+                        className="flex items-center mb-1 gap-2 overflow-x-auto"
+                        key={item.id}
+                      >
                         <p>{item.nombre}</p>
                         <input
                           required
@@ -329,7 +365,10 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carritoGrande.map((item) => (
-                      <div className="flex items-center overflow-x-auto mb-1 gap-2" key={item.id}>
+                      <div
+                        className="flex items-center overflow-x-auto mb-1 gap-2"
+                        key={item.id}
+                      >
                         <p>{item.nombre}</p>
                         <input
                           required
@@ -375,7 +414,10 @@ const Tap = ({setModalOpen}) => {
                     }}
                   >
                     {carrito.map((item) => (
-                      <div className="flex items-center overflow-x-auto mb-1 gap-2" key={item.id}>
+                      <div
+                        className="flex items-center overflow-x-auto mb-1 gap-2"
+                        key={item.id}
+                      >
                         <p>{item.nombre}</p>
                         <input
                           onChange={(e) => {
@@ -409,7 +451,9 @@ const Tap = ({setModalOpen}) => {
             <button type="submit" className="btn">
               Enviar
             </button>
-            <span className="btnCancel cursor-pointer" onClick={handleReset}>Cancelar</span>
+            <span className="btnCancel cursor-pointer" onClick={handleReset}>
+              Cancelar
+            </span>
           </div>
         </form>
       </TabContext>

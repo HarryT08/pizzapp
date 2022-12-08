@@ -1,4 +1,4 @@
-import {TableInicio, LineCharts, LineChart} from '../components';
+import {TableInicio, LineCharts, LineChart} from '../../components';
 
 const Inicio = () => {
 

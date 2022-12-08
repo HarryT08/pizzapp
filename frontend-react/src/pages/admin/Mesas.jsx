@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { mesas } from "../data/datos";
+import { mesas } from "../../data/datos";
 import { GiKnifeFork } from "react-icons/gi";
-import { ModalAggMesa } from "../components";
+import { ModalAggMesa } from "../../components";
 import Swal from "sweetalert2";
 
 const Mesas = () => {

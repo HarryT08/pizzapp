@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { dataOrdenes } from "../../../data/datos";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import TableHead from "@mui/material/TableHead";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
+import { dataOrdenes } from "../../../../data/datos";
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TableHead,
+  Paper,
+  TablePagination,
+} from "@mui/material";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import Swal from "sweetalert2";
 
@@ -27,7 +29,6 @@ const TableOrdenes = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [dataOrders, setDataOrders] = useState(dataOrdenes);
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -68,10 +69,10 @@ const TableOrdenes = () => {
   };
 
   const ordernarUltimos = () => {
-    return dataOrders.sort((a,b) => {
+    return dataOrders.sort((a, b) => {
       return b.id - a.id;
-    })
-  }
+    });
+  };
 
   return (
     <>

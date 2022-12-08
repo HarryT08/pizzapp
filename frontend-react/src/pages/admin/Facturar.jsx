@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { mesas } from "../data/datos"
+import { mesas } from "../../data/datos"
 import {GiKnifeFork} from 'react-icons/gi'
 
 const Facturar = () => {
