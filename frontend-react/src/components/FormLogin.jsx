@@ -2,6 +2,7 @@ import { useState } from "react";
 import { instance } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import {Loader} from "../components";
+import jwt_decode from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,15 +16,18 @@ const FormLogin = () => {
     e.preventDefault();
     try {
       setLoading(true);
-
       const response = await instance.post("/auth/login", {
         username: username,
         password: password,
       });
       localStorage.setItem("Authorization", response.data.token);
-      console.log(response);
-      navigate("/admin/");
-
+      const decoded = jwt_decode(response.data.token);
+      localStorage.setItem("cargo", decoded.cargo);
+      if(decoded.cargo === "admin"){
+        navigate("/admin/");
+      }else if(decoded.cargo === "mesero"){
+        navigate("/mesero/");
+      }
       setLoading(false);
     } catch (err) {
       setLoading(false);
