@@ -217,12 +217,12 @@ const TableCuentas = ({ error, data, getUsers }) => {
           <button className="btn" type="submit">
             {loading ? <Loader /> : "Editar usuario"}
           </button>
-          <button
-            className="btnCancel"
+          <span
+            className="btnCancel cursor-pointer"
             onClick={() => abrirCerrarModalEditar()}
           >
             Cancelar
-          </button>
+          </span>
         </div>
       </form>
     </div>

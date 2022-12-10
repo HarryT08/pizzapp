@@ -10,10 +10,13 @@ import {
 } from "@mui/material";
 import TableIngredientesTab from "./tables/productos/tab/TableIngredientesTab";
 import { AiFillCloseCircle } from "react-icons/ai";
+import {toast} from 'react-toastify'
 import { instance } from "../api/api";
+import {Loader} from '../components'
 import "../styles/aditional-styles/checkbox.css";
 
 const Tap = ({ setModalOpen, getProductos }) => {
+  const [loading, setLoading] = useState(false)
   const [carritoPequeño, setCarritoPequeño] = useState([]);
   const [carritoMediano, setCarritoMediano] = useState([]);
   const [carritoGrande, setCarritoGrande] = useState([]);
@@ -55,18 +58,23 @@ const Tap = ({ setModalOpen, getProductos }) => {
       ];
     }
     try {
+      setLoading(true)
       const response = await instance.post("/productos", {
         nombre: name,
         precio: precio,
         presentaciones: presentaciones,
       });
+      toast.success('Producto agregado correctamente')
       setCarritoPequeño([]);
       setCarritoMediano([]);
       setCarritoGrande([]);
       setCarrito([]);
       setModalOpen(false)
       getProductos()
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
+      toast.error('No se pudo agregar el producto')
       console.log(err);
     }
   };
@@ -450,7 +458,7 @@ const Tap = ({ setModalOpen, getProductos }) => {
           </TabPanel>
           <div className="flex gap-3">
             <button type="submit" className="btn">
-              Enviar
+              {loading ? <Loader /> : "Agregar"}
             </button>
             <span className="btnCancel cursor-pointer" onClick={handleReset}>
               Cancelar

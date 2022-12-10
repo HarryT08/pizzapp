@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { instance } from "../../api/api";
 import { ModalAggProducto, TableProductos } from "../../components";
 import { FiSearch } from "react-icons/fi";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Productos = () => {
@@ -26,6 +27,7 @@ useEffect(() => {
   return (
     <div className="w-full">
       {/* Barra busqueda */}
+      <ToastContainer/>
       <div className="flex justify-between pb-3 border-b-2">
         <form>
         <div className="flex">

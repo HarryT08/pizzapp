@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useStateContext } from "../../../context/ContextProvider";
 import {
     Table,
     TableBody,
@@ -13,7 +12,6 @@ import {
 import { instance } from "../../../api/api";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import Swal from "sweetalert2";
-import { useEffect } from "react";
 
 // Columnas de los productos
 const columnsProductos = [
@@ -25,7 +23,6 @@ const columnsProductos = [
 const TableProductos = ({ search, products, getProductos }) => {
     const [pageProducts, setPageProducts] = useState(0);
     const [rowsProducts, setRowsProducts] = useState(10);
-    const { handleDelete, data } = useStateContext();
 
     // Paginacion tabla productos
     const handleChangePageProducts = (event, newPage) => {

@@ -5,7 +5,7 @@ import { ModalAggMesa } from "../../components";
 import Swal from "sweetalert2";
 
 const Mesas = () => {
-  const [modalAdd, setModalAdd] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [mesas2, setMesas2] = useState(mesas);
 
   const deleteMesa = (id) => {
@@ -31,10 +31,10 @@ const Mesas = () => {
       <div className="mt-3">
         <button
           aria-controls="modal-addMesa"
-          className={`btn ${modalAdd && "bg-slate-200"}`}
+          className={`btn ${modalOpen && "bg-slate-200"}`}
           onClick={(e) => {
             e.stopPropagation();
-            setModalAdd(true);
+            setModalOpen(true);
           }}
         >
           Agregar mesa
@@ -72,7 +72,7 @@ const Mesas = () => {
           ))}
         </div>
       </div>
-      <ModalAggMesa id="modal-addMesa" modalOpen={modalAdd} setModalOpen={setModalAdd}/>
+      <ModalAggMesa id="modal-addMesa" modalOpen={modalOpen} setModalOpen={setModalOpen}/>
     </div>
   );
 };
