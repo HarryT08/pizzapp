@@ -1,12 +1,25 @@
-import { useState } from "react";
-import { mesas } from "../../data/datos";
+import { useState, useEffect } from "react";
+import { instance } from "../../api/api";
 import { GiKnifeFork } from "react-icons/gi";
 import { ModalAggMesa } from "../../components";
 import Swal from "sweetalert2";
 
 const Mesas = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [mesas2, setMesas2] = useState(mesas);
+  const [mesas, setMesas] = useState([]);
+
+  const getMesas = async () => {
+    try {
+      const response = await instance.get("/mesas");
+      setMesas(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getMesas();
+  }, []);
 
   const deleteMesa = (id) => {
     Swal.fire({
@@ -20,8 +33,14 @@ const Mesas = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        setMesas2(mesas2.filter((mesa) => mesa.id !== id));
-        Swal.fire("Eliminado", "La mesa ha sido eliminada", "success");
+        instance
+          .delete(`/mesas/${id}`)
+          .then((res) => {
+            getMesas();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     });
   };
@@ -42,12 +61,12 @@ const Mesas = () => {
       </div>
       <div className="mt-3">
         <div className="flex flex-wrap my-7 justify-center gap-10 items-center">
-          {mesas2.map((item) => (
+          {mesas.map((item) => (
             <div key={item.id} className="card-producto">
               {/* Numero de la mesa */}
               <div className="flex justify-end">
                 <p className="border-2 border-azul-marino bg-azul-marino/20 font-medium rounded-full px-4 py-1 m-1">
-                  Mesa {item.id}
+                  {item.estado}
                 </p>
               </div>
 
@@ -60,11 +79,14 @@ const Mesas = () => {
 
               <div className="flex justify-center my-5">
                 <p className="border-2 border-azul-marino bg-azul-marino/20 font-medium rounded-full px-4 py-1 m-1">
-                  {item.valor}
+                  Mesa {item.id}
                 </p>
               </div>
               <div className="flex justify-center mb-5">
-                <button className='btnCancel' onClick={() => deleteMesa(item.id)}>
+                <button
+                  className="btnCancel"
+                  onClick={() => deleteMesa(item.id)}
+                >
                   Eliminar
                 </button>
               </div>
@@ -72,7 +94,12 @@ const Mesas = () => {
           ))}
         </div>
       </div>
-      <ModalAggMesa id="modal-addMesa" modalOpen={modalOpen} setModalOpen={setModalOpen}/>
+      <ModalAggMesa
+        id="modal-addMesa"
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        getMesas={getMesas}
+      />
     </div>
   );
 };
