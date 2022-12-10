@@ -19,7 +19,7 @@ export const getProducts = async (req: Request, res: Response) => {
     return res.json(products);
   } catch (error) {
     return res.json({
-      "mensaje" : "Ha ocurrido algo inesperado"
+      message : "Ha ocurrido algo inesperado"
     }) 
   }
 }
@@ -47,4 +47,32 @@ function createPreparation(idProducto: number, presentaciones: any) {
   });
   console.log(data);
   Preparacion.save(data);
+}
+
+export const deleteProduct = async( req: Request , res: Response) => {
+  try {
+
+    const id = Number.parseInt(req.params['id'])
+    console.log('Encontrado' , id, typeof id)
+    
+    await Preparacion.delete({
+      id_producto : id
+    })
+
+    const result = await Producto.delete({id : id})
+    
+    if(result.affected === 0) {
+      return res.status(404).json({
+        message : "Producto no encontrado"
+      })
+    }
+
+    return res.status(200).json( { 
+      message : 'Producto eliminado'
+    })
+
+  } catch (error) {
+    if (error instanceof Error)
+      return res.status(500).json({message: error.message});
+  }
 }

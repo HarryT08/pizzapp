@@ -6,6 +6,7 @@ import {
 } from 'typeorm';
 @Entity('preparacion')
 export class Preparacion extends BaseEntity{
+    
     @PrimaryColumn()
     id_producto: number;
 
