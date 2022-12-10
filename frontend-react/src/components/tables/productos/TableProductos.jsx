@@ -22,25 +22,10 @@ const columnsProductos = [
     { id: "acciones", label: "Acciones" },
 ];
 
-const TableProductos = ({search}) => {
-    const [products, setProducts] = useState([]);
+const TableProductos = ({search, products}) => {
     const [pageProducts, setPageProducts] = useState(0);
     const [rowsProducts, setRowsProducts] = useState(10);
     const { handleDelete, data } = useStateContext();
-
-    // show products
-    const getProductos = async() => {
-        try{
-            const response = await instance.get('/productos');
-            setProducts(response.data);
-        }catch(err){
-            console.log(err);
-        }
-    }
-
-    useEffect(() => {
-        getProductos();
-    }, [])
 
     // Paginacion tabla productos
     const handleChangePageProducts = (event, newPage) => {

@@ -13,7 +13,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { instance } from "../api/api";
 import "../styles/aditional-styles/checkbox.css";
 
-const Tap = ({ setModalOpen }) => {
+const Tap = ({ setModalOpen, getProductos }) => {
   const [carritoPequeño, setCarritoPequeño] = useState([]);
   const [carritoMediano, setCarritoMediano] = useState([]);
   const [carritoGrande, setCarritoGrande] = useState([]);
@@ -64,7 +64,8 @@ const Tap = ({ setModalOpen }) => {
       setCarritoMediano([]);
       setCarritoGrande([]);
       setCarrito([]);
-      console.log("Respuesta -> ", response.data);
+      setModalOpen(false)
+      getProductos()
     } catch (err) {
       console.log(err);
     }

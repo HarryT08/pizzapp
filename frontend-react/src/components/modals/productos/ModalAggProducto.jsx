@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Transition, Tap} from "../..";
 
-const ModalAggProducto = ({ id, modalOpen, setModalOpen }) => {
+const ModalAggProducto = ({ id, modalOpen, setModalOpen, getProductos }) => {
     const modalContent = useRef(null);
 
     return (
@@ -34,7 +34,7 @@ const ModalAggProducto = ({ id, modalOpen, setModalOpen }) => {
                         ref={modalContent}
                         className="bg-white dark:bg-[#191919]/95 border border-slate-700 dark:border-gray-700 overflow-auto max-w-2xl p-3 max-h-full rounded shadow-lg"
                     >
-                        <Tap setModalOpen={setModalOpen} />
+                        <Tap setModalOpen={setModalOpen} getProductos={getProductos} />
                     </div>
                 </Transition>
             </Transition>

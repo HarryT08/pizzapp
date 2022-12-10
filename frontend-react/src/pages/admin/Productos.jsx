@@ -1,11 +1,27 @@
+import { useState, useEffect } from "react";
+import { instance } from "../../api/api";
+import { ModalAggProducto, TableProductos } from "../../components";
 import { FiSearch } from "react-icons/fi";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
-import { ModalAggProducto, TableProductos } from "../../components";
 
 const Productos = () => {
+  const [products, setProducts] = useState([]);
   const [modalAdd, setModalAdd] = useState(false);
   const [search, setSearch] = useState("");
+
+  // show products
+  const getProductos = async() => {
+    try{
+        const response = await instance.get('/productos');
+        setProducts(response.data);
+    }catch(err){
+        console.log(err);
+    }
+}
+
+useEffect(() => {
+    getProductos();
+}, [])
 
   return (
     <div className="w-full">
@@ -49,9 +65,9 @@ const Productos = () => {
 
       {/* DataTable Productos */}
       <div className="mt-3">
-        <TableProductos search={search}/>
+        <TableProductos search={search} products={products}/>
       </div>
-      <ModalAggProducto id="modal-addProduct" modalOpen={modalAdd} setModalOpen={setModalAdd}/>
+      <ModalAggProducto id="modal-addProduct" modalOpen={modalAdd} setModalOpen={setModalAdd} getProductos={getProductos}/>
     </div>
   );
 };
