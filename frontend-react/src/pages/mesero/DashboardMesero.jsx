@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {RealizarPedido, EditarPedido,TomarOrden} from '.'
+import {RealizarPedido, EditarPedido,TomarOrden, ConfirmarPedido} from '.'
 import { NavLink, Route, Routes } from "react-router-dom";
 import {dataSidebarMesero} from '../../data/datos'
 import { Navbar, Sidebar } from "../../components";
@@ -47,6 +47,7 @@ const DashboardMesero = () => {
             <Route path="/realizar-pedido" element={<RealizarPedido/>}/>
             <Route path="/editar-pedido" element={<EditarPedido/>}/>
             <Route path='/tomar-orden' element={<TomarOrden/>}/>
+            <Route path='/confirmar-pedido' element={<ConfirmarPedido/>}/>
           </Routes>
         </div>
       </main>

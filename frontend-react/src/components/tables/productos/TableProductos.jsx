@@ -10,32 +10,37 @@ import {
     TablePagination,
     Paper
 } from "@mui/material";
+import {instance} from '../../../api/api'
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 // Columnas de los productos
 const columnsProductos = [
-    { id: "imagen", label: "Imagen" },
     { id: "nombre", label: "Nombre" },
     { id: "precio", label: "Precio" },
     { id: "acciones", label: "Acciones" },
 ];
 
-const TableProductos = () => {
+const TableProductos = ({search}) => {
+    const [products, setProducts] = useState([]);
     const [pageProducts, setPageProducts] = useState(0);
     const [rowsProducts, setRowsProducts] = useState(10);
     const { handleDelete, data } = useStateContext();
-    const [search, setSearch] = useState("");
 
     // show products
     const getProductos = async() => {
         try{
             const response = await instance.get('/productos');
+            setProducts(response.data);
         }catch(err){
             console.log(err);
         }
     }
 
+    useEffect(() => {
+        getProductos();
+    }, [])
 
     // Paginacion tabla productos
     const handleChangePageProducts = (event, newPage) => {
@@ -68,7 +73,7 @@ const TableProductos = () => {
 
     // Funcion para filtrar los productos
     const filterData = () => {
-        return data.filter((val) => {
+        return products.filter((val) => {
             if (search === "") {
                 return val;
             } else if (val.nombre.toLowerCase().includes(search.toLowerCase())) {
@@ -106,22 +111,8 @@ const TableProductos = () => {
                                 )
                                 .map((item) => (
                                     <TableRow key={item.id}>
-                                        <TableCell align="center">
-                                            <div className="flex justify-center">
-                                                <img
-                                                    src={item.img}
-                                                    alt="Imagen"
-                                                    style={{
-                                                        width: "32px",
-                                                        height: "32px",
-                                                        borderRadius: "50%",
-                                                        objectFit: "cover",
-                                                    }}
-                                                />
-                                            </div>
-                                        </TableCell>
                                         <TableCell align="center">{item.nombre}</TableCell>
-                                        <TableCell align="center">{item.precio}</TableCell>
+                                        <TableCell align="center">{item.costo}</TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-5 justify-center">
                                                 <AiFillEdit

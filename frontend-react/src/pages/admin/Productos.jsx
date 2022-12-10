@@ -49,7 +49,7 @@ const Productos = () => {
 
       {/* DataTable Productos */}
       <div className="mt-3">
-        <TableProductos />
+        <TableProductos search={search}/>
       </div>
       <ModalAggProducto id="modal-addProduct" modalOpen={modalAdd} setModalOpen={setModalAdd}/>
     </div>
