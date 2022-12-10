@@ -33,7 +33,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Navbar: Parte derecha */}
         <div className="flex items-center">
-          <span>Dark mode</span>
+          {/* <span>Dark mode</span> */}
           {/* <ButtonMode/> */}
           {/*  Divider */}
           <hr className="w-px h-6 bg-slate-200 mx-3" />

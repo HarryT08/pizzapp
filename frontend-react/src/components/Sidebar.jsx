@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { dataSidebar } from "../data/datos";
+import { NavLink } from "react-router-dom";
 import logoBohemia from "../assets/img/logoBohemia.png";
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen, children }) => {
   const trigger = useRef(null);
   const sidebar = useRef(null);
 
   const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
-  const [sidebarExpanded, setSidebarExpanded] = useState(
+  const [sidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
@@ -46,11 +45,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       document.querySelector("body").classList.remove("sidebar-expanded");
     }
   }, [sidebarExpanded]);
-
-  const activeLink =
-    "flex font-semibold items-center gap-7 pl-4 pt-3 pb-2.5 rounded-lg text-md text-dark dark:text-[#181818] dark:hover:text-[#181818] bg-white m-2";
-  const normalLink =
-    "flex font-semibold items-center gap-7 pl-4 pt-3 pb-2.5 rounded-lg text-md text-white dark:text-white dark:hover:text-[#181818] hover:bg-white hover:text-black m-2";
 
   return (
     <div>
@@ -99,12 +93,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* Pages groups */}
           <div>
             <h3 className="text-sm uppercase text-white font-semibold pl-3">
-              <span
-                className="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
-                aria-hidden="true"
-              >
-                •••
-              </span>
               <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">
                 Paginas
               </span>
@@ -112,42 +100,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <hr className=" border-slate-200/50" />
             <ul className="mt-3">
               {/* Inbox */}
-              {dataSidebar.map((item, index) => (
-                <li key={index}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    <div className="flex items-center">
-                      <i>{item.icon}</i>
-                      <span className="text-base font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                        {item.titulo}
-                      </span>
-                    </div>
-                  </NavLink>
-                </li>
-              ))}
+              {children}
             </ul>
-          </div>
-        </div>
-        {/* Expand / collapse button */}
-        <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
-          <div className="px-3 py-2">
-            <button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
-              <span className="sr-only">Expandir o cerrar Sidebar</span>
-              <svg
-                className="w-6 h-6 fill-current sidebar-expanded:rotate-180"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  className="text-slate-400"
-                  d="M19.586 11l-5-5L16 4.586 23.414 12 16 19.414 14.586 18l5-5H7v-2z"
-                />
-                <path className="text-slate-600" d="M3 23H1V1h2z" />
-              </svg>
-            </button>
           </div>
         </div>
       </div>

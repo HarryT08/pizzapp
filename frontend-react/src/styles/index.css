@@ -11,6 +11,10 @@
 @layer components {
   /* Estados */
 
+  input:disabled {
+    @apply bg-gray-200;
+  }
+
   .Terminado {
     @apply bg-verde-profundo/20 rounded-md p-1 text-verde-profundo;
   }
@@ -34,7 +38,7 @@
   }
 
   .btnLogin {
-    @apply w-full bg-naranja-vivido hover:bg-white hover:text-naranja-vivido border-2 border-naranja-vivido rounded-md text-white font-semibold text-sm md:text-base 2xl:text-2xl px-3 py-2 transition duration-300 ease-in-out;
+    @apply w-full bg-naranja-vivido hover:bg-white hover:text-naranja-vivido border-2 border-naranja-vivido rounded-md text-white font-semibold text-base px-3 py-2 transition duration-300 ease-in-out;
   }
 
   /* Cards */
@@ -53,6 +57,16 @@
     @apply flex flex-col items-center p-3;
   }
 
+  .modal{
+    @apply bg-white rounded-lg shadow-2xl drop-shadow-3xl
+    max-w-2xl p-3 max-h-full overflow-auto w-72 h-96
+    absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+    transition-all
+
+    /* Responsive */
+    movilM:w-80 movilM:h-max movilL:w-96 movilL:h-max  tableta:h-max
+  }
+
   /* Modal */
   .overlay {
     @apply w-screen h-screen fixed top-0 left-0 bg-black/50 flex items-center justify-center p-10 z-10;
@@ -63,7 +77,7 @@
   }
 
   .header-modal {
-    @apply flex items-center justify-between mb-5 pb-5 border-b-2 border-[#e8e8e8];
+    @apply flex items-center justify-between gap-7 mb-5 pb-5 border-b-2 border-[#e8e8e8];
   }
 
   .btn-close {

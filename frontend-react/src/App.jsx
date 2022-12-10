@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
-import {Dashboard, Login} from "./pages";
-import { DASHBOARD, HOME, LOGIN } from "./routes/paths";
+import { Login } from './pages';
+import {DashboardAdmin} from "./pages/admin";
+import {DashboardMesero} from "./pages/mesero";
+import { DASHBOARD_ADMIN, DASHBOARD_MESERO, HOME, LOGIN } from "./routes/paths";
 import { RutasPrivadas, RutasPublicas } from "./routes";
 
 function App() {
@@ -10,9 +12,14 @@ function App() {
       <Routes>
         <Route path={HOME} exact element={<RutasPublicas><Login/></RutasPublicas>} />
         <Route path={LOGIN} element={ <RutasPublicas><Login/></RutasPublicas>} />
-        <Route path={DASHBOARD} element={
+        <Route path={DASHBOARD_ADMIN} element={
           <RutasPrivadas>
-            <Dashboard />
+            <DashboardAdmin />
+          </RutasPrivadas>
+        }/>
+        <Route path={DASHBOARD_MESERO} element={
+          <RutasPrivadas>
+            <DashboardMesero/>
           </RutasPrivadas>
         }/>
       </Routes>
