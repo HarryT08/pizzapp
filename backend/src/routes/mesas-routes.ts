@@ -1,12 +1,15 @@
 import { Router } from 'express';
 const router = Router();
 
-// import { getMesas } from '../controllers/mesas-controller';
+import { getMesas, createMesa, deleteMesa } from '../controllers/mesas-controller';
 
 router.route('/')
-    // .get(getMesas)
-    .post()
+    .get(getMesas)
+    .post(createMesa)
     .put()
-    .delete();
+    .delete(deleteMesa);
+
+router.route('/:id')
+    .delete(deleteMesa);
 
 export default router;
