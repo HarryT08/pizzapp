@@ -65,7 +65,7 @@ useEffect(() => {
 
       {/* DataTable Productos */}
       <div className="mt-3">
-        <TableProductos search={search} products={products}/>
+        <TableProductos search={search} products={products} getProductos={getProductos}/>
       </div>
       <ModalAggProducto id="modal-addProduct" modalOpen={modalAdd} setModalOpen={setModalAdd} getProductos={getProductos}/>
     </div>

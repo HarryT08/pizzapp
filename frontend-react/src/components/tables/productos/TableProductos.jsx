@@ -8,9 +8,9 @@ import {
     TableHead,
     TableRow,
     TablePagination,
-    Paper
+    Paper,
 } from "@mui/material";
-import {instance} from '../../../api/api'
+import { instance } from "../../../api/api";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
@@ -22,7 +22,7 @@ const columnsProductos = [
     { id: "acciones", label: "Acciones" },
 ];
 
-const TableProductos = ({search, products}) => {
+const TableProductos = ({ search, products, getProductos }) => {
     const [pageProducts, setPageProducts] = useState(0);
     const [rowsProducts, setRowsProducts] = useState(10);
     const { handleDelete, data } = useStateContext();
@@ -38,7 +38,7 @@ const TableProductos = ({search, products}) => {
     };
 
     // Funcion para eliminar productos
-    const showAlert = (id) => {
+    const deleteProduct = (id) => {
         Swal.fire({
             title: "¿Estás seguro?",
             text: "No podrás revertir esta acción",
@@ -50,8 +50,15 @@ const TableProductos = ({search, products}) => {
             cancelButtonText: "Cancelar",
         }).then((result) => {
             if (result.isConfirmed) {
-                handleDelete(id);
                 Swal.fire("Eliminado", "El producto ha sido eliminado", "success");
+                instance
+                    .delete(`/productos/${id}`)
+                    .then((res) => {
+                        getProductos();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             }
         });
     };
@@ -107,7 +114,7 @@ const TableProductos = ({search, products}) => {
                                                 <AiTwotoneDelete
                                                     size={25}
                                                     className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
-                                                    onClick={() => showAlert(item.id)}
+                                                    onClick={() => deleteProduct(item.id)}
                                                 />
                                             </div>
                                         </TableCell>
@@ -120,7 +127,7 @@ const TableProductos = ({search, products}) => {
                 style={{ width: "100%" }}
                 rowsPerPageOptions={[10, 50, 100, 200]}
                 component="div"
-                count={data.length}
+                count={products.length}
                 rowsPerPage={rowsProducts}
                 page={pageProducts}
                 onPageChange={handleChangePageProducts}
