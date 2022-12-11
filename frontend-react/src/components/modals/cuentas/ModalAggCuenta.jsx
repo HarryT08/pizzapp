@@ -72,6 +72,17 @@ const ModalAggCuenta = ({ id, modalOpen, setModalOpen, getUsers }) => {
 
   const handleReset = () => {
     document.getElementById("formUser").reset();
+    setUsuario({
+      id: "",
+      nombre: "",
+      apellido: "",
+      idRol: "1",
+      password: "",
+      username: "",
+      cedula: "",
+      celular: "",
+      found: false,
+    });
     setModalOpen(false)
   }
 

@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Transition } from ".";
 import jwt_decode from "jwt-decode";
-import { BiLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 
 const UserMenu = () => {
+    const [cargo, setCargo] = useState("");
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [userName, setUserName] = useState("");
     const navigate = useNavigate();
@@ -39,6 +39,7 @@ const UserMenu = () => {
 
     useEffect(() => {
         decodedUserName();
+        getCargo()
     }, []);
 
     const decodedUserName = () => {
@@ -46,6 +47,12 @@ const UserMenu = () => {
         const decoded = jwt_decode(token);
         return setUserName(decoded.nombre);
     };
+
+    const getCargo = () => {
+        const token = localStorage.getItem("Authorization");
+        const decoded = jwt_decode(token);
+        setCargo(decoded.cargo)
+    }
 
     const getInitials = (name) => {
         const names = name.split(" ");
@@ -100,7 +107,7 @@ const UserMenu = () => {
                             {userName}
                         </div>
                         <div className="text-xs text-slate-500 dark:text-gray-100 italic">
-                            Cargo
+                            {cargo}
                         </div>
                     </div>
                     <ul>

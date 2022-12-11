@@ -1,14 +1,50 @@
+import { useState } from "react";
+import { instance } from "../../../api/api";
 import { useRef } from "react";
-import { Transition } from "../..";
+import { Transition, Loader } from "../..";
+import { toast } from "react-toastify";
 
-const ModalAggMesa = ({ id, modalOpen, setModalOpen }) => {
+const ModalAggMesa = ({ id, modalOpen, setModalOpen, getMesas }) => {
+
+    const [loading, setLoading] = useState(false);
+    const [numeroMesa, setNumeroMesa] = useState({
+        id: "",
+    });
     const modalContent = useRef(null);
-    const numeroInput = useRef(null);
 
     const cleanButtonCancel = () => {
+        document.getElementById("formMesa").reset();
         setModalOpen(false);
-        numeroInput.current.value = "";
-    }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setNumeroMesa((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const sendMesa = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const response = await instance.post("/mesas", numeroMesa);
+            toast.success("Mesa agregada");
+            cleanButtonCancel();
+            getMesas()
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            if(err.response.status === 404){
+                toast.error("Ya existe una mesa con ese numero");
+            }else if(err.response.status === 500){
+                toast.error("No se pudo agregar la mesa");
+            }
+            console.log(err);
+        }
+    };
+
     return (
         <Transition
             className="fixed inset-0 bg-slate-900 bg-opacity-30 z-50 transition-opacity"
@@ -41,14 +77,28 @@ const ModalAggMesa = ({ id, modalOpen, setModalOpen }) => {
                     <div className="header-modal">
                         <h3 className="text-xl font-semibold">Agregar mesas</h3>
                     </div>
-                    <form onSubmit={(e) => e.preventDefault()}>
+                    <form id="formMesa" onSubmit={sendMesa}>
                         <div className="my-2 flex flex-col">
-                            <label className="block text-base font-medium">Numero de la mesa</label>
-                            <input ref={numeroInput} type="number" placeholder="Numero" className="block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"/>
+                            <label className="block text-base font-medium">
+                                Numero de la mesa
+                            </label>
+                            <input
+                                required
+                                type="number"
+                                name='id'
+                                placeholder="Numero"
+                                className="block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
+                                onChange={handleChange}
+                            />
                         </div>
                         <div className="flex pt-3 gap-3">
-                            <button className="btn">Agregar</button>
-                            <span className="btnCancel cursor-pointer" onClick={cleanButtonCancel}>
+                            <button className="btn">
+                                {loading ? <Loader/> : "Agregar"}
+                            </button>
+                            <span
+                                className="btnCancel cursor-pointer"
+                                onClick={cleanButtonCancel}
+                            >
                                 Cancelar
                             </span>
                         </div>

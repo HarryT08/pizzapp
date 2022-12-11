@@ -3,7 +3,7 @@ import { Login } from './pages';
 import {DashboardAdmin} from "./pages/admin";
 import {DashboardMesero} from "./pages/mesero";
 import { DASHBOARD_ADMIN, DASHBOARD_MESERO, HOME, LOGIN } from "./routes/paths";
-import { RutasPrivadas, RutasPublicas } from "./routes";
+import { RutasPrivadas, RutasPublicas, RutaAdmin, RutaMesero } from "./routes";
 
 function App() {
 
@@ -14,12 +14,16 @@ function App() {
         <Route path={LOGIN} element={ <RutasPublicas><Login/></RutasPublicas>} />
         <Route path={DASHBOARD_ADMIN} element={
           <RutasPrivadas>
-            <DashboardAdmin />
+              <RutaAdmin>
+              <DashboardAdmin />
+              </RutaAdmin>
           </RutasPrivadas>
         }/>
         <Route path={DASHBOARD_MESERO} element={
           <RutasPrivadas>
-            <DashboardMesero/>
+            <RutaMesero>
+              <DashboardMesero/>
+            </RutaMesero>
           </RutasPrivadas>
         }/>
       </Routes>

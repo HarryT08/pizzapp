@@ -1,11 +1,26 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import { instance } from '../../api/api';
 import { TableCarritoProductos, TableProductosMesero } from "../../components";
-import {productos} from '../../data/datos'
+
 
 const TomarOrden = () => {
 
-    const [products, setProducts] = useState(productos)
+    const [products, setProducts] = useState([])
     const [carrito, setCarrito] = useState([])
+
+    // show products
+    const getProducts = async () => {
+        try{
+            const response = await instance.get('/productos');
+            setProducts(response.data);
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        getProducts();
+    }, [])
 
     return (
         <div>

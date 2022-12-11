@@ -7,6 +7,7 @@ import {
   TableRow,
   TableHead,
   Paper,
+  TablePagination
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { FiSearch } from "react-icons/fi";
@@ -17,7 +18,20 @@ const columnas = [
 ];
 
 const TableProductosMesero = ({ products, carrito, setCarrito }) => {
+
+  const [pageProducts, setPageProducts] = useState(0);
+  const [rowsProducts, setRowsProducts] = useState(10);
   const [search, setSearch] = useState("");
+
+  // Paginacion tabla productos
+  const handleChangePageProducts = (event, newPage) => {
+    setPageProducts(newPage);
+};
+
+const handleChangeRowsPerPageProducts = (event) => {
+    setRowsProducts(+event.target.value);
+    setPageProducts(0);
+};
 
   const findProduct = (id) => {
     const check = carrito.every((item) => {
@@ -66,48 +80,64 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
           </div>
         </div>
       </form>
-      <Paper>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead>
-              <TableRow style={{ background: "#D00000" }}>
-                {columnas.map((columna) => (
-                  <TableCell
-                    key={columna.id}
-                    style={{
-                      color: "#fff",
-                      fontWeight: "bold",
-                      fontFamily: "Montserrat",
-                    }}
-                    align="center"
-                  >
-                    {columna.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filterProducts().length === 0 ? (
-                <p>No se encontro el producto</p>
-              ) : (
-                filterProducts().map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell align="center">{product.nombre}</TableCell>
-                    <TableCell align="center">
-                      <p
-                        className="cursor-pointer border border-azul-marino rounded-full bg-azul-marino/20 font-medium text-azul-marino"
-                        onClick={() => findProduct(product.id)}
+      {products.length === 0 ? (
+        <p className="text-center">No hay productos</p>
+      ) : (
+        <Paper>
+          {filterProducts().length === 0 ? (
+            <p className="text-center">Este producto no se ha agregado</p>
+          ) : (
+            <TableContainer component={Paper} sx={{ minWidth: 650 }}>
+              <Table>
+                <TableHead>
+                  <TableRow style={{ background: "#D00000" }}>
+                    {columnas.map((columna) => (
+                      <TableCell
+                        key={columna.id}
+                        style={{
+                          color: "#fff",
+                          fontWeight: "bold",
+                          fontFamily: "Montserrat",
+                        }}
+                        align="center"
                       >
-                        Agregar
-                      </p>
-                    </TableCell>
+                        {columna.label}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+                </TableHead>
+                <TableBody>
+                  {filterProducts().map((product) => (
+                    <TableRow key={product.id}>
+                      <TableCell align="center">{product.nombre}</TableCell>
+                      <TableCell align="center">
+                        <div className="flex justify-center">
+                          <p
+                            className="w-max px-3 py-1 cursor-pointer rounded-full bg-azul-marino/20 font-medium text-azul-marino"
+                            onClick={() => findProduct(product.id)}
+                          >
+                            Agregar
+                          </p>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+          <TablePagination
+                        style={{ width: "100%" }}
+                        rowsPerPageOptions={[10, 50, 100, 200]}
+                        component="div"
+                        count={products.length}
+                        rowsPerPage={rowsProducts}
+                        page={pageProducts}
+                        onPageChange={handleChangePageProducts}
+                        onRowsPerPageChange={handleChangeRowsPerPageProducts}
+                    />
+        </Paper>
+      )}
     </>
   );
 };

@@ -1,15 +1,33 @@
-import { FiSearch } from "react-icons/fi";
-import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { instance } from "../../api/api";
 import { ModalAggProducto, TableProductos } from "../../components";
+import { FiSearch } from "react-icons/fi";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Productos = () => {
+  const [products, setProducts] = useState([]);
   const [modalAdd, setModalAdd] = useState(false);
   const [search, setSearch] = useState("");
+
+  // show products
+  const getProductos = async() => {
+    try{
+        const response = await instance.get('/productos');
+        setProducts(response.data);
+    }catch(err){
+        console.log(err);
+    }
+}
+
+useEffect(() => {
+    getProductos();
+}, [])
 
   return (
     <div className="w-full">
       {/* Barra busqueda */}
+      <ToastContainer/>
       <div className="flex justify-between pb-3 border-b-2">
         <form>
         <div className="flex">
@@ -49,9 +67,9 @@ const Productos = () => {
 
       {/* DataTable Productos */}
       <div className="mt-3">
-        <TableProductos />
+        <TableProductos search={search} products={products} getProductos={getProductos}/>
       </div>
-      <ModalAggProducto id="modal-addProduct" modalOpen={modalAdd} setModalOpen={setModalAdd}/>
+      <ModalAggProducto id="modal-addProduct" modalOpen={modalAdd} setModalOpen={setModalAdd} getProductos={getProductos}/>
     </div>
   );
 };

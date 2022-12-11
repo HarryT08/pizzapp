@@ -37,9 +37,8 @@ export class Producto extends BaseEntity{
     })
     ingredientes : MateriaPrima[];
 
-    init(nombre:string, costo:number, imagen:string): void{
+    init(nombre:string, costo:number): void {
         this.nombre = nombre;
         this.costo = costo;
-        this.imagen = imagen;
     }
 }

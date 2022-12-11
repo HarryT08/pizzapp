@@ -10,10 +10,13 @@ import {
 } from "@mui/material";
 import TableIngredientesTab from "./tables/productos/tab/TableIngredientesTab";
 import { AiFillCloseCircle } from "react-icons/ai";
+import {toast} from 'react-toastify'
 import { instance } from "../api/api";
+import {Loader} from '../components'
 import "../styles/aditional-styles/checkbox.css";
 
-const Tap = ({ setModalOpen }) => {
+const Tap = ({ setModalOpen, getProductos }) => {
+  const [loading, setLoading] = useState(false)
   const [carritoPequeño, setCarritoPequeño] = useState([]);
   const [carritoMediano, setCarritoMediano] = useState([]);
   const [carritoGrande, setCarritoGrande] = useState([]);
@@ -55,17 +58,23 @@ const Tap = ({ setModalOpen }) => {
       ];
     }
     try {
+      setLoading(true)
       const response = await instance.post("/productos", {
         nombre: name,
         precio: precio,
         presentaciones: presentaciones,
       });
+      toast.success('Producto agregado correctamente')
       setCarritoPequeño([]);
       setCarritoMediano([]);
       setCarritoGrande([]);
       setCarrito([]);
-      console.log("Respuesta -> ", response.data);
+      setModalOpen(false)
+      getProductos()
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
+      toast.error('No se pudo agregar el producto')
       console.log(err);
     }
   };
@@ -267,7 +276,7 @@ const Tap = ({ setModalOpen }) => {
                   >
                     {carritoPequeño.map((item) => (
                       <div
-                        className="flex items-center mb-1 gap-1 overflow-x-auto"
+                        className="flex items-center mb-2.5 gap-5 overflow-x-auto"
                         key={item.id}
                       >
                         <p>{item.nombre}</p>
@@ -449,7 +458,7 @@ const Tap = ({ setModalOpen }) => {
           </TabPanel>
           <div className="flex gap-3">
             <button type="submit" className="btn">
-              Enviar
+              {loading ? <Loader /> : "Agregar"}
             </button>
             <span className="btnCancel cursor-pointer" onClick={handleReset}>
               Cancelar

@@ -9,7 +9,6 @@ export const signup = async (req: Request, res: Response) => {
     let { username, password, cedula, idRol, nombre, apellido, celular } =
       req.body;
     //Encriptar la contraseña
-    console.log(username);
     const user = new User();
     const persona = new Persona();
     const rol = new Rol();
@@ -30,10 +29,10 @@ export const login = async (req: Request, res: Response) => {
   try {
     let { username, password } = req.body;
     //buscar el usuario por su username
-    const user = await User.findOne({ where: {username: username}, relations: ["persona"] });
+    const user = await User.findOne({ where: {username: username}, relations: ["persona", "rol"] });
 
     if (user && user.validatePassword(password)) {
-      const token = jwt.sign({ cedula: user.cedula, nombre: user.persona.nombre }, 'secret', {
+      const token = jwt.sign({ cedula: user.cedula, nombre: user.persona.nombre, cargo: user.rol.nombre }, 'secret', {
         expiresIn: '9h'
       });
 

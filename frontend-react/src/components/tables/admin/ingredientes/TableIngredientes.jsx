@@ -8,6 +8,7 @@ import {
     TableHead,
     TableRow,
     Paper,
+    TablePagination
 } from "@mui/material";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import { instance } from "../../../../api/api";
@@ -21,7 +22,9 @@ const columns = [
     { id: "acciones", label: "Acciones" },
 ];
 
-const TableIngredientes = ({ data, setData, search, getProducts }) => {
+const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
+    const [pageIngredientes, setPageIngredientes] = useState(0);
+    const [rowsIngredientes, setRowsIngredientes] = useState(10);
     const [modalEditar, setModalEditar] = useState(false);
     const [loading, setLoading] = useState(false);
     const [ingrediente, setIngrediente] = useState({
@@ -29,6 +32,16 @@ const TableIngredientes = ({ data, setData, search, getProducts }) => {
         nombre: "",
         existencia: "",
     });
+
+    // Paginacion tabla Ingredientes
+    const handleChangePageIngredientes = (event, newPage) => {
+        setPageIngredientes(newPage);
+    };
+
+    const handleChangeRowsPerPageIngredientes = (event) => {
+        setRowsIngredientes(+event.target.value);
+        setPageIngredientes(0);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -66,7 +79,7 @@ const TableIngredientes = ({ data, setData, search, getProducts }) => {
                 instance
                     .delete(`/ingredientes/${id}`)
                     .then((res) => {
-                        getProducts();
+                        getIngredientes();
                     })
                     .catch((err) => {
                         console.log(err);
@@ -78,7 +91,7 @@ const TableIngredientes = ({ data, setData, search, getProducts }) => {
     // Peticion PUT
     const editProduct = async (e) => {
         e.preventDefault();
-        getProducts();
+        getIngredientes();
         try {
             await instance.put(`/ingredientes/${ingrediente.id}`, {
                 nombre: ingrediente.nombre,
@@ -173,52 +186,72 @@ const TableIngredientes = ({ data, setData, search, getProducts }) => {
 
     return (
         <>
-            <Paper>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }}>
-                        <TableHead>
-                            <TableRow style={{ background: "#D00000" }}>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        style={{
-                                            color: "#fff",
-                                            fontWeight: "bold",
-                                        }}
-                                        align="center"
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {filterData().length === 0
-                                ? "No se encontraron ingredientes"
-                                : filterData().map((item) => (
-                                    <TableRow key={item.id}>
-                                        <TableCell align="center">{item.nombre}</TableCell>
-                                        <TableCell align="center">{item.existencia}</TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-5 justify-center">
-                                                <AiFillEdit
-                                                    size={25}
-                                                    onClick={() => findAndEdit(item.id)}
-                                                    className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
-                                                />
-                                                <AiTwotoneDelete
-                                                    size={25}
-                                                    className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
-                                                    onClick={() => deleteProduct(item.id)}
-                                                />
-                                            </div>
-                                        </TableCell>
+            {data.length === 0 ? (
+                <p className="text-center">No hay ingredientes</p>
+            ) : (
+                <Paper>
+                    {filterData().length === 0 ? (
+                        <p className="text-center">Este ingrediente no ha sido agregado</p>
+                    ) : (
+                        <TableContainer component={Paper} sx={{ minWidth: 650 }}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow style={{ background: "#D00000" }}>
+                                        {columns.map((column) => (
+                                            <TableCell
+                                                key={column.id}
+                                                style={{
+                                                    color: "#fff",
+                                                    fontWeight: "bold",
+                                                }}
+                                                align="center"
+                                            >
+                                                {column.label}
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
-                                ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+                                </TableHead>
+                                <TableBody>
+                                    {filterData().slice(
+                                            pageIngredientes * rowsIngredientes,
+                                            pageIngredientes * rowsIngredientes + rowsIngredientes
+                                        ).map((item) => (
+                                        <TableRow key={item.id}>
+                                            <TableCell align="center">{item.nombre}</TableCell>
+                                            <TableCell align="center">{item.existencia}</TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-5 justify-center">
+                                                    <AiFillEdit
+                                                        size={25}
+                                                        onClick={() => findAndEdit(item.id)}
+                                                        className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
+                                                    />
+                                                    <AiTwotoneDelete
+                                                        size={25}
+                                                        className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
+                                                        onClick={() => deleteProduct(item.id)}
+                                                    />
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )}
+                    <TablePagination
+                        style={{ width: "100%" }}
+                        rowsPerPageOptions={[10, 50, 100, 200]}
+                        component="div"
+                        count={data.length}
+                        rowsPerPage={rowsIngredientes}
+                        page={pageIngredientes}
+                        onPageChange={handleChangePageIngredientes}
+                        onRowsPerPageChange={handleChangeRowsPerPageIngredientes}
+                    />
+                </Paper>
+            )}
+
             <Modal open={modalEditar} onClose={abrirCerrarModalEditar}>
                 {bodyModalEditar}
             </Modal>

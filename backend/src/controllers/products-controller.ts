@@ -1,13 +1,6 @@
 import { Request, Response } from "express";
-import { MateriaPrima } from "../entities/MateriaPrima";
 import { Preparacion } from "../entities/Preparacion";
 import { Producto } from "../entities/Producto";
-
-// export async function getProducts(req:Request, res:Response): Promise<Response>{
-//     const conn = await connect();
-//     const product = await conn.query('SELECT * FROM producto');
-//     return res.send(product[0]);
-// }
 
 export const getProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -20,27 +13,101 @@ export const getProduct = async (req: Request, res: Response) => {
   return res.json(product);
 };
 
+export const getProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await Producto.find();  
+    return res.json(products);
+  } catch (error) {
+    return res.json({
+      message : "Ha ocurrido algo inesperado"
+    }) 
+  }
+}
+
 export const createProduct = async (req: Request, res: Response) => {
   let { nombre, precio, presentaciones } = req.body;
   const producto = new Producto();
-  producto.init(nombre, precio, "proof image");
+  producto.init(nombre, precio);
   const saved = await producto.save();         // Producto guardado y ya tengo el ID
   createPreparation(saved.id, presentaciones); // Depronto aqui se podria poner await
   return res.json('Producto creado');
 };
 
-const createPreparation =  (idProducto: number, presentaciones: any) => {
-  let data : Preparacion[] = []
+function createPreparation(idProducto: number, presentaciones: any) {
+  let data : Preparacion[] = [];
   presentaciones.forEach((presentacion: any) => {
-    const size = presentacion["tamaño"]
-    presentacion["ingredientes"].forEach( (ingrediente: any) => {
-      const idMateria = ingrediente["id"]
-      const cantidad = ingrediente["cantidad"]
+    const size = presentacion["tamaño"];
+    presentacion["ingredientes"].forEach((ingrediente: any) => {
+      const idMateria = ingrediente["id"];
+      const cantidad = ingrediente["cantidad"];
       const preparacion = new Preparacion();
       preparacion.init(idProducto, idMateria, size, cantidad);
-      data.push(preparacion)
-    })
-  })
+      data.push(preparacion);
+    });
+  });
   console.log(data);
   Preparacion.save(data);
+}
+
+export const deleteProduct = async( req: Request , res: Response) => {
+  try {
+
+    const id = Number.parseInt(req.params['id'])
+    console.log('Encontrado' , id, typeof id)
+    
+    await Preparacion.delete({
+      id_producto : id
+    })
+
+    const result = await Producto.delete({id : id})
+    
+    if(result.affected === 0) {
+      return res.status(404).json({
+        message : "Producto no encontrado"
+      })
+    }
+
+    return res.status(200).json( { 
+      message : 'Producto eliminado'
+    })
+
+  } catch (error) {
+    if (error instanceof Error)
+      return res.status(500).json({message: error.message});
+  }
+}
+
+
+export const updateProduct = async (req: Request, res: Response) => {
+  console.log("ENTRO")
+  const id  = Number.parseInt( req.params['id'] )
+  //chosen --> Las presentaciones que selecciono el usuario
+  let { nombre , costo, chosen} = req.body
+  const producto = await Producto.findOneBy( {id : id} )
+  if(producto){
+    producto.nombre = nombre
+    producto.costo = costo
+    await updatePreparations(id , chosen)
+    producto.save()
+  }
+  res.json("yes")
+}
+
+async function updatePreparations(id_producto : number , chosen : any) {
+  console.log(id_producto)
+  const preps = await Preparacion.createQueryBuilder("preparacion")
+                          .where("preparacion.id_producto = :id_producto", { id_producto: 9 })
+                          .andWhere("preparacion.tamanio = tamanio" , {tamanio : 'mediana'}) 
+                          .getMany()
+  console.log(preps)
+
+  /*chosen.forEach( async ( presentacion : any ) => {
+    const preparaciones = await Preparacion.findBy({
+      id_producto : id_producto,
+      id_materia : presentacion.ingredientes[0].id
+    })
+    console.log(preparaciones.length)
+    
+
+  })*/
 }
