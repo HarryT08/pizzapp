@@ -27,7 +27,7 @@ export const getProducts = async (req: Request, res: Response) => {
 export const createProduct = async (req: Request, res: Response) => {
   let { nombre, precio, presentaciones } = req.body;
   const producto = new Producto();
-  producto.init(nombre, precio, "proof image");
+  producto.init(nombre, precio);
   const saved = await producto.save();         // Producto guardado y ya tengo el ID
   createPreparation(saved.id, presentaciones); // Depronto aqui se podria poner await
   return res.json('Producto creado');
@@ -75,4 +75,39 @@ export const deleteProduct = async( req: Request , res: Response) => {
     if (error instanceof Error)
       return res.status(500).json({message: error.message});
   }
+}
+
+
+export const updateProduct = async (req: Request, res: Response) => {
+  console.log("ENTRO")
+  const id  = Number.parseInt( req.params['id'] )
+  //chosen --> Las presentaciones que selecciono el usuario
+  let { nombre , costo, chosen} = req.body
+  const producto = await Producto.findOneBy( {id : id} )
+  if(producto){
+    producto.nombre = nombre
+    producto.costo = costo
+    await updatePreparations(id , chosen)
+    producto.save()
+  }
+  res.json("yes")
+}
+
+async function updatePreparations(id_producto : number , chosen : any) {
+  console.log(id_producto)
+  const preps = await Preparacion.createQueryBuilder("preparacion")
+                          .where("preparacion.id_producto = :id_producto", { id_producto: 9 })
+                          .andWhere("preparacion.tamanio = tamanio" , {tamanio : 'mediana'}) 
+                          .getMany()
+  console.log(preps)
+
+  /*chosen.forEach( async ( presentacion : any ) => {
+    const preparaciones = await Preparacion.findBy({
+      id_producto : id_producto,
+      id_materia : presentacion.ingredientes[0].id
+    })
+    console.log(preparaciones.length)
+    
+
+  })*/
 }
