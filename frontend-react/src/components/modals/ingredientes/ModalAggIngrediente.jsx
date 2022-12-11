@@ -113,12 +113,12 @@ const ModalAggIngrediente = ({
                         <div className="flex mt-3 gap-3">
                             <button
                                 type="submit"
-                                className="rounded-md py-2 px-8 text-[10px] movilM:text-sm border-2 border-azul-marino/20 bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white"
+                                className="rounded-md py-2 px-8 text-[10px] movilM:text-sm bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white"
                             >
                                 {loading ? <Loader /> : "Agregar ingrediente"}
                             </button>
                             <span
-                                className="cursor-pointer rounded-md py-2 px-8 text-[10px] movilM:text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white"
+                                className="cursor-pointer rounded-md py-2 px-8 text-[10px] movilM:text-sm bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white"
                                 onClick={handleReset}
                             >
                                 Cancelar

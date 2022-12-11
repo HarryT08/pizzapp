@@ -70,67 +70,78 @@ const TableProductos = ({ search, products, getProductos }) => {
             }
         });
     };
+
     return (
-        <Paper>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }}>
-                    <TableHead>
-                        <TableRow style={{ background: "#D00000" }}>
-                            {columnsProductos.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    style={{
-                                        color: "#fff",
-                                        fontWeight: "bold",
-                                    }}
-                                    align="center"
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {filterData().length === 0
-                            ? "No hay Productos"
-                            : filterData()
-                                .slice(
-                                    pageProducts * rowsProducts,
-                                    pageProducts * rowsProducts + rowsProducts
-                                )
-                                .map((item) => (
-                                    <TableRow key={item.id}>
-                                        <TableCell align="center">{item.nombre}</TableCell>
-                                        <TableCell align="center">{item.costo}</TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-5 justify-center">
-                                                <AiFillEdit
-                                                    size={25}
-                                                    className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
-                                                />
-                                                <AiTwotoneDelete
-                                                    size={25}
-                                                    className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
-                                                    onClick={() => deleteProduct(item.id)}
-                                                />
-                                            </div>
-                                        </TableCell>
+        <>
+            {/* Mostrar o no la tabla si hay productos o no */}
+            {products.length === 0 ? (
+                <p className="text-center">No hay productos</p>
+            ) : (
+                <Paper>
+                    {filterData().length === 0 ? (
+                        <p className="text-center">Este producto no se ha agregado</p>
+                    ) : (
+                        <TableContainer component={Paper} sx={{ minWidth: 650 }}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow style={{ background: "#D00000" }}>
+                                        {columnsProductos.map((column) => (
+                                            <TableCell
+                                                key={column.id}
+                                                style={{
+                                                    color: "#fff",
+                                                    fontWeight: "bold",
+                                                }}
+                                                align="center"
+                                            >
+                                                {column.label}
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
-                                ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                style={{ width: "100%" }}
-                rowsPerPageOptions={[10, 50, 100, 200]}
-                component="div"
-                count={products.length}
-                rowsPerPage={rowsProducts}
-                page={pageProducts}
-                onPageChange={handleChangePageProducts}
-                onRowsPerPageChange={handleChangeRowsPerPageProducts}
-            />
-        </Paper>
+                                </TableHead>
+                                <TableBody>
+                                    {filterData()
+                                        .slice(
+                                            pageProducts * rowsProducts,
+                                            pageProducts * rowsProducts + rowsProducts
+                                        )
+                                        .map((item) => (
+                                            <TableRow key={item.id}>
+                                                <TableCell align="center">{item.nombre}</TableCell>
+                                                <TableCell align="center">{item.costo}</TableCell>
+                                                <TableCell>
+                                                    <div className="flex items-center gap-5 justify-center">
+                                                        <AiFillEdit
+                                                            size={25}
+                                                            className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
+                                                        />
+                                                        <AiTwotoneDelete
+                                                            size={25}
+                                                            className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
+                                                            onClick={() => deleteProduct(item.id)}
+                                                        />
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+
+                    )}
+                    <TablePagination
+                        style={{ width: "100%" }}
+                        rowsPerPageOptions={[10, 50, 100, 200]}
+                        component="div"
+                        count={products.length}
+                        rowsPerPage={rowsProducts}
+                        page={pageProducts}
+                        onPageChange={handleChangePageProducts}
+                        onRowsPerPageChange={handleChangeRowsPerPageProducts}
+                    />
+                </Paper>
+            )}
+        </>
     );
 };
 

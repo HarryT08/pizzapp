@@ -30,11 +30,11 @@
   /* Boton */
 
   .btn {
-    @apply rounded-md py-2 px-8 text-sm border-2 border-azul-marino/20 bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white;
+    @apply rounded-md py-2 px-8 text-sm bg-azul-marino/20 text-azul-marino font-bold transition duration-300 ease-in-out hover:bg-azul-marino hover:text-white;
   }
 
   .btnCancel {
-    @apply rounded-md py-2 px-8 text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white;
+    @apply rounded-md py-2 px-8 text-sm  bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white;
   }
 
   .btnLogin {

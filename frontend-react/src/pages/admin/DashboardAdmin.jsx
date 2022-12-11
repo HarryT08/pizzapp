@@ -9,6 +9,16 @@ import {
   Mesas,
   Facturar,
 } from ".";
+import {
+  INDEX_ADMIN,
+  INICIO_ADMIN,
+  PRODUCTOS_ADMIN,
+  INGREDIENTES_ADMIN,
+  ORDENES_ADMIN,
+  CUENTAS_ADMIN,
+  MESAS_ADMIN,
+  FACTURAR_ADMIN,
+} from "../../routes/paths";
 import { dataSidebar } from "../../data/datos";
 import { Navbar, Sidebar } from "../../components";
 
@@ -25,22 +35,20 @@ const DashboardAdmin = () => {
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
         {dataSidebar.map((item, index) => (
-                <li key={index}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    <div className="flex items-center">
-                      <i>{item.icon}</i>
-                      <span className="text-base font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                        {item.titulo}
-                      </span>
-                    </div>
-                  </NavLink>
-                </li>
-              ))}
+          <li key={index}>
+            <NavLink
+              to={item.path}
+              className={({ isActive }) => (isActive ? activeLink : normalLink)}
+            >
+              <div className="flex items-center">
+                <i>{item.icon}</i>
+                <span className="text-base font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                  {item.titulo}
+                </span>
+              </div>
+            </NavLink>
+          </li>
+        ))}
       </Sidebar>
 
       {/* Contenido del dashboard */}
@@ -50,14 +58,14 @@ const DashboardAdmin = () => {
         <main>
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             <Routes>
-              <Route path="/" element={<Inicio />} />
-              <Route path="/inicio" element={<Inicio />} />
-              <Route path="/productos" element={<Productos />} />
-              <Route path="/ingredientes" element={<Ingredientes />} />
-              <Route path="/ordenes" element={<Ordenes />} />
-              <Route path="/cuentas" element={<Cuentas />} />
-              <Route path="/mesas" element={<Mesas />} />
-              <Route path="/facturar" element={<Facturar />} />
+              <Route path={INDEX_ADMIN} element={<Inicio />} />
+              <Route path={INICIO_ADMIN} element={<Inicio />} />
+              <Route path={PRODUCTOS_ADMIN} element={<Productos />} />
+              <Route path={INGREDIENTES_ADMIN} element={<Ingredientes />} />
+              <Route path={ORDENES_ADMIN} element={<Ordenes />} />
+              <Route path={CUENTAS_ADMIN} element={<Cuentas />} />
+              <Route path={MESAS_ADMIN} element={<Mesas />} />
+              <Route path={FACTURAR_ADMIN} element={<Facturar />} />
             </Routes>
           </div>
         </main>

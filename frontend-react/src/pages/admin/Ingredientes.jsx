@@ -11,11 +11,11 @@ const Ingredientes = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    getProducts();
+    getIngredientes();
   }, []);
 
   // Petincion GET
-  const getProducts = async () => {
+  const getIngredientes = async () => {
     try {
       const response = await instance.get("/ingredientes");
       return setData(response.data);
@@ -72,7 +72,7 @@ const Ingredientes = () => {
       />
 
       <div className="mt-3">
-        <TableIngredientes data={data} setData={setData} search={search} getProducts={getProducts}/>
+        <TableIngredientes data={data} setData={setData} search={search} getIngredientes={getIngredientes}/>
       </div>
 
     </div>

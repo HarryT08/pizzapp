@@ -276,7 +276,7 @@ const Tap = ({ setModalOpen, getProductos }) => {
                   >
                     {carritoPequeño.map((item) => (
                       <div
-                        className="flex items-center mb-1 gap-1 overflow-x-auto"
+                        className="flex items-center mb-2.5 gap-5 overflow-x-auto"
                         key={item.id}
                       >
                         <p>{item.nombre}</p>

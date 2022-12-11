@@ -56,10 +56,10 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
       <div className="flex items-center gap-10 mb-3 overflow-x-auto">
         <h1 className="font-bold text-base">Carrito de productos</h1>
         <div className="flex gap-5">
-          <Link to={'/mesero/confirmar-pedido'} className="rounded-md py-2 px-8 text-xs border-2 border-[#008000]/20 bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer">
+          <Link to={'/mesero/confirmar-pedido'} className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer">
             Siguiente
           </Link>
-          <Link to={'/mesero/realizar-pedido'} className="rounded-md py-2 px-8 text-xs border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white">
+          <Link to={'/mesero/realizar-pedido'} className="rounded-md py-2 px-8 text-xs bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white">
             Volver
           </Link>
         </div>
@@ -123,7 +123,6 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
             onChange={(e) => setOberservacion(e.target.value)}
           />
         </div>
-        {console.log('Estas son las observaciones ->', observacion)}
       </div>
     </>
   );

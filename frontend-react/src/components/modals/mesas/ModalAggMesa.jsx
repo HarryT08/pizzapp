@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { instance } from "../../../api/api";
 import { useRef } from "react";
-import { Transition } from "../..";
+import { Transition, Loader } from "../..";
+import { toast } from "react-toastify";
 
 const ModalAggMesa = ({ id, modalOpen, setModalOpen, getMesas }) => {
+
+    const [loading, setLoading] = useState(false);
     const [numeroMesa, setNumeroMesa] = useState({
         id: "",
     });
@@ -22,16 +25,22 @@ const ModalAggMesa = ({ id, modalOpen, setModalOpen, getMesas }) => {
         }));
     };
 
-    // 404 ya esta registrada
-    // 500 se jodio todo
-    // 200 OK
     const sendMesa = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             const response = await instance.post("/mesas", numeroMesa);
+            toast.success("Mesa agregada");
             cleanButtonCancel();
             getMesas()
+            setLoading(false);
         } catch (err) {
+            setLoading(false);
+            if(err.response.status === 404){
+                toast.error("Ya existe una mesa con ese numero");
+            }else if(err.response.status === 500){
+                toast.error("No se pudo agregar la mesa");
+            }
             console.log(err);
         }
     };
@@ -83,7 +92,9 @@ const ModalAggMesa = ({ id, modalOpen, setModalOpen, getMesas }) => {
                             />
                         </div>
                         <div className="flex pt-3 gap-3">
-                            <button className="btn">Agregar</button>
+                            <button className="btn">
+                                {loading ? <Loader/> : "Agregar"}
+                            </button>
                             <span
                                 className="btnCancel cursor-pointer"
                                 onClick={cleanButtonCancel}
