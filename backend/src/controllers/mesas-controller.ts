@@ -10,6 +10,22 @@ export const getMesas = async (req: Request, res: Response) => {
 }
 
 /*
+Metodo para buscar las mesas por su estado, usando el ORM de typeorm
+*/
+export const getMesasByEstado = async (req: Request, res: Response) => {
+    try{
+        const {estado} = req.params;
+        const mesas = await Mesa.findBy({estado: estado});
+        if(mesas.length === 0) 
+            return res.status(404).json({message: "No hay mesas con el estado " + estado});
+        return res.json(mesas);
+    }catch(error){
+        if (error instanceof Error)
+            return res.status(500).json({message: error.message});
+    }
+}
+
+/*
 Metodo para crear una mesa, usando el ORM de typeorm
 */
 export const createMesa = async (req: Request, res: Response) => {
@@ -29,6 +45,9 @@ export const createMesa = async (req: Request, res: Response) => {
     }
 }
 
+/* 
+Método para eliminar una mesa, usando el ORM de typeorm
+*/
 export const deleteMesa = async (req: Request, res: Response) => {
     try {
         const {id} = req.params;
