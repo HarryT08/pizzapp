@@ -78,8 +78,8 @@ const TableIngredientesTab = ({
     return (
         <>
             <ToastContainer />
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 300 }}>
+            <TableContainer component={Paper} sx={{ minWidth: 300 }}>
+                <Table>
                     <TableHead style={{ background: "#D00000" }}>
                         <TableRow>
                             {columns.map((column) => (
@@ -112,12 +112,14 @@ const TableIngredientesTab = ({
                                         style={{ fontFamily: "Montserrat" }}
                                         align="center"
                                     >
-                                        <p
-                                            className="cursor-pointer border border-azul-marino rounded-full bg-azul-marino/20 font-medium text-azul-marino"
-                                            onClick={() => findProduct(item.id)}
-                                        >
-                                            Agregar
-                                        </p>
+                                        <div className="flex justify-center">
+                                            <p
+                                                className="w-max px-3 py-1 cursor-pointer rounded-full bg-azul-marino/20 font-medium text-azul-marino"
+                                                onClick={() => findProduct(item.id)}
+                                            >
+                                                Agregar
+                                            </p>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}

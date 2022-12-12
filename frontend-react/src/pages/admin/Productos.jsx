@@ -6,31 +6,33 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Productos = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
   const [products, setProducts] = useState([]);
-  const [modalAdd, setModalAdd] = useState(false);
   const [search, setSearch] = useState("");
 
   // show products
-  const getProductos = async() => {
-    try{
-        const response = await instance.get('/productos');
-        setProducts(response.data);
-    }catch(err){
-        console.log(err);
+  const getProductos = async () => {
+    try {
+      const response = await instance.get("/productos");
+      setProducts(response.data);
+    } catch (err) {
+      console.log(err);
     }
-}
+  };
 
-useEffect(() => {
+  useEffect(() => {
     getProductos();
-}, [])
+  }, []);
 
   return (
     <div className="w-full">
       {/* Barra busqueda */}
-      <ToastContainer/>
+      <ToastContainer />
       <div className="flex justify-between pb-3 border-b-2">
         <form>
-        <div className="flex">
+          <div className="flex">
             <input
               type="text"
               placeholder="Busqueda"
@@ -52,14 +54,8 @@ useEffect(() => {
       {/* Boton agg ingredientes */}
       <div className="mt-3">
         <button
-          aria-controls="modal-addProduct"
-          className={`btn ${
-            modalAdd && "bg-slate-200"
-          }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            setModalAdd(true);
-          }}
+          className="btn"
+          onClick={handleOpenModal}
         >
           Agregar producto
         </button>
@@ -67,9 +63,18 @@ useEffect(() => {
 
       {/* DataTable Productos */}
       <div className="mt-3">
-        <TableProductos search={search} products={products} getProductos={getProductos}/>
+        <TableProductos
+          search={search}
+          products={products}
+          getProductos={getProductos}
+        />
       </div>
-      <ModalAggProducto id="modal-addProduct" modalOpen={modalAdd} setModalOpen={setModalAdd} getProductos={getProductos}/>
+      <ModalAggProducto
+        handleCloseModal={handleCloseModal}
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+        getProductos={getProductos}
+      />
     </div>
   );
 };

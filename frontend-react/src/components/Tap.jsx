@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import TableIngredientesTab from "./tables/productos/tab/TableIngredientesTab";
 import { AiFillCloseCircle } from "react-icons/ai";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import { instance } from "../api/api";
-import {Loader} from '../components'
+import { Loader } from "../components";
 import "../styles/aditional-styles/checkbox.css";
 
-const Tap = ({ setModalOpen, getProductos }) => {
-  const [loading, setLoading] = useState(false)
+const Tap = ({ handleCloseModal, getProductos }) => {
+  const [loading, setLoading] = useState(false);
   const [carritoPequeño, setCarritoPequeño] = useState([]);
   const [carritoMediano, setCarritoMediano] = useState([]);
   const [carritoGrande, setCarritoGrande] = useState([]);
@@ -58,23 +58,23 @@ const Tap = ({ setModalOpen, getProductos }) => {
       ];
     }
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await instance.post("/productos", {
         nombre: name,
         precio: precio,
         presentaciones: presentaciones,
       });
-      toast.success('Producto agregado correctamente')
+      toast.success("Producto agregado correctamente");
       setCarritoPequeño([]);
       setCarritoMediano([]);
       setCarritoGrande([]);
       setCarrito([]);
-      setModalOpen(false)
-      getProductos()
-      setLoading(false)
+      handleCloseModal();
+      getProductos();
+      setLoading(false);
     } catch (err) {
-      setLoading(false)
-      toast.error('No se pudo agregar el producto')
+      setLoading(false);
+      toast.error("No se pudo agregar el producto");
       console.log(err);
     }
   };
@@ -121,16 +121,16 @@ const Tap = ({ setModalOpen, getProductos }) => {
 
   const handleReset = () => {
     document.getElementById("form").reset();
-    setModalOpen(false);
+    handleCloseModal();
   };
 
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box sx={{ width: "100%" }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange}>
             <Tab label="Producto" value="1" />
-            <Tab label="Ingredientes" value="2" />
+            <Tab label="Preparacion" value="2" />
           </TabList>
         </Box>
         <form id="form" onSubmit={enviarDatos}>
@@ -158,19 +158,20 @@ const Tap = ({ setModalOpen, getProductos }) => {
               />
             </div>
           </TabPanel>
+          <div></div>
           <TabPanel value="2">
             <div className="flex items-center gap-2 mb-2 overflow-x-auto">
               <div className="container">
-                <ul className="ks-cboxtags">
+                <ul className='ks-cboxtags'>
                   <li>
                     <input
                       id="pequeña"
                       className="w-3 h-3"
                       value={pequeña}
-                      defaultChecked={pequeña}
+                      checked={pequeña}
                       disabled={unico ? true : false}
                       type="checkbox"
-                      onClick={() => checkPequeña()}
+                      onChange={() => checkPequeña()}
                     />
                     <label
                       htmlFor="pequeña"
@@ -188,10 +189,10 @@ const Tap = ({ setModalOpen, getProductos }) => {
                       id="mediana"
                       className="w-3 h-3"
                       value={mediana}
-                      defaultChecked={mediana}
+                      checked={mediana}
                       type="checkbox"
                       disabled={unico ? true : false}
-                      onClick={() => checkMediana()}
+                      onChange={() => checkMediana()}
                     />
                     <label
                       htmlFor="mediana"
@@ -209,10 +210,10 @@ const Tap = ({ setModalOpen, getProductos }) => {
                       id="grande"
                       className="w-3 h-3"
                       value={grande}
-                      defaultChecked={grande}
+                      checked={grande}
                       type="checkbox"
                       disabled={unico ? true : false}
-                      onClick={() => checkGrande()}
+                      onChange={() => checkGrande()}
                     />
                     <label
                       htmlFor="grande"
@@ -226,18 +227,21 @@ const Tap = ({ setModalOpen, getProductos }) => {
               <div className="container">
                 <ul className="ks-cboxtags">
                   <li>
-                      <input
-                        id="unicos"
-                        className="w-3 h-3"
-                        type="checkbox"
-                        onChange={() => {
-                          setGrande(false);
-                          setMediana(false);
-                          setPequeña(false);
-                        }}
-                        onClick={() => checkUnico()}
-                      />
-                    <label htmlFor='unicos' className="text-xs movilL:text-base">
+                    <input
+                      id="unicos"
+                      className="w-3 h-3"
+                      type="checkbox"
+                      onChange={() => {
+                        setGrande(false);
+                        setMediana(false);
+                        setPequeña(false);
+                      }}
+                      onClick={() => checkUnico()}
+                    />
+                    <label
+                      htmlFor="unicos"
+                      className="text-xs movilL:text-base"
+                    >
                       Unico
                     </label>
                   </li>

@@ -64,7 +64,7 @@
     transition-all
 
     /* Responsive */
-    movilM:w-80 movilM:h-max movilL:w-96 movilL:h-max  tableta:h-max
+    movilM:w-80 movilM:h-max movilL:w-96 movilL:h-max tableta:h-max portatil:w-max
   }
 
   /* Modal */

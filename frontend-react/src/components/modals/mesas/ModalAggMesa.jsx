@@ -1,20 +1,8 @@
 import { useState } from "react";
 import { instance } from "../../../api/api";
-import { Modal, Fade, Box } from "@mui/material";
+import { Modal, Fade } from "@mui/material";
 import { Loader } from "../..";
 import { toast } from "react-toastify";
-
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    borderRadius: '8px',
-    boxShadow: 24,
-    p: 4,
-};
 
 const ModalAggMesa = ({
     modalOpen,
