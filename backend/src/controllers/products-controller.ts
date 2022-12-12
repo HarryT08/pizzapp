@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { Preparacion } from "../entities/Preparacion";
 import { Producto } from "../entities/Producto";
 
+/*
+Metodo para obtener un producto por su id, usando el ORM de typeorm
+*/
 export const getProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
   const parseId = {
@@ -13,6 +16,9 @@ export const getProduct = async (req: Request, res: Response) => {
   return res.json(product);
 };
 
+/*
+Metodo para buscar todos los productos, usando el ORM de typeorm
+*/
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await Producto.find();  
@@ -24,6 +30,9 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 }
 
+/*
+Metodo para crear un producto, usando el ORM de typeorm
+*/
 export const createProduct = async (req: Request, res: Response) => {
   let { nombre, precio, presentaciones } = req.body;
   const producto = new Producto();
@@ -33,6 +42,9 @@ export const createProduct = async (req: Request, res: Response) => {
   return res.json('Producto creado');
 };
 
+/*
+Metodo para crear la preparacion de un producto, usando el ORM de typeorm
+*/
 function createPreparation(idProducto: number, presentaciones: any) {
   let data : Preparacion[] = [];
   presentaciones.forEach((presentacion: any) => {
@@ -49,6 +61,9 @@ function createPreparation(idProducto: number, presentaciones: any) {
   Preparacion.save(data);
 }
 
+/*
+Metodo para eliminar un producto, usando el ORM de typeorm
+*/
 export const deleteProduct = async( req: Request , res: Response) => {
   try {
 
@@ -77,7 +92,9 @@ export const deleteProduct = async( req: Request , res: Response) => {
   }
 }
 
-
+/*
+Metodo para actualizar un producto, usando el ORM de typeorm
+*/
 export const updateProduct = async (req: Request, res: Response) => {
   console.log("ENTRO")
   const id  = Number.parseInt( req.params['id'] )
@@ -93,6 +110,9 @@ export const updateProduct = async (req: Request, res: Response) => {
   res.json("yes")
 }
 
+/*
+Metodo para actualizar las preparaciones de un producto, usando el ORM de typeorm
+*/
 async function updatePreparations(id_producto : number , chosen : any) {
   console.log(id_producto)
   const preps = await Preparacion.findBy({id_producto : id_producto})
@@ -107,4 +127,9 @@ async function updatePreparations(id_producto : number , chosen : any) {
     
 
   })*/
+}
+
+export const getProductsAndPreparations = async (req: Request, res: Response) => {
+  const products = await Producto.find({relations: ["preparaciones"]});
+  return res.json(products);
 }

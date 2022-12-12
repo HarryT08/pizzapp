@@ -5,8 +5,11 @@ import {
     PrimaryGeneratedColumn,
     ManyToMany,
     JoinTable,
+    OneToMany,
+    JoinColumn,
 } from 'typeorm';
 import { MateriaPrima } from './MateriaPrima';
+import { Preparacion } from './Preparacion';
 
 @Entity('producto')
 export class Producto extends BaseEntity{
@@ -21,6 +24,10 @@ export class Producto extends BaseEntity{
 
     @Column()
     imagen : string;
+
+    @OneToMany(() => Preparacion,(preparacion) => preparacion.producto)
+    @JoinColumn({name : 'id_producto'})
+    preparaciones : Preparacion[];
 
     constructor(){
         super();

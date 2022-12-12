@@ -2,22 +2,29 @@ import {
     Column,
     Entity,
     BaseEntity,
-    PrimaryColumn
+    PrimaryColumn,
+    JoinColumn,
+    ManyToOne
 } from 'typeorm';
+import { Producto } from './Producto';
 @Entity('preparacion')
 export class Preparacion extends BaseEntity{
 
-    @PrimaryColumn()
     id_producto: number;
 
     @PrimaryColumn()
     id_materia: number;
 
-    @Column()
+    @PrimaryColumn()
     tamanio : string;
 
     @Column()
     cantidad : number;
+
+    @PrimaryColumn({name : 'id_producto', type : 'int'})
+    @ManyToOne(() => Producto, (producto) => producto.preparaciones)
+    @JoinColumn({name : 'id_producto'})
+    producto : Producto;
 
     init(id_producto:number, id_materia:number, tamanio:string, cantidad:number) : void {
         this.id_producto = id_producto;
