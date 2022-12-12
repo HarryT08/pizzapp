@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Cuentas = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
 
@@ -30,25 +32,20 @@ const Cuentas = () => {
     <div className="w-full p-3">
       <ToastContainer/>
       <button
-        aria-controls="modal-addUser"
         className="btn mb-3"
-        onClick={(e) => {
-          e.stopPropagation();
-          setModalOpen(true);
-        }}
+        onClick={handleOpenModal}
       >
         Agregar usuario
       </button>
 
       <ModalAggCuenta
-        id="modal-addUser"
         modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
+        handleCloseModal={handleCloseModal}
         getUsers={getUsers}
       />
 
       <div className="p-3 bg-white rounded-lg drop-shadow-3xl">
-        <TableCuentas error={error} data={data} getUsers={getUsers}/>
+        <TableCuentas error={error} data={data} getUsers={getUsers} modalOpen={modalOpen} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal}/>
       </div>
     </div>
   );

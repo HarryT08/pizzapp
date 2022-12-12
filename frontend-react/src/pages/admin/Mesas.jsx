@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Mesas = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
   const [mesas, setMesas] = useState([]);
 
   const getMesas = async () => {
@@ -51,14 +53,7 @@ const Mesas = () => {
     <div className="w-full">
       <ToastContainer />
       <div className="mt-3">
-        <button
-          aria-controls="modal-addMesa"
-          className={`btn ${modalOpen && "bg-slate-200"}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            setModalOpen(true);
-          }}
-        >
+        <button className="btn" onClick={handleOpenModal}>
           Agregar mesa
         </button>
       </div>
@@ -106,9 +101,8 @@ const Mesas = () => {
       }
 
       <ModalAggMesa
-        id="modal-addMesa"
+        handleCloseModal={handleCloseModal}
         modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
         getMesas={getMesas}
       />
     </div>
