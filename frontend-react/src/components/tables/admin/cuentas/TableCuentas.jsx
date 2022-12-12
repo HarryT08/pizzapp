@@ -28,6 +28,10 @@ const TableCuentas = ({
   handleOpenModal,
   modalOpen,
 }) => {
+
+  const [modalEditOpen, setModalEditOpen] = useState(false);
+  const handleOpenEditModal = () => setModalEditOpen(true);
+  const handleCloseEditModal = () => setModalEditOpen(false);
   const [empleado, setEmpleado] = useState({
     persona: {
       nombre: "",
@@ -59,7 +63,7 @@ const TableCuentas = ({
       persona: user[0].persona,
       rol: user[0].rol,
     });
-    handleOpenModal();
+    handleOpenEditModal();
   };
 
   // Peticion DELETE
@@ -162,8 +166,8 @@ const TableCuentas = ({
 
       <ModalEditCuenta
         getUsers={getUsers}
-        modalOpen={modalOpen}
-        handleCloseModal={handleCloseModal}
+        modalEditOpen={modalEditOpen}
+        handleCloseEditModal={handleCloseEditModal}
         usuario={usuario}
         setUsuario={setUsuario}
         empleado={empleado}

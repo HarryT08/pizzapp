@@ -21,6 +21,7 @@ export {default as ModalEditCuenta} from './modals/cuentas/ModalEditCuenta'
 export {default as ModalAggProducto} from './modals/productos/ModalAggProducto'
 export {default as ModalAggMesa} from './modals/mesas/ModalAggMesa'
 export {default as  ModalAggIngrediente} from './modals/ingredientes/ModalAggIngrediente'
+export {default as ModalEditIngrediente} from './modals/ingredientes/ModalEditIngrediente'
 
 export {default as LineChart} from './charts/inicio/LineChart'
 export {default as LineCharts} from './charts/inicio/LineCharts'

@@ -8,6 +8,8 @@ import { ModalAggIngrediente, TableIngredientes } from "../../components";
 const Ingredientes = () => {
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -52,29 +54,29 @@ const Ingredientes = () => {
       {/* Boton agg ingredientes */}
       <div className="mt-3">
         <button
-          aria-controls="modal-addIngredientes"
           className="btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            setModalOpen(true);
-          }}
+          onClick={handleOpenModal}
         >
           Agregar ingrediente
         </button>
       </div>
-      
+
       <ModalAggIngrediente
-        id="modal-addIngredientes"
         modalOpen={modalOpen}
+        handleCloseModal={handleCloseModal}
         setModalOpen={setModalOpen}
         data={data}
         setData={setData}
       />
 
       <div className="mt-3">
-        <TableIngredientes data={data} setData={setData} search={search} getIngredientes={getIngredientes}/>
+        <TableIngredientes
+          data={data}
+          setData={setData}
+          search={search}
+          getIngredientes={getIngredientes}
+        />
       </div>
-
     </div>
   );
 };

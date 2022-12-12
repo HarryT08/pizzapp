@@ -68,7 +68,7 @@ const ModalAggMesa = ({
             closeAfterTransition
         >
             <Fade in={modalOpen}>
-                <Box sx={style}>
+                <div className="modal">
                     <div className="header-modal">
                         <h3 className="text-xl font-semibold">Agregar mesas</h3>
                     </div>
@@ -98,7 +98,7 @@ const ModalAggMesa = ({
                             </span>
                         </div>
                     </form>
-                </Box>
+                </div>
             </Fade>
         </Modal>
     );

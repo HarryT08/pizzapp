@@ -11,7 +11,6 @@ const Cuentas = () => {
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
 
-
   // Peticion GET
   const getUsers = async () => {
     try {
@@ -30,11 +29,8 @@ const Cuentas = () => {
 
   return (
     <div className="w-full p-3">
-      <ToastContainer/>
-      <button
-        className="btn mb-3"
-        onClick={handleOpenModal}
-      >
+      <ToastContainer />
+      <button className="btn mb-3" onClick={handleOpenModal}>
         Agregar usuario
       </button>
 
@@ -45,7 +41,14 @@ const Cuentas = () => {
       />
 
       <div className="p-3 bg-white rounded-lg drop-shadow-3xl">
-        <TableCuentas error={error} data={data} getUsers={getUsers} modalOpen={modalOpen} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal}/>
+        <TableCuentas
+          error={error}
+          data={data}
+          getUsers={getUsers}
+          modalOpen={modalOpen}
+          handleOpenModal={handleOpenModal}
+          handleCloseModal={handleCloseModal}
+        />
       </div>
     </div>
   );

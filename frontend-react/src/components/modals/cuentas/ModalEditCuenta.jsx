@@ -1,22 +1,10 @@
-import { Modal, Fade, Box } from "@mui/material";
+import { Modal, Fade } from "@mui/material";
 import { useState } from "react";
 import { instance } from "../../../api/api";
 import { toast } from "react-toastify";
 import {Loader} from '../../../components'
 
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    borderRadius: "8px",
-    boxShadow: 24,
-    p: 4,
-};
-
-const ModalEditCuenta = ({ handleCloseModal, modalOpen, usuario, setUsuario, empleado, getUsers }) => {
+const ModalEditCuenta = ({ handleCloseEditModal, modalEditOpen, usuario, setUsuario, empleado, getUsers }) => {
 
     const [loading, setLoading] = useState(false);
 
@@ -35,17 +23,8 @@ const ModalEditCuenta = ({ handleCloseModal, modalOpen, usuario, setUsuario, emp
             setLoading(true);
             const response = await instance.put("/usuarios", usuario);
             getUsers();
-            handleCloseModal();
             toast.success("Usuario actualizado con exito");
-            setUsuario({
-                nombre: "",
-                apellido: "",
-                celular: "",
-                idRol: "1",
-                password: "",
-                username: "",
-                cedula: "",
-            });
+            handleReset()
             setLoading(false);
         } catch (err) {
             console.log(err);
@@ -53,20 +32,25 @@ const ModalEditCuenta = ({ handleCloseModal, modalOpen, usuario, setUsuario, emp
         }
     };
 
+    const handleReset = () => {
+        document.getElementById("formEditCuenta").reset();
+        handleCloseEditModal();
+    }
+
     return (
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            open={modalOpen}
-            onClose={handleCloseModal}
+            open={modalEditOpen}
+            onClose={handleCloseEditModal}
             closeAfterTransition
         >
-            <Fade in={modalOpen}>
-                <Box sx={style}>
+            <Fade in={modalEditOpen}>
+                <div className='modal'>
                     <div className="header-modal">
                         <h3 className="text-xl font-semibold">Modificar Usuario</h3>
                     </div>
-                    <form onSubmit={updateUser}>
+                    <form id='formEditCuenta' onSubmit={updateUser}>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="mt-2">
                                 <label className="block text-base font-medium">Cedula</label>
@@ -159,13 +143,13 @@ const ModalEditCuenta = ({ handleCloseModal, modalOpen, usuario, setUsuario, emp
                             </button>
                             <span
                                 className="btnCancel cursor-pointer"
-                                onClick={() => handleCloseModal()}
+                                onClick={handleReset}
                             >
                                 Cancelar
                             </span>
                         </div>
                     </form>
-                </Box>
+                </div>
             </Fade>
         </Modal>
     );

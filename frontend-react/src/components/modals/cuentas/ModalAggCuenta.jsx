@@ -1,21 +1,9 @@
 import { useState } from "react";
-import { Modal, Fade, Box } from "@mui/material";
+import { Modal, Fade } from "@mui/material";
 import { Loader } from "../..";
 import { instance } from "../../../api/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "8px",
-  boxShadow: 24,
-  p: 4,
-};
 
 const ModalAggCuenta = ({
   modalOpen,
@@ -107,11 +95,11 @@ const ModalAggCuenta = ({
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={modalOpen}
-        onClose={handleCloseModal}
+        onClose={handleReset}
         closeAfterTransition
       >
         <Fade in={modalOpen}>
-          <Box sx={style}>
+          <div className="modal">
             <div className="header-modal">
               <h3 className="text-xl font-semibold">Agregar Usuario</h3>
             </div>
@@ -218,7 +206,7 @@ const ModalAggCuenta = ({
                 </span>
               </div>
             </form>
-          </Box>
+          </div>
         </Fade>
       </Modal>
     </>
