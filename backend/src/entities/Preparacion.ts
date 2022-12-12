@@ -10,6 +10,7 @@ import { Producto } from './Producto';
 @Entity('preparacion')
 export class Preparacion extends BaseEntity{
 
+    @Column()
     id_producto: number;
 
     @PrimaryColumn()
@@ -21,12 +22,12 @@ export class Preparacion extends BaseEntity{
     @Column()
     cantidad : number;
 
-    @PrimaryColumn({name : 'id_producto', type : 'int'})
+    @PrimaryColumn({name : 'id_producto', type : 'int' , insert : false})
     @ManyToOne(() => Producto, (producto) => producto.preparaciones)
     @JoinColumn({name : 'id_producto'})
     producto : Producto;
 
-    init(id_producto:number, id_materia:number, tamanio:string, cantidad:number) : void {
+    init(id_producto: number, id_materia:number, tamanio:string, cantidad:number) : void {
         this.id_producto = id_producto;
         this.id_materia = id_materia;
         this.tamanio = tamanio;

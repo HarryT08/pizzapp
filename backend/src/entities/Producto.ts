@@ -22,9 +22,6 @@ export class Producto extends BaseEntity{
     @Column()
     costo : number;
 
-    @Column()
-    imagen : string;
-
     @OneToMany(() => Preparacion,(preparacion) => preparacion.producto)
     @JoinColumn({name : 'id_producto'})
     preparaciones : Preparacion[];
