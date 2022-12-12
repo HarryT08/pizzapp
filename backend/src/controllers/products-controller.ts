@@ -88,17 +88,14 @@ export const updateProduct = async (req: Request, res: Response) => {
     producto.nombre = nombre
     producto.costo = costo
     await updatePreparations(id , chosen)
-    producto.save()
+    //producto.save()
   }
   res.json("yes")
 }
 
 async function updatePreparations(id_producto : number , chosen : any) {
   console.log(id_producto)
-  const preps = await Preparacion.createQueryBuilder("preparacion")
-                          .where("preparacion.id_producto = :id_producto", { id_producto: 9 })
-                          .andWhere("preparacion.tamanio = tamanio" , {tamanio : 'mediana'}) 
-                          .getMany()
+  const preps = await Preparacion.findBy({id_producto : id_producto})
   console.log(preps)
 
   /*chosen.forEach( async ( presentacion : any ) => {
