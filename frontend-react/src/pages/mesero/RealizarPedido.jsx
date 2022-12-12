@@ -7,7 +7,7 @@ const RealizarPedido = () => {
 
   const getMesas = async () => {
     try {
-      const response = await instance.get("/mesas");
+      const response = await instance.get("/mesas/Disponible");
       setMesas(response.data);
     } catch (err) {
       console.log(err);

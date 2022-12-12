@@ -56,8 +56,8 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
       <div className="flex items-center gap-10 mb-3 overflow-x-auto">
         <h1 className="font-bold text-base">Carrito de productos</h1>
         <div className="flex gap-5">
-          <Link to={'/mesero/confirmar-pedido'} className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer">
-            Siguiente
+          <Link to={'/mesero/realizar-pedido'} className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer">
+            Terminar pedido
           </Link>
           <Link to={'/mesero/realizar-pedido'} className="rounded-md py-2 px-8 text-xs bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white">
             Volver

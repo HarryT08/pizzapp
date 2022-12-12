@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {RealizarPedido, EditarPedido,TomarOrden, ConfirmarPedido} from '.'
+import {RealizarPedido, EditarPedido,TomarOrden} from '.'
 import { INDEX_MESERO, REALIZAR_PEDIDO_MESERO, TOMAR_ORDEN_MESERO } from "../../routes/paths";
 import { NavLink, Route, Routes } from "react-router-dom";
 import {dataSidebarMesero} from '../../data/datos'
@@ -47,7 +47,6 @@ const DashboardMesero = () => {
             <Route path={INDEX_MESERO} element={<RealizarPedido/>}/>
             <Route path={REALIZAR_PEDIDO_MESERO} element={<RealizarPedido/>}/>
             <Route path={`${TOMAR_ORDEN_MESERO}/:id`} element={<TomarOrden/>}/>
-            <Route path='/confirmar-pedido' element={<ConfirmarPedido/>}/>
             <Route path="/editar-pedido" element={<EditarPedido/>}/>
           </Routes>
         </div>
