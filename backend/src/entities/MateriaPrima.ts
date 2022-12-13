@@ -3,9 +3,12 @@ import {
     Entity,
     BaseEntity,
     PrimaryGeneratedColumn,
-    ManyToMany
+    ManyToMany,
+    JoinColumn,
+    OneToMany
 } from 'typeorm';
 import { Producto } from './Producto';
+import { Preparacion } from './Preparacion';
 
 @Entity('materiaPrima')
 export class MateriaPrima extends BaseEntity{
@@ -21,6 +24,10 @@ export class MateriaPrima extends BaseEntity{
 
     @ManyToMany(() => Producto, producto => producto.ingredientes)
     productos : Producto[];
+
+    @OneToMany(() => Preparacion,(preparacion) => preparacion.materiaPrima)
+    @JoinColumn({name : 'id_materia'})
+    preparaciones : Preparacion[];
 
     constructor(){
         super();
