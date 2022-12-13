@@ -15,6 +15,17 @@ const sizes = [
   { key: 'unique', value: 'Única' }
 ];
 
+const transformIngredientesStructure = (ingredientes = [], size = 'unique') => {
+  return ingredientes
+    .filter((item) => item[size] > 0)
+    .map((item) => ({
+      id: item.id,
+      nombre: item.nombre,
+      existencia: item.existencia,
+      cantidad: item[size]
+    }));
+};
+
 const Tap = ({ handleCloseModal, getProductos }) => {
   const [loading, setLoading] = useState(false);
   const [ingredientes, setIngredientes] = useState([]);
@@ -23,7 +34,7 @@ const Tap = ({ handleCloseModal, getProductos }) => {
   const [precio, setPrecio] = useState(0);
   const [value, setValue] = useState('1');
   const [filterSizes, setFilterSizes] = useState([]);
-  const [selectedTab, setSelectedTab] = useState(null);
+  const [selectedTab, setSelectedTab] = useState('');
 
   // sendData
   const enviarDatos = async (e) => {
@@ -50,34 +61,30 @@ const Tap = ({ handleCloseModal, getProductos }) => {
     if (filterSizes.some((item) => item.key === 'unique')) {
       presentaciones = [
         {
-          ingredientes: carrito,
+          ingredientes: transformIngredientesStructure(carrito, 'unique'),
           tamaño: 'unico'
         }
       ];
     } else {
       presentaciones = [
         {
-          ingredientes: [],
+          ingredientes: transformIngredientesStructure(carrito, 'small'),
           tamaño: 'pequeña'
         },
         {
-          ingredientes: [],
+          ingredientes: transformIngredientesStructure(carrito, 'medium'),
           tamaño: 'mediana'
         },
         {
-          ingredientes: [],
+          ingredientes: transformIngredientesStructure(carrito, 'large'),
           tamaño: 'grande'
         }
       ];
     }
 
-    // console.log(presentaciones);
-
-    return;
+    setLoading(true);
 
     try {
-      setLoading(true);
-
       await instance.post('/productos', {
         nombre: name,
         precio: precio,
@@ -149,6 +156,7 @@ const Tap = ({ handleCloseModal, getProductos }) => {
                 placeholder="Nombre"
                 className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
                 onChange={(e) => setName(e.target.value)}
+                value={name}
               />
             </div>
             <div className="flex flex-col mt-2">
@@ -159,7 +167,8 @@ const Tap = ({ handleCloseModal, getProductos }) => {
                 type="number"
                 placeholder="Precio"
                 className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-                onChange={(e) => setPrecio(e.target.value)}
+                onChange={(e) => setPrecio(Number(e.target.value))}
+                value={precio}
               />
             </div>
           </TabPanel>
@@ -241,15 +250,30 @@ const Tap = ({ handleCloseModal, getProductos }) => {
 };
 
 function InputIngrediente({ item, size, setCarrito, deleteProduct }) {
+  const [value, setValue] = useState(item[size.key]);
+
   const handleChange = (e) => {
-    const value = Number(e.target.value);
+    //Quitar las letras y los espacios
+    let value = e.target.value;
+    value = value.replace(/([a-zA-Z]|\s)+/, '');
+    value = Number(value);
+
+    setValue(value);
 
     setCarrito((current) => {
-      current.map((currentItem) => {
+      return current.map((currentItem) => {
         if (currentItem.id !== item.id) return currentItem;
         return { ...currentItem, [size.key]: value };
       });
     });
+  };
+
+  const handleBlur = (e) => {
+    const value = Number(e.target.value);
+
+    if (isNaN(value)) {
+      return toast.error('La cantidad no es un valor válido.');
+    }
   };
 
   return (
@@ -261,10 +285,11 @@ function InputIngrediente({ item, size, setCarrito, deleteProduct }) {
       <input
         required
         onChange={handleChange}
-        defaultValue={item[size.key]}
+        value={value}
         name="cantidad"
-        type="text"
+        type="number"
         className="w-32 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
+        onBlur={handleBlur}
       />
       <div className="flex items-center">
         <AiFillCloseCircle
