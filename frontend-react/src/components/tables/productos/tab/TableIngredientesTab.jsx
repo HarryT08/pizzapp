@@ -10,8 +10,7 @@ import {
     TablePagination,
 } from "@mui/material";
 import { instance } from "../../../../api/api";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const columns = [
     { id: "nombre", label: "Nombre" },
@@ -76,8 +75,7 @@ const TableIngredientesTab = ({
     };
 
     return (
-        <>
-            <ToastContainer />
+        <div className='overflow-x-auto'>
             <TableContainer component={Paper} sx={{ minWidth: 300 }}>
                 <Table>
                     <TableHead style={{ background: "#D00000" }}>
@@ -136,7 +134,7 @@ const TableIngredientesTab = ({
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-        </>
+        </div>
     );
 };
 
