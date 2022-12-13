@@ -42,7 +42,7 @@ const DashboardAdmin = () => {
             >
               <div className="flex items-center">
                 <i>{item.icon}</i>
-                <span className="text-base font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                <span className="text-base font-medium ml-3  lg:sidebar-expanded:opacity-100 2xl:opacity-100">
                   {item.titulo}
                 </span>
               </div>
