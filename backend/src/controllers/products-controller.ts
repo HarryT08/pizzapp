@@ -138,20 +138,19 @@ export const getProductsAndPreparations = async (req: Request, res: Response) =>
   console.log(productos[0]);
 
   for (const producto of productos) {
-    let records:Record<string, boolean> = { }  
+    let records : Record<string, number> = { }  
     for (const preparacion of producto.preparaciones) {
-      
+
       let tamanio = preparacion.tamanio;
+      let maxToPrepare = Math.floor(preparacion.materiaPrima.existencia / preparacion.cantidad);
 
-      if(records[tamanio] !== undefined) {
-        records[tamanio] &&= preparacion.cantidad <= preparacion.materiaPrima.existencia
-      }else{
-        records[tamanio] = preparacion.cantidad <= preparacion.materiaPrima.existencia
+      if(records[tamanio] === undefined){
+        records[tamanio] = maxToPrepare
       }
-
+      
+      records[tamanio] = Math.min(records[tamanio] , maxToPrepare)
     }
     producto.preparar = records;
   }
-
   return res.json(productos);
 }
