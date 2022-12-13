@@ -41,6 +41,8 @@ export class Producto extends BaseEntity{
     })
     ingredientes : MateriaPrima[];
 
+    preparar : Record<string, boolean>;
+    
     init(nombre:string, costo:number): void {
         this.nombre = nombre;
         this.costo = costo;

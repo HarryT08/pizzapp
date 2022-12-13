@@ -129,10 +129,29 @@ async function updatePreparations(product: Producto, chosen: any) {
   })*/
 }
 
-export const getProductsAndPreparations = async (
-  req: Request,
-  res: Response
-) => {
-  const products = await Producto.find({ relations: ["preparaciones"] });
-  return res.json(products);
-};
+export const getProductsAndPreparations = async (req: Request, res: Response) => {
+  const productos = await Producto.find({relations: ["preparaciones", "preparaciones.materiaPrima"]});
+
+  
+
+  
+  console.log(productos[0]);
+
+  for (const producto of productos) {
+    let records:Record<string, boolean> = { }  
+    for (const preparacion of producto.preparaciones) {
+      
+      let tamanio = preparacion.tamanio;
+
+      if(records[tamanio] !== undefined) {
+        records[tamanio] &&= preparacion.cantidad <= preparacion.materiaPrima.existencia
+      }else{
+        records[tamanio] = preparacion.cantidad <= preparacion.materiaPrima.existencia
+      }
+
+    }
+    producto.preparar = records;
+  }
+
+  return res.json(productos);
+}

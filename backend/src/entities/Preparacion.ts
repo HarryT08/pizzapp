@@ -6,14 +6,15 @@ import {
     JoinColumn,
     ManyToOne
 } from 'typeorm';
+import { MateriaPrima } from './MateriaPrima';
 import { Producto } from './Producto';
 @Entity('preparacion')
 export class Preparacion extends BaseEntity{
 
     @Column()
     id_producto: number;
-
-    @PrimaryColumn()
+    
+    @Column()
     id_materia: number;
 
     @PrimaryColumn()
@@ -27,7 +28,12 @@ export class Preparacion extends BaseEntity{
     @JoinColumn({name : 'id_producto'})
     producto : Producto;
 
-    init(id_producto: number, id_materia:number, tamanio:string, cantidad:number) : void {
+    @PrimaryColumn({name : 'id_materia', type : 'int', insert: false})
+    @ManyToOne(() => MateriaPrima, (materiaPrima) => materiaPrima.preparaciones)
+    @JoinColumn({name : 'id_materia'})
+    materiaPrima : MateriaPrima;
+
+    init(id_producto:number, id_materia:number, tamanio:string, cantidad:number) : void {
         this.id_producto = id_producto;
         this.id_materia = id_materia;
         this.tamanio = tamanio;
