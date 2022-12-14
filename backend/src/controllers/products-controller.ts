@@ -124,16 +124,14 @@ async function updatePreparations(product: Producto, chosen: any) {
 export const getProductsAndPreparations = async (req: Request, res: Response) => {
   const productos = await Producto.find({relations: ["preparaciones", "preparaciones.materiaPrima"]});
   for (const producto of productos) {
-    let records : Record<string, number> = { }  
+    let records : Record<string, number> = { }
     for (const preparacion of producto.preparaciones) {
-
       let tamanio = preparacion.tamanio;
       let maxToPrepare = Math.floor(preparacion.materiaPrima.existencia / preparacion.cantidad);
 
       if(records[tamanio] === undefined){
         records[tamanio] = maxToPrepare
       }
-      
       records[tamanio] = Math.min(records[tamanio] , maxToPrepare)
     }
     producto.preparar = records;
@@ -144,8 +142,7 @@ export const getProductsAndPreparations = async (req: Request, res: Response) =>
 
 export const getProductAndPreparations =async (req : Request, res : Response) => {
   const { id } = req.params;
-  const productos = await Producto.find({relations: ["preparaciones", "preparaciones.materiaPrima"]})
-  const producto = productos.find( producto => producto.id === Number(id))
+  const producto = await Producto.find({where: {id: parseInt(id)}, relations: ["preparaciones", "preparaciones.materiaPrima"]})
   if(!producto) return res.status(404).json({message: "Producto no encontrado"})
-  return res.status(200).json(producto); 
+  return res.status(200).json(producto);
 }

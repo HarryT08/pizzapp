@@ -11,10 +11,10 @@ import { Producto } from './Producto';
 @Entity('preparacion')
 export class Preparacion extends BaseEntity{
 
-    @Column()
+    @Column({select: false})
     id_producto: number;
     
-    @Column()
+    @Column({select: false})
     id_materia: number;
 
     @PrimaryColumn()
