@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { instance } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import {Loader} from "../components";
+import { Loader } from "../components";
 import jwt_decode from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,9 +23,9 @@ const FormLogin = () => {
       localStorage.setItem("Authorization", response.data.token);
       const decoded = jwt_decode(response.data.token);
       localStorage.setItem("cargo", decoded.cargo);
-      if(decoded.cargo === "admin"){
+      if (decoded.cargo === "admin") {
         navigate("/admin/");
-      }else if(decoded.cargo === "mesero"){
+      } else if (decoded.cargo === "mesero") {
         navigate("/mesero/");
       }
       setLoading(false);
@@ -41,7 +41,9 @@ const FormLogin = () => {
         <h1 className="text-xl text-black md:text-2xl 2xl:text-2xl font-bold pb-2">
           Iniciar sesion
         </h1>
-        <p>Bienvenido a <b>Pizza Bohemia.</b></p>
+        <p>
+          Bienvenido a <b>Pizza Bohemia.</b>
+        </p>
       </div>
 
       <form className="mt-3" onSubmit={iniciarSesion}>
