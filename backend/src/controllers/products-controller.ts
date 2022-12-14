@@ -58,7 +58,6 @@ function createPreparation(producto: Producto, presentaciones: any) {
       data.push(preparacion);
     });
   });
-  console.log(data);
   Preparacion.save(data);
 }
 

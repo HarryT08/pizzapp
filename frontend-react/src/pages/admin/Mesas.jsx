@@ -5,6 +5,7 @@ import { ModalAggMesa } from "../../components";
 import Swal from "sweetalert2";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Alert from '@mui/material/Alert';
 
 const Mesas = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,7 +61,7 @@ const Mesas = () => {
       {
         // Mensajes por si no hay mesas
         mesas.length === 0 ? (
-          <p className="text-center mt-3">No existe ninguna mesa</p>
+          <Alert severity="error"><strong>No hay mesas para editar</strong></Alert>
         ) : (
           <div className="mt-3">
             <div className="flex flex-wrap my-7 justify-center gap-10 items-center">

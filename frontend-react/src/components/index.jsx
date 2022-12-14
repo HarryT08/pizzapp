@@ -6,6 +6,7 @@ export {default as UserMenu} from './UserMenu'
 export {default as Loader} from './Loader'
 export {default as Tap} from './Tap'
 export {default as MesasPedidos} from './MesasPedidos'
+export {default as MesasFacturar} from './MesasFacturar'
 export {default as ButtonMesero} from './ButtonMesero'
 
 export {default as TableInicio} from './tables/admin/inicio/TableInicio'
