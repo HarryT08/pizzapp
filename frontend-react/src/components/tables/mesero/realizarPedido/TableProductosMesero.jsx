@@ -7,18 +7,21 @@ import {
   TableRow,
   TableHead,
   Paper,
-  TablePagination
+  TablePagination,
 } from "@mui/material";
+import { ButtonMesero } from "../../../";
 import { toast } from "react-toastify";
 import { FiSearch } from "react-icons/fi";
 
 const columnas = [
   { id: "nombre", label: "Nombre" },
+  { id: "tamaño", label: "Tamaño" },
   { id: "acciones", label: "Acciones" },
 ];
 
 const TableProductosMesero = ({ products, carrito, setCarrito }) => {
-
+  // const referenciaBoton = useRef(false);
+  const [showButton, setShowButton] = useState(false);
   const [pageProducts, setPageProducts] = useState(0);
   const [rowsProducts, setRowsProducts] = useState(10);
   const [search, setSearch] = useState("");
@@ -26,12 +29,12 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
   // Paginacion tabla productos
   const handleChangePageProducts = (event, newPage) => {
     setPageProducts(newPage);
-};
+  };
 
-const handleChangeRowsPerPageProducts = (event) => {
+  const handleChangeRowsPerPageProducts = (event) => {
     setRowsProducts(+event.target.value);
     setPageProducts(0);
-};
+  };
 
   const findProduct = (id) => {
     const check = carrito.every((item) => {
@@ -56,6 +59,36 @@ const handleChangeRowsPerPageProducts = (event) => {
       }
     });
   };
+
+  const getTamaniosProducts = (producto) => {
+    let tamanios = producto.preparar;
+    let total = [];
+    for (const [clave, valor] of Object.entries(tamanios)) {
+      total.push(
+        <option value={clave} key={clave}>
+          {clave}
+        </option>
+      );
+    }
+    return total;
+  };
+
+  const validate = (producto, id) => {
+    let tam = producto.preparar;
+    let op = document.getElementById("tam" + id);
+    if (op) {
+      op = op.value;
+      if (tam[op] > 0) {
+        return <button aria-controls="botoncito">Cracks</button>;
+      } else {
+        return <button aria-controls="botoncito">coooooooo</button>;
+      }
+    }
+  };
+
+  function Button({ producto, show }) {
+    return <div> {show && <button>Agregar</button>} </div>;
+  }
 
   return (
     <>
@@ -107,17 +140,29 @@ const handleChangeRowsPerPageProducts = (event) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filterProducts().map((product) => (
+                  {filterProducts().map((product, index) => (
                     <TableRow key={product.id}>
                       <TableCell align="center">{product.nombre}</TableCell>
                       <TableCell align="center">
-                        <div className="flex justify-center">
-                          <p
-                            className="w-max px-3 py-1 cursor-pointer rounded-full bg-azul-marino/20 font-medium text-azul-marino"
-                            onClick={() => findProduct(product.id)}
-                          >
-                            Agregar
-                          </p>
+                        <select
+                          defaultValue={`tam${index}`}
+                          name={`tam${index}`}
+                          id={`tam${index}`}
+                          onChange={(event) => validate(product, index)}
+                        >
+                          {getTamaniosProducts(product)}
+                        </select>
+                      </TableCell>
+                      <TableCell align="center">
+                        <div id="botoncito" className="flex justify-center">
+                          {/* ComponenteBoton(boolean, product) */}
+                          <Button />
+                          {/* <p
+                              className="w-max px-3 py-1 cursor-pointer rounded-full bg-azul-marino/20 font-medium text-azul-marino"
+                              onClick={() => findProduct(product.id)}
+                            >
+                              Agregar
+                            </p> */}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -127,15 +172,15 @@ const handleChangeRowsPerPageProducts = (event) => {
             </TableContainer>
           )}
           <TablePagination
-                        style={{ width: "100%" }}
-                        rowsPerPageOptions={[10, 50, 100, 200]}
-                        component="div"
-                        count={products.length}
-                        rowsPerPage={rowsProducts}
-                        page={pageProducts}
-                        onPageChange={handleChangePageProducts}
-                        onRowsPerPageChange={handleChangeRowsPerPageProducts}
-                    />
+            style={{ width: "100%" }}
+            rowsPerPageOptions={[10, 50, 100, 200]}
+            component="div"
+            count={products.length}
+            rowsPerPage={rowsProducts}
+            page={pageProducts}
+            onPageChange={handleChangePageProducts}
+            onRowsPerPageChange={handleChangeRowsPerPageProducts}
+          />
         </Paper>
       )}
     </>
