@@ -2,9 +2,7 @@ import { useContext } from 'react';
 import { SelectedProductContext } from '@/pages/admin/Productos';
 
 export default function TabProducto() {
-  const { selectedProduct, setSelectedProduct } = useContext(
-    SelectedProductContext
-  );
+  const { producto, setProducto } = useContext(SelectedProductContext);
 
   return (
     <>
@@ -16,10 +14,9 @@ export default function TabProducto() {
           type="text"
           placeholder="Nombre"
           className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-          defaultValue={selectedProduct.nombre}
-          value={selectedProduct.nombre}
+          value={producto.nombre}
           onChange={(e) =>
-            setSelectedProduct((current) => ({
+            setProducto((current) => ({
               ...current,
               nombre: e.target.value
             }))
@@ -34,12 +31,11 @@ export default function TabProducto() {
           type="number"
           placeholder="Precio"
           className="block p-3 w-full flex-1 rounded-md border-azul-marino/70 focus:border-azul-marino focus:ring-azul-marino sm:text-sm"
-          defaultValue={selectedProduct.precio}
-          value={selectedProduct.precio}
+          value={producto.costo}
           onChange={(e) =>
-            setSelectedProduct((current) => ({
+            setProducto((current) => ({
               ...current,
-              precio: Number(e.target.value)
+              costo: Number(e.target.value.replace(/[^0-9]+/, ''))
             }))
           }
         />

@@ -15,41 +15,48 @@ const sizes = {
 };
 
 export default function TabPreparaciones() {
-  const { ingredientes, selectedProduct } = useContext(SelectedProductContext);
+  const { producto, preparaciones, setPreparaciones } = useContext(
+    SelectedProductContext
+  );
 
   const [selectedSizes, setSelectedSizes] = useState(() =>
-    selectedProduct.selectedSizes.map((item) => ({
+    producto.selectedSizes.map((item) => ({
       key: item,
       value: sizes[item]
     }))
   );
 
   const [selectedTab, setSelectedTab] = useState(
-    () => selectedProduct.selectedSizes.at(-1) || ''
+    () => producto.selectedSizes.at(-1) || ''
   );
 
-  const [carrito, setCarrito] = useState([]);
-
-  const handleChangeChecked = (e, item) => {
+  const handleChangeChecked = (e, size) => {
     if (!e.target.checked) {
-      const nextSizes = selectedSizes.filter((a) => a.key !== item.key);
+      const nextSizes = selectedSizes.filter((a) => a.key !== size.key);
+
       setSelectedTab(nextSizes.at(-1)?.key || '');
       setSelectedSizes(nextSizes);
+      setPreparaciones((draft) =>
+        draft.filter((it) => it.tamanio !== size.key)
+      );
       return;
     }
 
-    if (item.key === 'unico') {
+    if (size.key === 'unico') {
       setSelectedTab('unico');
-      setSelectedSizes([item]);
+      setSelectedSizes([size]);
+      setPreparaciones((draft) => draft.filter((it) => it.tamanio === 'unico'));
       return;
     }
 
-    setSelectedTab(item.key);
-    setSelectedSizes((current) => [...current, item]);
+    setSelectedTab(size.key);
+    setSelectedSizes((current) => [...current, size]);
   };
 
   const deleteIngrediente = (id) => {
-    setCarrito((current) => current.filter((item) => item.id !== id));
+    setPreparaciones((current) =>
+      current.filter((item) => item.id !== id && item.tamanio === selectedTab)
+    );
   };
 
   return (
@@ -64,14 +71,12 @@ export default function TabPreparaciones() {
               selectedSizes.some((size) => size.key === 'unico') &&
               key !== 'unico'
             }
-            onChange={handleChangeChecked}
+            onChange={(e) => handleChangeChecked(e, { key, value })}
           />
         ))}
       </ul>
       <TableIngredientesTab
-        carrito={carrito}
-        setCarrito={setCarrito}
-        selectedSizes={selectedSizes}
+        selectedTab={selectedTab}
       />
       <div className="mt-2">
         <TabContext value={selectedTab}>
@@ -85,14 +90,15 @@ export default function TabPreparaciones() {
 
           {selectedSizes.map((size) => (
             <TabPanel value={size.key} key={size.key}>
-              {ingredientes.map((item) => (
-                <InputIngrediente
-                  key={item.id}
-                  size={size}
-                  item={item}
-                  onDelete={deleteIngrediente}
-                />
-              ))}
+              {preparaciones
+                .filter((it) => it.tamanio === selectedTab)
+                .map((it) => (
+                  <InputIngrediente
+                    key={`${it.id_materia}-${it.tamanio}`}
+                    preparacion={it}
+                    onDelete={deleteIngrediente}
+                  />
+                ))}
             </TabPanel>
           ))}
         </TabContext>

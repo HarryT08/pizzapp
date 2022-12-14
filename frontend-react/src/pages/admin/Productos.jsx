@@ -1,35 +1,51 @@
 import { useState, useEffect, createContext } from 'react';
+import { useCallback } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { instance } from '@/api/api';
 import { ModalProducto, TableProductos } from '@/components';
+import * as productsServices from '@/services/productos';
 
 const initialProduct = {
+  id: '',
   nombre: '',
-  precio: 0,
-  preparaciones: [],
+  costo: 0,
   selectedSizes: []
 };
 
 export const SelectedProductContext = createContext({
-  selectedProduct: initialProduct,
-  setSelectedProduct: () => {},
-  ingredientes: []
+  producto: initialProduct,
+  setProducto: () => {},
+  ingredientes: [],
+  preparaciones: [],
+  setPreparaciones: () => {}
 });
 
 const Productos = () => {
   const [showModal, setShowModal] = useState(false);
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
+  const [action, setAction] = useState('create');
 
   const [ingredientes, setIngredientes] = useState([]);
+  const [producto, setProducto] = useState(initialProduct);
+  const [preparaciones, setPreparaciones] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const [selectedProduct, setSelectedProduct] = useState(initialProduct);
+  const handleCreate = () => {
+    setAction('create');
+    setProducto(initialProduct);
+    setPreparaciones([]);
+    setShowModal(true);
+  };
 
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleUpdate = (producto) => {
+    setAction('update');
+    handleChangeProducto(producto);
+    setShowModal(true);
+  };
 
   // show products
   const getProductos = async () => {
@@ -47,6 +63,60 @@ const Productos = () => {
       return setIngredientes(response.data);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleChangeProducto = useCallback((producto) => {
+    const { preparaciones, ...rest } = producto;
+
+    setProducto(rest);
+    setPreparaciones(preparaciones);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (producto.nombre.trim() === '') {
+      return toast.error('El nombre del producto es obligatorio.');
+    }
+
+    if (!producto.costo) {
+      return toast.error('El precio del producto es obligatorio.');
+    }
+
+    if (isNaN(producto.costo)) {
+      return toast.error('El precio del producto no es válido.');
+    }
+
+    if (preparaciones.length === 0) {
+      return toast.error('No se ha seleccionado ningún ingrediente.');
+    }
+
+    setLoading(true);
+
+    try {
+      const data = {
+        id: producto.id,
+        nombre: producto.nombre,
+        precio: producto.precio,
+        preparaciones
+      };
+
+      if (action === 'create') {
+        await productsServices.createProduct(data);
+      } else if (action === 'update') {
+        await productsServices.updateProduct(data);
+      }
+
+      toast.success('Producto agregado correctamente');
+      setPreparaciones([]);
+      setShowModal(false);
+      getProductos();
+    } catch (err) {
+      toast.error('No se pudo guardar el producto');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,7 +152,7 @@ const Productos = () => {
 
       {/* Boton agg ingredientes */}
       <div className="mt-3">
-        <button className="btn" onClick={handleOpenModal}>
+        <button className="btn" onClick={handleCreate}>
           Agregar producto
         </button>
       </div>
@@ -93,19 +163,22 @@ const Productos = () => {
           search={search}
           products={products}
           getProductos={getProductos}
-          setShowModal={setShowModal}
-          onChangeSelectedProduct={setSelectedProduct}
+          onUpdate={handleUpdate}
         />
       </div>
       <SelectedProductContext.Provider
-        value={{ selectedProduct, setSelectedProduct, ingredientes }}
+        value={{
+          producto,
+          setProducto,
+          ingredientes,
+          preparaciones,
+          setPreparaciones,
+          onUpdate: handleUpdate,
+          onSubmit: handleSubmit,
+          loading
+        }}
       >
-        <ModalProducto
-          handleCloseModal={handleCloseModal}
-          modalOpen={showModal}
-          setModalOpen={setShowModal}
-          getProductos={getProductos}
-        />
+        <ModalProducto isOpen={showModal} onClose={() => setShowModal(false)} />
       </SelectedProductContext.Provider>
     </div>
   );

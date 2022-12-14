@@ -18,10 +18,11 @@ const columns = [
   { id: 'acciones', label: 'Acciones' }
 ];
 
-const TableIngredientesTab = ({ carrito, setCarrito, selectedSizes = [] }) => {
+const TableIngredientesTab = ({ selectedTab = '' }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
-  const { ingredientes } = useContext(SelectedProductContext);
+  const { producto, ingredientes, preparaciones, setPreparaciones } =
+    useContext(SelectedProductContext);
 
   // Paginacion de la tabla del modal
   const handleChangePage = (event, newPage) => {
@@ -34,21 +35,32 @@ const TableIngredientesTab = ({ carrito, setCarrito, selectedSizes = [] }) => {
   };
 
   // Agregamos un producto al carrito
-  const findProduct = (id) => {
-    if (selectedSizes.length === 0) {
+  const addIngrediente = (id) => {
+    if (!selectedTab) {
       return toast.error('No se ha seleccionado ningún tamaño.');
     }
 
-    if (carrito.some((item) => item.id === id)) {
+    if (
+      preparaciones.some(
+        (item) => item.id_materia === id && item.size === selectedTab
+      )
+    ) {
       return toast.error('El producto ya ha sido agregado.');
     }
 
-    const data = ingredientes.find((ingrediente) => ingrediente.id === id);
+    const ingrediente = ingredientes.find(
+      (ingrediente) => ingrediente.id === id
+    );
 
-    setCarrito([
-      ...carrito,
-      { ...data, small: 0, medium: 0, large: 0, unique: 0 }
-    ]);
+    setPreparaciones((current) =>
+      current.concat({
+        id_materia: id,
+        id_producto: producto.id,
+        tamanio: selectedTab,
+        cantidad: 1,
+        materiaPrima: ingrediente
+      })
+    );
   };
 
   return (
@@ -91,7 +103,7 @@ const TableIngredientesTab = ({ carrito, setCarrito, selectedSizes = [] }) => {
                       <button
                         type="button"
                         className="w-max px-3 py-1 cursor-pointer rounded-full bg-azul-marino/20 font-medium text-azul-marino"
-                        onClick={() => findProduct(item.id)}
+                        onClick={() => addIngrediente(item.id)}
                       >
                         Agregar
                       </button>

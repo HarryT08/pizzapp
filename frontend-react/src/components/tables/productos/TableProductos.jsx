@@ -27,8 +27,7 @@ const TableProductos = ({
   search,
   products,
   getProductos,
-  setShowModal,
-  onChangeSelectedProduct
+  onUpdate
 }) => {
   const [pageProducts, setPageProducts] = useState(0);
   const [rowsProducts, setRowsProducts] = useState(10);
@@ -85,8 +84,7 @@ const TableProductos = ({
         producto.id
       );
 
-      onChangeSelectedProduct(object);
-      setShowModal(true);
+      onUpdate(object);
     } catch (error) {
       toast.error('No se pudo obtener el producto');
       console.error(error);

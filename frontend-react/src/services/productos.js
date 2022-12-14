@@ -5,18 +5,17 @@ export async function getProductoAndPreparaciones(idProducto) {
     '/productos/productsAndPreparations/' + idProducto
   );
 
-  const { costo, ...rest } = response.data;
+  const [data] = response.data;
   const selectedSizes = [];
 
-  response.data.preparaciones.forEach(({ tamanio }) => {
+  data.preparaciones.forEach(({ tamanio }) => {
     if (!selectedSizes.includes(tamanio)) {
       selectedSizes.push(tamanio);
     }
   });
 
   const producto = {
-    ...rest,
-    precio: costo,
+    ...data,
     selectedSizes
   };
 
@@ -29,4 +28,8 @@ export function getProducts() {
 
 export function createProduct(producto) {
   return instance.post('/productos', producto);
+}
+
+export function updateProduct(producto) {
+  return instance.put(`/productos/${producto.id}`, producto);
 }
