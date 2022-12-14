@@ -140,3 +140,13 @@ export const getProductsAndPreparations = async (req: Request, res: Response) =>
   }
   return res.json(productos);
 }
+
+
+export const getProductAndPreparations =async (req : Request, res : Response) => {
+  const { id } = req.params;
+  const parseId = {
+    id: Number(id),
+  };
+  const producto = await Producto.findOne({where: parseId, relations: ["preparaciones", "preparaciones.materiaPrima"]});
+  return res.status(200).json(producto); 
+}
