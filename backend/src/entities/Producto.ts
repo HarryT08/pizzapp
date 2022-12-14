@@ -23,7 +23,7 @@ export class Producto extends BaseEntity{
     costo : number;
 
     @OneToMany(() => Preparacion,(preparacion) => preparacion.producto)
-    @JoinColumn({name : 'id_producto'})
+    // @JoinColumn({name : 'id_producto'})
     preparaciones : Preparacion[];
 
     constructor(){

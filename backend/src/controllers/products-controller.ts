@@ -144,9 +144,8 @@ export const getProductsAndPreparations = async (req: Request, res: Response) =>
 
 export const getProductAndPreparations =async (req : Request, res : Response) => {
   const { id } = req.params;
-  const parseId = {
-    id: Number(id),
-  };
-  const producto = await Producto.findOne({where: parseId, relations: ["preparaciones", "preparaciones.materiaPrima"]});
+  const productos = await Producto.find({relations: ["preparaciones", "preparaciones.materiaPrima"]})
+  const producto = productos.find( producto => producto.id === Number(id))
+  if(!producto) return res.status(404).json({message: "Producto no encontrado"})
   return res.status(200).json(producto); 
 }
