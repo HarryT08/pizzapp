@@ -1,0 +1,7 @@
+.bodyTable{
+    text-align: center;
+}
+
+.bodyTable:nth-child(2n + 2){
+    background-color: #fff;
+}

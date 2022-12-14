@@ -323,3 +323,27 @@ export const dataOrdenes = [
     estado: 'Pendiente'
   }
 ]
+
+export const dataFactura = [
+  {
+    id: 1,
+    nombreProducto: 'Hamburguesa especial',
+    precioUnitario: '$10.000',
+    cantidad: 2,
+    precioTotal: '$20.000'
+  },
+  {
+    id: 2,
+    nombreProducto: 'Hamburguesa especial',
+    precioUnitario: '$10.000',
+    cantidad: 2,
+    precioTotal: '$20.000'
+  },
+  {
+    id: 3,
+    nombreProducto: 'Hamburguesa especial',
+    precioUnitario: '$10.000',
+    cantidad: 2,
+    precioTotal: '$20.000'
+  }
+]

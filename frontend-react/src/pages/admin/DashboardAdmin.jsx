@@ -8,6 +8,7 @@ import {
   Cuentas,
   Mesas,
   Facturar,
+  Factura
 } from ".";
 import {
   INDEX_ADMIN,
@@ -18,6 +19,7 @@ import {
   CUENTAS_ADMIN,
   MESAS_ADMIN,
   FACTURAR_ADMIN,
+  FACTURA_ADMIN
 } from "../../routes/paths";
 import { dataSidebar } from "../../data/datos";
 import { Navbar, Sidebar } from "../../components";
@@ -66,6 +68,7 @@ const DashboardAdmin = () => {
               <Route path={CUENTAS_ADMIN} element={<Cuentas />} />
               <Route path={MESAS_ADMIN} element={<Mesas />} />
               <Route path={FACTURAR_ADMIN} element={<Facturar />} />
+              <Route path={`${FACTURA_ADMIN}/:id`} element={<Factura/>}/>
             </Routes>
           </div>
         </main>
