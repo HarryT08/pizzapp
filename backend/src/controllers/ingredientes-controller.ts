@@ -1,18 +1,43 @@
 import { Request, Response } from 'express';
 import { MateriaPrima } from '../entities/MateriaPrima';
+import { cleanProductName } from "../libs/cleanFunctions";
 
 export const createIngredient = async(req : Request , res : Response) => {
     const {nombre , existencia} = req.body;
-    const materiaPrima = new MateriaPrima();
-    materiaPrima.init(nombre, existencia);
-    const saved = await materiaPrima.save();
-    return res.json({...saved});
+    const nameClean = cleanProductName(nombre);
+    const ingrediente = await searchIngredient(nameClean);
+    
+    if(ingrediente){
+        return res.status(400).json({
+            message: "El ingrediente ya existe"
+        });
+    }
+
+    try {
+        const materiaPrima = new MateriaPrima();
+        materiaPrima.init(nombre, existencia);
+        const saved = await materiaPrima.save();
+        return res.status(201).json({
+            message : "Ingrediente creado con exito",
+            ...saved
+        });
+    } catch (error) {
+        if (error instanceof Error)
+            return res.status(500).json({ message: error.message });
+    }
 }
+
+const searchIngredient = async (nombre : string)  => {
+    const ingrediente = await MateriaPrima.findOneBy({
+      nombre : nombre
+    })
+    return ingrediente
+  }
+
 
 export const updateIngredient = async (req : Request , res : Response) => {
     const id = parseInt(req.params['id'])
     let {nombre , existencia} = req.body;
-    //console.log("El id de " + nombre + " es " + id);
     const materiaPrima = await MateriaPrima.findOneBy({id : id});
     if(materiaPrima){
         materiaPrima.nombre = nombre;

@@ -61,9 +61,8 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 const searchProduct = async (nombre : string)  => {
-  let nameClean = cleanProductName(nombre);
   const producto = await Producto.findOneBy({
-    nombre : nameClean
+    nombre : nombre
   })
   return producto
 }
