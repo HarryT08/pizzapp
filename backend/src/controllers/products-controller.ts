@@ -35,18 +35,43 @@ Metodo para crear un producto, usando el ORM de typeorm
 */
 export const createProduct = async (req: Request, res: Response) => {
   let { nombre, precio, presentaciones } = req.body;
-  const producto = new Producto();
-  nombre = cleanProductName(nombre);
-  producto.init(nombre, precio);
-  const saved = await producto.save();
-  createPreparation(saved, presentaciones);
-  return res.json("Producto creado");
+  const nameClean = cleanProductName(nombre);
+  const product = await searchProduct(nameClean);
+
+  if( product ){
+    return res.status(400).json({
+      message: "El producto ya existe",
+    }); 
+  }
+
+  try {
+    const newProduct = new Producto();
+    newProduct.init( nameClean, precio );
+    const saved = await newProduct.save();
+    createPreparation(saved, presentaciones);
+
+    return res.status(201).json({
+      message : "Producto creado con exito"
+    });
+
+  } catch (error) {
+    if (error instanceof Error)
+      return res.status(500).json({ message: error.message });
+  }
 };
+
+const searchProduct = async (nombre : string)  => {
+  let nameClean = cleanProductName(nombre);
+  const producto = await Producto.findOneBy({
+    nombre : nameClean
+  })
+  return producto
+}
 
 /*
 Metodo para crear la preparacion de un producto, usando el ORM de typeorm
 */
-function createPreparation(producto: Producto, presentaciones: any) {
+const createPreparation = (producto: Producto, presentaciones: any) => {
   let data: Preparacion[] = [];
   presentaciones.forEach((presentacion: any) => {
     const size = presentacion["tamaño"];
