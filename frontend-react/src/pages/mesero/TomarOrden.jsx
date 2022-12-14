@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { instance } from "../../api/api";
-import { TableCarritoProductos, TableProductosMesero } from "../../components";
+import { useState, useEffect } from 'react';
+import { instance } from '@/api/api';
+import { TableCarritoProductos, TableProductosMesero } from '@/components';
 
 const TomarOrden = () => {
   const [products, setProducts] = useState([]);
@@ -8,7 +8,7 @@ const TomarOrden = () => {
 
   const getProductsOrder = async () => {
     try {
-      const response = await instance.get("/productos/productsAndPreparations");
+      const response = await instance.get('/productos/productsAndPreparations');
       console.log(response.data);
       setProducts(response.data);
     } catch (err) {
@@ -23,7 +23,6 @@ const TomarOrden = () => {
   return (
     <div>
       <div className="mb-10">
-        {console.log("Esta es la informacion del carrito ->", carrito)}
         <TableCarritoProductos carrito={carrito} setCarrito={setCarrito} />
       </div>
       <div>

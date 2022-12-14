@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -7,48 +7,37 @@ import {
   TableContainer,
   TableRow,
   TableHead,
-  Paper,
-} from "@mui/material";
+  Paper
+} from '@mui/material';
+import RowCarritoProductos from '@/components/meseros/RowCarritoProductos';
 
 const columnas = [
-  { id: "nombre", label: "Nombre" },
-  { id: "cantidad", label: "Cantidad" },
-  { id: "acciones", label: "Acciones" },
+  { id: 'nombre', label: 'Nombre' },
+  { id: 'cantidad', label: 'Cantidad' },
+  { id: 'acciones', label: 'Acciones' }
 ];
 
 const TableCarritoProductos = ({ carrito, setCarrito }) => {
+  const [observacion, setObservacion] = useState('');
 
-  const [observacion, setOberservacion] = useState("")
+  const handleChangeCantidad = (id, cantidad) => {
+    setCarrito((current) =>
+      current.map((item) => {
+        if (item.id === id) {
+          return { ...item, cantidad };
+        }
 
-  // Aumentar cantidades del carrito
-  const increaseAmount = (id) => {
-    carrito.forEach((item) => {
-      if (item.id === id) {
-        item.cantidad += 1;
-      }
-    });
-    setCarrito([...carrito]);
+        return item;
+      })
+    );
   };
 
-  // Disminuir cantidades del carrito y eliminar del carrito
-  const decreaseAmount = (id) => {
-    carrito.forEach((item) => {
-      if (item.id === id) {
-        if (item.cantidad >= 1) {
-          item.cantidad -= 1;
-        } else if (item.cantidad === 0) {
-          const check = window.confirm(
-            "¿Desea eliminar el producto del carrito?"
-          );
-          if (check) {
-            carrito = carrito.filter((item) => {
-              return item.id !== id;
-            });
-          }
-        }
-      }
-    });
-    setCarrito([...carrito]);
+  const handleDeleteProduct = (id) => {
+    const confirm = window.confirm('¿Está seguro de eliminar el producto?');
+
+    if (confirm) {
+      setCarrito((current) => current.filter((item) => item.id !== id));
+    }
   };
 
   return (
@@ -56,10 +45,16 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
       <div className="flex items-center gap-10 mb-3 overflow-x-auto">
         <h1 className="font-bold text-base">Carrito de productos</h1>
         <div className="flex gap-5">
-          <Link to={'/mesero/realizar-pedido'} className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer">
+          <Link
+            to={'/mesero/realizar-pedido'}
+            className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer"
+          >
             Terminar pedido
           </Link>
-          <Link to={'/mesero/realizar-pedido'} className="rounded-md py-2 px-8 text-xs bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white">
+          <Link
+            to={'/mesero/realizar-pedido'}
+            className="rounded-md py-2 px-8 text-xs bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white"
+          >
             Volver
           </Link>
         </div>
@@ -68,14 +63,14 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
-              <TableRow style={{ background: "#D00000" }}>
+              <TableRow style={{ background: '#D00000' }}>
                 {columnas.map((columna) => (
                   <TableCell
                     key={columna.id}
                     style={{
-                      color: "#fff",
-                      fontWeight: "bold",
-                      fontFamily: "Montserrat",
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      fontFamily: 'Montserrat'
                     }}
                     align="center"
                   >
@@ -86,26 +81,12 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
             </TableHead>
             <TableBody>
               {carrito.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell align="center">{product.nombre}</TableCell>
-                  <TableCell align="center">{product.cantidad}</TableCell>
-                  <TableCell align="center">
-                    <div className="flex gap-5 justify-center">
-                      <span
-                        className="rounded-full p-1 px-2.5 text-sm border-2 border-[#008000]/20 bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer"
-                        onClick={() => increaseAmount(product.id)}
-                      >
-                        +
-                      </span>
-                      <span
-                        className="rounded-full p-1 px-2.5 text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white cursor-pointer"
-                        onClick={() => decreaseAmount(product.id)}
-                      >
-                        -
-                      </span>
-                    </div>
-                  </TableCell>
-                </TableRow>
+                <RowCarritoProductos
+                  key={product.id}
+                  product={product}
+                  onDelete={handleDeleteProduct}
+                  onChange={handleChangeCantidad}
+                />
               ))}
             </TableBody>
           </Table>
@@ -120,7 +101,7 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
             id=""
             cols="20"
             rows="5"
-            onChange={(e) => setOberservacion(e.target.value)}
+            onChange={(e) => setObservacion(e.target.value)}
           />
         </div>
       </div>

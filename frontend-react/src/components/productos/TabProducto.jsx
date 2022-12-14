@@ -35,7 +35,7 @@ export default function TabProducto() {
           onChange={(e) =>
             setProducto((current) => ({
               ...current,
-              costo: Number(e.target.value.replace(/[^0-9]+/, ''))
+              costo: Number(e.target.value.replace(/[^0-9]+/g, ''))
             }))
           }
         />

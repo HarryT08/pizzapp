@@ -12,7 +12,7 @@ export default function InputIngrediente({ preparacion, onDelete }) {
   };
 
   const handleBlur = (e) => {
-    let value = Number(e.target.value.replace(/[^0-9]+/, ''));
+    let value = Number(e.target.value.replace(/[^0-9]+/g, ''));
 
     if (value < 1 || isNaN(value)) {
       value = 1;
