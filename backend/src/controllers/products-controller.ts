@@ -30,8 +30,6 @@ export const getProducts = async (req: Request, res: Response) => {
     });
   }
 };
-//pizza hawaiana
-//pizza hawaiana
 /*
 Metodo para crear un producto, usando el ORM de typeorm
 */
@@ -105,38 +103,26 @@ export const updateProduct = async (req: Request, res: Response) => {
     producto.nombre = nombre;
     producto.costo = costo;
     await updatePreparations(producto, chosen);
-    //producto.save()
+    producto.save()
   }
-  res.json("yes");
+  //Producto Actualizado con exito
+  res.sendStatus(204)
 };
 
-/*
-Metodo para actualizar las preparaciones de un producto, usando el ORM de typeorm
-*/
 async function updatePreparations(product: Producto, chosen: any) {
-  console.log(product.id);
-  const preps = await Preparacion.findBy({
-    id_producto: product.id,
-  });
-  console.log(preps);
-
-  /*chosen.forEach( async ( presentacion : any ) => {
-    const preparaciones = await Preparacion.findBy({
-      id_producto : id_producto,
-      id_materia : presentacion.ingredientes[0].id
+  chosen.forEach(  ( presentacion : any ) => {
+    const id = product.id;
+    presentacion.ingredientes.forEach( async ( ingrediente : any ) => {
+      const idMateria = ingrediente.id;
+      const cantidad = ingrediente.cantidad;
+        let query = 'UPDATE preparacion SET cantidad = ?  WHERE id_producto = ? AND id_materia = ? AND tamanio = ?';
+        await Preparacion.query(query, [cantidad, id, idMateria, presentacion.tamaño]);
     })
-    console.log(preparaciones.length)
-  })*/
+  })
 }
 
 export const getProductsAndPreparations = async (req: Request, res: Response) => {
   const productos = await Producto.find({relations: ["preparaciones", "preparaciones.materiaPrima"]});
-
-  
-
-  
-  console.log(productos[0]);
-
   for (const producto of productos) {
     let records : Record<string, number> = { }  
     for (const preparacion of producto.preparaciones) {
