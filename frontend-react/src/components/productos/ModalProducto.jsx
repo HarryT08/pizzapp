@@ -1,7 +1,7 @@
 import { Modal, Fade } from "@mui/material";
-import { Tap } from "../..";
+import { Tap } from "@/components";
 
-const ModalAggProducto = ({
+const ModalProducto = ({
     modalOpen,
     getProductos,
     handleCloseModal,
@@ -26,4 +26,4 @@ const ModalAggProducto = ({
     );
 };
 
-export default ModalAggProducto;
+export default ModalProducto;

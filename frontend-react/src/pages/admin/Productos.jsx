@@ -1,29 +1,58 @@
-import { useState, useEffect } from "react";
-import { instance } from "../../api/api";
-import { ModalAggProducto, TableProductos } from "../../components";
-import { FiSearch } from "react-icons/fi";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect, createContext } from 'react';
+import { FiSearch } from 'react-icons/fi';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { instance } from '@/api/api';
+import { ModalProducto, TableProductos } from '@/components';
+
+const initialProduct = {
+  nombre: '',
+  precio: 0,
+  preparaciones: [],
+  selectedSizes: []
+};
+
+export const SelectedProductContext = createContext({
+  selectedProduct: initialProduct,
+  setSelectedProduct: () => {},
+  ingredientes: []
+});
 
 const Productos = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
+  const [showModal, setShowModal] = useState(false);
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
+
+  const [ingredientes, setIngredientes] = useState([]);
+
+  const [selectedProduct, setSelectedProduct] = useState(initialProduct);
+
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   // show products
   const getProductos = async () => {
     try {
-      const response = await instance.get("/productos");
+      const response = await instance.get('/productos');
       setProducts(response.data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+    }
+  };
+
+  const getIngredientes = async () => {
+    try {
+      const response = await instance.get('/ingredientes');
+      return setIngredientes(response.data);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   useEffect(() => {
     getProductos();
+    getIngredientes();
   }, []);
 
   return (
@@ -53,10 +82,7 @@ const Productos = () => {
 
       {/* Boton agg ingredientes */}
       <div className="mt-3">
-        <button
-          className="btn"
-          onClick={handleOpenModal}
-        >
+        <button className="btn" onClick={handleOpenModal}>
           Agregar producto
         </button>
       </div>
@@ -67,14 +93,20 @@ const Productos = () => {
           search={search}
           products={products}
           getProductos={getProductos}
+          setShowModal={setShowModal}
+          onChangeSelectedProduct={setSelectedProduct}
         />
       </div>
-      <ModalAggProducto
-        handleCloseModal={handleCloseModal}
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        getProductos={getProductos}
-      />
+      <SelectedProductContext.Provider
+        value={{ selectedProduct, setSelectedProduct, ingredientes }}
+      >
+        <ModalProducto
+          handleCloseModal={handleCloseModal}
+          modalOpen={showModal}
+          setModalOpen={setShowModal}
+          getProductos={getProductos}
+        />
+      </SelectedProductContext.Provider>
     </div>
   );
 };

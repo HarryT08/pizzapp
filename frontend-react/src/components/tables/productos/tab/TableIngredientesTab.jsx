@@ -1,31 +1,27 @@
-import { useEffect, useState } from 'react';
 import {
+  Paper,
   Table,
+  TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  Paper,
-  TableBody,
-  TablePagination
+  TablePagination,
+  TableRow
 } from '@mui/material';
-import { instance } from '../../../../api/api';
+import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
+
+import { SelectedProductContext } from '@/pages/admin/Productos';
 
 const columns = [
   { id: 'nombre', label: 'Nombre' },
   { id: 'acciones', label: 'Acciones' }
 ];
 
-const TableIngredientesTab = ({
-  carrito,
-  setCarrito,
-  ingredientes,
-  setIngredientes,
-  sizes = []
-}) => {
+const TableIngredientesTab = ({ carrito, setCarrito, selectedSizes = [] }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
+  const { ingredientes } = useContext(SelectedProductContext);
 
   // Paginacion de la tabla del modal
   const handleChangePage = (event, newPage) => {
@@ -37,23 +33,9 @@ const TableIngredientesTab = ({
     setPage(0);
   };
 
-  // Obtener todos los productos
-  const getIngredientes = async () => {
-    try {
-      const response = await instance.get('/ingredientes');
-      return setIngredientes(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    getIngredientes();
-  }, []);
-
   // Agregamos un producto al carrito
   const findProduct = (id) => {
-    if (sizes.length === 0) {
+    if (selectedSizes.length === 0) {
       return toast.error('No se ha seleccionado ningún tamaño.');
     }
 
@@ -107,7 +89,7 @@ const TableIngredientesTab = ({
                   >
                     <div className="flex justify-center">
                       <button
-                        type='button'
+                        type="button"
                         className="w-max px-3 py-1 cursor-pointer rounded-full bg-azul-marino/20 font-medium text-azul-marino"
                         onClick={() => findProduct(item.id)}
                       >

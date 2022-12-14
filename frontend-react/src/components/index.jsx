@@ -19,7 +19,7 @@ export {default as TableProductosMesero} from './tables/mesero/realizarPedido/Ta
 
 export {default as ModalAggCuenta} from './modals/cuentas/ModalAggCuenta'
 export {default as ModalEditCuenta} from './modals/cuentas/ModalEditCuenta'
-export {default as ModalAggProducto} from './modals/productos/ModalAggProducto'
+export {default as ModalProducto} from './productos/ModalProducto'
 export {default as ModalAggMesa} from './modals/mesas/ModalAggMesa'
 export {default as  ModalAggIngrediente} from './modals/ingredientes/ModalAggIngrediente'
 export {default as ModalEditIngrediente} from './modals/ingredientes/ModalEditIngrediente'
