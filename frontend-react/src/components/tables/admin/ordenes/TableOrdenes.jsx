@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { dataOrdenes } from "../../../../data/datos";
+import { useState } from 'react';
+import { dataOrdenes } from '../../../../data/datos';
 import {
   Radio,
   RadioGroup,
@@ -12,17 +12,18 @@ import {
   TableRow,
   TableHead,
   Paper,
-  TablePagination,
-} from "@mui/material";
-import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
-import Swal from "sweetalert2";
+  TablePagination
+} from '@mui/material';
+import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
 
 const columns = [
-  { id: "orden", label: "#Orden" },
-  { id: "fecha", label: "Fecha" },
-  { id: "totalOrden", label: "Total Orden" },
-  { id: "estado", label: "Estado" },
-  { id: "acciones", label: "Acciones" },
+  { id: 'orden', label: '#Orden' },
+  { id: 'fecha', label: 'Fecha' },
+  { id: 'totalOrden', label: 'Total Orden' },
+  { id: 'estado', label: 'Estado' },
+  { id: 'acciones', label: 'Acciones' }
 ];
 
 const TableOrdenes = () => {
@@ -52,18 +53,18 @@ const TableOrdenes = () => {
 
   const showAlert = (id) => {
     Swal.fire({
-      title: "¿Estás seguro?",
-      text: "No podrás revertir esta acción",
-      icon: "warning",
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esta acción',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#008000",
-      cancelButtonColor: "#D00000",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#008000',
+      cancelButtonColor: '#D00000',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteTableOrder(id);
-        Swal.fire("Eliminado", "El producto ha sido eliminado", "success");
+        Swal.fire('Eliminado', 'El producto ha sido eliminado', 'success');
       }
     });
   };
@@ -89,19 +90,19 @@ const TableOrdenes = () => {
             value="terminado"
             control={<Radio />}
             label="Terminado"
-            onClick={() => filterResults("Terminado")}
+            onClick={() => filterResults('Terminado')}
           />
           <FormControlLabel
             value="pendiente"
             control={<Radio />}
             label="Pendiente"
-            onClick={() => filterResults("Pendiente")}
+            onClick={() => filterResults('Pendiente')}
           />
           <FormControlLabel
             value="cancelado"
             control={<Radio />}
             label="Cancelado"
-            onClick={() => filterResults("Cancelado")}
+            onClick={() => filterResults('Cancelado')}
           />
         </RadioGroup>
       </FormControl>
@@ -110,14 +111,14 @@ const TableOrdenes = () => {
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
-              <TableRow style={{ background: "#D00000" }}>
+              <TableRow style={{ background: '#D00000' }}>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
                     style={{
-                      color: "#fff",
-                      fontWeight: "bold",
-                      fontFamily: "Montserrat",
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      fontFamily: 'Montserrat'
                     }}
                     align="center"
                   >
@@ -132,29 +133,29 @@ const TableOrdenes = () => {
                 .map((item) => (
                   <TableRow key={item.id}>
                     <TableCell
-                      style={{ fontFamily: "Montserrat" }}
+                      style={{ fontFamily: 'Montserrat' }}
                       align="center"
                     >
                       {item.id}
                     </TableCell>
                     <TableCell
-                      style={{ fontFamily: "Montserrat" }}
+                      style={{ fontFamily: 'Montserrat' }}
                       align="center"
                     >
                       {item.fecha}
                     </TableCell>
                     <TableCell
-                      style={{ fontFamily: "Montserrat" }}
+                      style={{ fontFamily: 'Montserrat' }}
                       align="center"
                     >
                       {item.total}
                     </TableCell>
                     <TableCell
-                      style={{ fontFamily: "Montserrat" }}
+                      style={{ fontFamily: 'Montserrat' }}
                       align="center"
                     >
-                      {" "}
-                      <p className={`${item.estado}`}>{item.estado}</p>{" "}
+                      {' '}
+                      <p className={`${item.estado}`}>{item.estado}</p>{' '}
                     </TableCell>
                     <TableCell align="center">
                       <div className="flex items-center gap-5 justify-center">
@@ -182,6 +183,8 @@ const TableOrdenes = () => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={labelRowsPerPage}
+          labelDisplayedRows={labelDisplayedRows}
         />
       </Paper>
     </>

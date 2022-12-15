@@ -12,7 +12,7 @@ import {
 import { toast } from 'react-toastify';
 import { FiSearch } from 'react-icons/fi';
 import RowProductosMesero from '@/components/meseros/RowProductosMesero';
-import Alert from '@mui/material/Alert';
+import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
 
 const columnas = [
   { id: 'nombre', label: 'Nombre' },
@@ -75,7 +75,7 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
         </div>
       </form>
       {products.length === 0 ? (
-        <Alert severity="error"><strong>No hay productos.</strong></Alert>
+        <p className="text-center">No hay productos</p>
       ) : (
         <Paper>
           {filterProducts().length === 0 ? (
@@ -121,6 +121,8 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
             page={pageProducts}
             onPageChange={handleChangePageProducts}
             onRowsPerPageChange={handleChangeRowsPerPageProducts}
+            labelRowsPerPage={labelRowsPerPage}
+            labelDisplayedRows={labelDisplayedRows}
           />
         </Paper>
       )}

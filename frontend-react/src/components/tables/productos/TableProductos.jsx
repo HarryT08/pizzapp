@@ -10,12 +10,13 @@ import {
   Paper
 } from '@mui/material';
 import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 import { toast } from 'react-toastify';
 import Alert from '@mui/material/Alert';
 
 import { instance } from '@/api/api';
 import * as productosService from '@/services/productos';
+import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
 
 // Columnas de los productos
 const columnsProductos = [
@@ -24,12 +25,7 @@ const columnsProductos = [
   { id: 'acciones', label: 'Acciones' }
 ];
 
-const TableProductos = ({
-  search,
-  products,
-  getProductos,
-  onUpdate
-}) => {
+const TableProductos = ({ search, products, getProductos, onUpdate }) => {
   const [pageProducts, setPageProducts] = useState(0);
   const [rowsProducts, setRowsProducts] = useState(10);
 
@@ -50,8 +46,7 @@ const TableProductos = ({
       text: 'No podrás revertir esta acción',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#008000',
-      cancelButtonColor: '#D00000',
+      confirmButtonColor: '#D00000',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -159,6 +154,8 @@ const TableProductos = ({
         page={pageProducts}
         onPageChange={handleChangePageProducts}
         onRowsPerPageChange={handleChangeRowsPerPageProducts}
+        labelRowsPerPage={labelRowsPerPage}
+        labelDisplayedRows={labelDisplayedRows}
       />
     </Paper>
   );

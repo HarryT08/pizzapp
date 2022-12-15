@@ -12,6 +12,7 @@ import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { SelectedProductContext } from '@/pages/admin/Productos';
+import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
 
 const columns = [
   { id: 'nombre', label: 'Nombre' },
@@ -118,7 +119,8 @@ const TableIngredientesTab = ({ selectedSizes = [] }) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage={'Filas por página'}
+        labelRowsPerPage={labelRowsPerPage}
+        labelDisplayedRows={labelDisplayedRows}
       />
     </div>
   );
