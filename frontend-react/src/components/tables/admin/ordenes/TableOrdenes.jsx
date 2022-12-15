@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { dataOrdenes } from '../../../../data/datos';
 import {
   Radio,
   RadioGroup,
@@ -14,10 +13,10 @@ import {
   Paper,
   TablePagination
 } from '@mui/material';
-import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai';
+import { AiTwotoneDelete } from 'react-icons/ai';
 import { instance } from "../../../../api/api";
-import Swal from 'sweetalert2';
 import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 
 const columns = [
   { id: 'orden', label: '#Orden' },

@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { instance } from "../../api/api";
 import { GiKnifeFork } from "react-icons/gi";
 import { ModalAggMesa } from "../../components";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Alert from '@mui/material/Alert';
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
+import { ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Alert from "@mui/material/Alert";
 
 const Mesas = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -60,7 +60,9 @@ const Mesas = () => {
       {
         // Mensajes por si no hay mesas
         mesas.length === 0 ? (
-          <Alert severity="error"><strong>No hay mesas para editar</strong></Alert>
+          <Alert severity="error">
+            <strong>No hay mesas para editar</strong>
+          </Alert>
         ) : (
           <div className="mt-3">
             <div className="flex flex-wrap my-7 justify-center gap-10 items-center">

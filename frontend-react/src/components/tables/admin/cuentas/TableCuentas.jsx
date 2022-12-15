@@ -12,7 +12,7 @@ import {
   Paper,
 } from "@mui/material";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 
 const columns = [
   { id: "id", label: "Id" },

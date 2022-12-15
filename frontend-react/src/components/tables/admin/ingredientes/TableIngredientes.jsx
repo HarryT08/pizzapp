@@ -10,11 +10,11 @@ import {
     Paper,
     TablePagination,
 } from "@mui/material";
-import { ModalEditIngrediente } from "../../../";
+import { ModalEditIngrediente } from "@/components";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
-import { instance } from "../../../../api/api";
-import Swal from "sweetalert2";
+import { instance } from "@/api/api";
 import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 
 const columns = [
     { id: "nombre", label: "Nombre" },
