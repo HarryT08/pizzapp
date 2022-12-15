@@ -23,12 +23,14 @@ const Factura = () => {
       params: {estado: "Abierta"}
     });
     setDataMesa(response.data);
+    updateStateComanda();
   };
 
   const updateStateComanda = async () => {
     await instance.put(`/comanda/${id}`,{
       estado: "Facturado"
     });
+    updateMesa();
   };
 
   const updateMesa = async () => {
@@ -39,8 +41,6 @@ const Factura = () => {
 
   useEffect(() => {
     getComanda();
-    updateStateComanda();
-    updateMesa();
   }, []);
 
   return (

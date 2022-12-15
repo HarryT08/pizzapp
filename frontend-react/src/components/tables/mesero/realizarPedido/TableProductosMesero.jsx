@@ -35,13 +35,13 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
     setPageProducts(0);
   };
 
-  const handleAddProduct = (id) => {
+  const handleAddProduct = (id, selected) => {
     if (carrito.some((item) => item.id === id)) {
       return toast.error('El producto ya se encuentra en el carrito');
     }
 
     const product = products.find((product) => product.id === id);
-    setCarrito((current) => current.concat({ ...product, cantidad: 0 }));
+    setCarrito((current) => current.concat({ ...product, cantidad: 1, tamanio: selected}));
   };
 
   const filterProducts = () => {

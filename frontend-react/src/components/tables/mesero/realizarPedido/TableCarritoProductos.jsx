@@ -10,6 +10,8 @@ import {
   Paper
 } from '@mui/material';
 import RowCarritoProductos from '@/components/meseros/RowCarritoProductos';
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
+import { useNavigate } from "react-router-dom";
 
 const columnas = [
   { id: 'nombre', label: 'Nombre' },
@@ -19,6 +21,7 @@ const columnas = [
 
 const TableCarritoProductos = ({ carrito, setCarrito }) => {
   const [observacion, setObservacion] = useState('');
+  const navigate = useNavigate();
 
   const handleChangeCantidad = (id, cantidad) => {
     setCarrito((current) =>
@@ -33,24 +36,51 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
   };
 
   const handleDeleteProduct = (id) => {
-    const confirm = window.confirm('¿Está seguro de eliminar el producto?');
-
-    if (confirm) {
-      setCarrito((current) => current.filter((item) => item.id !== id));
-    }
+    Swal.fire({
+      title: `¿Estás seguro?`,
+      html: `No podrás revertir esto!`,
+      text: "No podrás revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#D00000",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setCarrito((current) => current.filter((item) => item.id !== id));
+        Swal.fire('Producto eliminado', '', 'success');
+      }
+    });
   };
+
+  const sendComanda = async () => {
+    if(carrito.length === 0) Swal.fire('Error', 'No hay productos en el carrito', 'error');
+    try{
+      console.log("Este es carrito", carrito);
+      /*const response = await instance.post('/comandas', {
+        observacion,
+        productos: carrito
+      })
+      navigate('/mesero/realizar-pedido');
+      ;*/
+      
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <>
       <div className="flex items-center gap-10 mb-3 overflow-x-auto">
         <h1 className="font-bold text-base">Carrito de productos</h1>
         <div className="flex gap-5">
-          <Link
-            to={'/mesero/realizar-pedido'}
+          <button
+            type="submit"
+            onClick={sendComanda}
             className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer"
           >
             Terminar pedido
-          </Link>
+          </button>
           <Link
             to={'/mesero/realizar-pedido'}
             className="rounded-md py-2 px-8 text-xs bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white"

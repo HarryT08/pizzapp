@@ -93,7 +93,6 @@ const TableCuentas = ({
 
   return (
     <>
-    {console.log(data)}
       {data.length === 0 ? (
         <Alert severity="error"><strong>No hay cuentas registradas.</strong></Alert>
       ) :(

@@ -156,6 +156,9 @@ async function updatePreparations(product: Producto, chosen: any) {
   }
 }
 
+/*
+Metodo para obtener los productos y sus preparaciones, usando el ORM de typeorm
+*/
 export const getProductsAndPreparations = async (
   req: Request,
   res: Response
@@ -184,6 +187,9 @@ export const getProductsAndPreparations = async (
   return res.json(productos);
 };
 
+/*
+Metodo para obtener los productos y sus preparaciones por id del producto, usando el ORM de typeorm
+*/
 export const getProductAndPreparations = async (
   req: Request,
   res: Response
