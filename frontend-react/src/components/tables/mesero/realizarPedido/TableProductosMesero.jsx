@@ -77,12 +77,12 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
       {products.length === 0 ? (
         <p className="text-center">No hay productos</p>
       ) : (
-        <Paper>
+        <Paper sx={{ mb: 3 }}>
           {filterProducts().length === 0 ? (
             <p className="text-center">Este producto no se ha agregado</p>
           ) : (
-            <TableContainer component={Paper} sx={{ minWidth: 650 }}>
-              <Table>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }}>
                 <TableHead>
                   <TableRow style={{ background: '#D00000' }}>
                     {columnas.map((columna) => (

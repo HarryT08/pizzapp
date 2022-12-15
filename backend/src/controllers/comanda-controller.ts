@@ -35,5 +35,31 @@ export const updateStateComanda = async (req: Request, res: Response) => {
         if (error instanceof Error)
             return res.status(500).json({message: error.message});
     }
+}
 
+/*
+Metodo para obtener las comandas, usando el ORM de typeorm
+*/
+export const getComandas = async (req: Request, res: Response) => {
+    try{
+        const comandas = await Comanda.find({order: {id: "DESC"}});
+        res.json(comandas);
+    }catch(error){
+        if (error instanceof Error)
+            return res.status(500).json({message: error.message});
+    }
+}
+
+/*
+Metodo para obtener las ultimas cinco comandas, usando el ORM de typeorm
+*/
+export const getLastComandas = async (req: Request, res: Response) => {
+    try{
+        const date = new Date();
+        const comandas = await Comanda.find({order: {id: "DESC"}, take: 5});
+        res.json(comandas);
+    }catch(error){
+        if (error instanceof Error)
+            return res.status(500).json({message: error.message});
+    }
 }

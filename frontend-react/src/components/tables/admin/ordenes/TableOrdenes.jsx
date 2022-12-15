@@ -15,6 +15,7 @@ import {
   TablePagination
 } from '@mui/material';
 import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai';
+import { instance } from "../../../../api/api";
 import Swal from 'sweetalert2';
 import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
 
@@ -26,10 +27,30 @@ const columns = [
   { id: 'acciones', label: 'Acciones' }
 ];
 
+const options = { style: 'currency', currency: 'COP', minimumFractionDigits: 0 };
+const numberFormat = new Intl.NumberFormat('es-CO', options);
+const fechaFormat = new Intl.DateTimeFormat('es-CO', {year: 'numeric', month: '2-digit', day: '2-digit' });
+
 const TableOrdenes = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [dataOrders, setDataOrders] = useState(dataOrdenes);
+  const [dataOrders, setDataOrders] = useState([]);
+  const [dataOrdenes, setDataOrdenes] = useState([]);
+
+  const getComandas = async() => {
+    try{
+      const response = await instance.get('/comanda');
+      setDataOrdenes(response.data);
+      setDataOrders(response.data);
+      console.log(response.data);
+    }catch(err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getComandas();
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -45,7 +66,7 @@ const TableOrdenes = () => {
   };
 
   const filterResults = (categoria) => {
-    const results = dataOrdenes.filter((curElem) => {
+    const results = dataOrders.filter((curElem) => {
       return curElem.estado === categoria;
     });
     setDataOrders(results);
@@ -69,12 +90,6 @@ const TableOrdenes = () => {
     });
   };
 
-  const ordernarUltimos = () => {
-    return dataOrders.sort((a, b) => {
-      return b.id - a.id;
-    });
-  };
-
   return (
     <>
       {/* Inputs filter */}
@@ -87,22 +102,16 @@ const TableOrdenes = () => {
             onClick={() => setDataOrders(dataOrdenes)}
           />
           <FormControlLabel
-            value="terminado"
+            value="facturado"
             control={<Radio />}
-            label="Terminado"
-            onClick={() => filterResults('Terminado')}
+            label="Facturado"
+            onClick={() => filterResults("Facturado")}
           />
           <FormControlLabel
-            value="pendiente"
+            value="abierto"
             control={<Radio />}
-            label="Pendiente"
-            onClick={() => filterResults('Pendiente')}
-          />
-          <FormControlLabel
-            value="cancelado"
-            control={<Radio />}
-            label="Cancelado"
-            onClick={() => filterResults('Cancelado')}
+            label="Abierto"
+            onClick={() => filterResults("Abierto")}
           />
         </RadioGroup>
       </FormControl>
@@ -128,7 +137,7 @@ const TableOrdenes = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {ordernarUltimos()
+              {dataOrders
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item) => (
                   <TableRow key={item.id}>
@@ -142,27 +151,24 @@ const TableOrdenes = () => {
                       style={{ fontFamily: 'Montserrat' }}
                       align="center"
                     >
-                      {item.fecha}
+                      {fechaFormat.format(new Date(item.fecha))}
                     </TableCell>
                     <TableCell
                       style={{ fontFamily: 'Montserrat' }}
                       align="center"
                     >
-                      {item.total}
+                      {numberFormat.format(item.total)}
                     </TableCell>
                     <TableCell
                       style={{ fontFamily: 'Montserrat' }}
                       align="center"
                     >
                       {' '}
-                      <p className={`${item.estado}`}>{item.estado}</p>{' '}
+                      <p className={`${item.estado}`}>{item.estado}</p>
+                      {' '}
                     </TableCell>
                     <TableCell align="center">
                       <div className="flex items-center gap-5 justify-center">
-                        <AiFillEdit
-                          size={25}
-                          className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
-                        />
                         <AiTwotoneDelete
                           size={25}
                           className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"

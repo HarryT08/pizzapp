@@ -105,8 +105,8 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
                     {filterData().length === 0 ? (
                         <p className="text-center">Este ingrediente no ha sido agregado</p>
                     ) : (
-                        <TableContainer component={Paper} sx={{ minWidth: 650 }}>
-                            <Table>
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }}>
                                 <TableHead>
                                     <TableRow style={{ background: "#D00000" }}>
                                         {columns.map((column) => (

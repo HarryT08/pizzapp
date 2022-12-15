@@ -1,7 +1,13 @@
 import { Router } from 'express';
 const router = Router();
 
-import { getComandaByMesa, updateStateComanda } from '../controllers/comanda-controller';
+import { getComandaByMesa, updateStateComanda, getComandas, getLastComandas } from '../controllers/comanda-controller';
+
+router.route("/")
+    .get(getComandas);
+
+router.route("/getLastComandas")
+    .get(getLastComandas);
 
 router.route('/:id')
     .get(getComandaByMesa)

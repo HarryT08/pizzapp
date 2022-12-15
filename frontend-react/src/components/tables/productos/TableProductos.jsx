@@ -25,7 +25,15 @@ const columnsProductos = [
   { id: 'acciones', label: 'Acciones' }
 ];
 
-const TableProductos = ({ search, products, getProductos, onUpdate }) => {
+const options = { style: 'currency', currency: 'COP', minimumFractionDigits: 0 };
+const numberFormat = new Intl.NumberFormat('es-CO', options);
+
+const TableProductos = ({
+  search,
+  products,
+  getProductos,
+  onUpdate
+}) => {
   const [pageProducts, setPageProducts] = useState(0);
   const [rowsProducts, setRowsProducts] = useState(10);
 
@@ -96,8 +104,8 @@ const TableProductos = ({ search, products, getProductos, onUpdate }) => {
       {filterData().length === 0 ? (
         <Alert severity="error"><strong>No hay productos.</strong></Alert>
       ) : (
-        <TableContainer component={Paper} sx={{ minWidth: 650 }}>
-          <Table>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow style={{ background: '#D00000' }}>
                 {columnsProductos.map((column) => (
@@ -123,7 +131,7 @@ const TableProductos = ({ search, products, getProductos, onUpdate }) => {
                 .map((product) => (
                   <TableRow key={product.id}>
                     <TableCell align="center">{product.nombre}</TableCell>
-                    <TableCell align="center">{product.costo}</TableCell>
+                    <TableCell align="center">{numberFormat.format(product.costo)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-5 justify-center">
                         <button onClick={() => handleEdit(product)}>

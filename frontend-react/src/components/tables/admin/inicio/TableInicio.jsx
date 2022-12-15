@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,18 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
-function createData(id, fecha, totalOrden, estado) {
-  return { id, fecha, totalOrden, estado };
-}
-
-const rows = [
-  createData(1, "30-09-2022", "$150000", "Terminado"),
-  createData(2, "20-09-2022", "$150000", "Pendiente"),
-  createData(3, "10-09-2022", "$150000", "Cancelado"),
-  createData(4, "30-08-2022", "$150000", "Terminado"),
-  createData(5, "20-08-2022", "$150000", "Cancelado"),
-];
+import { instance } from "../../../../api/api";
 
 const columns = [
   { id: 1, label: "#Orden" },
@@ -26,14 +15,25 @@ const columns = [
   { id: 4, label: "Estado" },
 ];
 
-const TableInicio = () => {
-  const [order, setOrder] = useState(rows);
+const options = { style: 'currency', currency: 'COP', minimumFractionDigits: 0 };
+const numberFormat = new Intl.NumberFormat('es-CO', options);
+const fechaFormat = new Intl.DateTimeFormat('es-CO', {year: 'numeric', month: '2-digit', day: '2-digit' });
 
-  const ordernarUltimos = () => {
-    return order.sort((a, b) => {
-      return b.id - a.id;
-    });
+const TableInicio = () => {
+  const [comandas, setComandas] = useState([]);
+
+  const getLastComandas = async () => {
+    try {
+      const response = await instance.get("/comanda/getLastComandas");
+      setComandas(response.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  useEffect(() => {
+    getLastComandas();
+  }, []);
 
   return (
     <>
@@ -54,25 +54,25 @@ const TableInicio = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ordernarUltimos().map((row) => (
-              <TableRow key={row.id}>
+            {comandas.map((comanda) => (
+              <TableRow key={comanda.id}>
                 <TableCell
                   style={{ fontFamily: "Montserrat" }}
                   align="center"
                   component="th"
                   scope="row"
                 >
-                  {row.id}
+                  {comanda.id}
                 </TableCell>
                 <TableCell style={{ fontFamily: "Montserrat" }} align="center">
-                  {row.fecha}
+                  {fechaFormat.format(new Date(comanda.fecha))}
                 </TableCell>
                 <TableCell style={{ fontFamily: "Montserrat" }} align="center">
-                  {row.totalOrden}
+                  {numberFormat.format(comanda.total)}
                 </TableCell>
                 <TableCell style={{ fontFamily: "Montserrat" }} align="center">
                   {" "}
-                  <p className={`${row.estado}`}>{row.estado}</p>{" "}
+                  <p className={`${comanda.estado}`}>{comanda.estado}</p>{" "}
                 </TableCell>
               </TableRow>
             ))}

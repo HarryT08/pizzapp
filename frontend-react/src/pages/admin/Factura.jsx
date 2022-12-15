@@ -27,7 +27,7 @@ const Factura = () => {
 
   const updateStateComanda = async () => {
     await instance.put(`/comanda/${id}`,{
-      estado: "Facturada"
+      estado: "Facturado"
     });
   };
 

@@ -21,7 +21,7 @@ export default function RowProductosMesero({ product, onAdd }) {
     <TableRow>
       <TableCell align="center">{product.nombre}</TableCell>
       <TableCell align="center">
-        {<select disabled={isEmpty}>{options}</select>}
+        {<select disabled={isEmpty} className="form-input mt-1 block p-3 w-full flex-1 rounded-md border-gray-300 focus:border-azul-marino focus:ring-azul-marino sm:text-sm">{options}</select>}
       </TableCell>
       <TableCell align="center">
         <div id="botoncito" className="flex justify-center">

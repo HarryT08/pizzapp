@@ -15,11 +15,11 @@
     @apply bg-gray-200;
   }
 
-  .Terminado {
+  .Facturado {
     @apply bg-verde-profundo/20 rounded-md p-1 text-verde-profundo;
   }
 
-  .Pendiente {
+  .Abierto {
     @apply bg-naranja-vivido/20 rounded-md p-1 text-naranja-vivido;
   }
 
