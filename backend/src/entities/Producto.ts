@@ -26,6 +26,9 @@ export class Producto extends BaseEntity{
     // @JoinColumn({name : 'id_producto'})
     preparaciones : Preparacion[];
 
+    @Column( {default : false} )
+    deleted: boolean;
+
     constructor(){
         super();
     }

@@ -93,17 +93,17 @@ export const deleteProduct = async (req: Request, res: Response) => {
     const id = Number.parseInt(req.params["id"]);
     console.log("Encontrado", id, typeof id);
 
-    await Preparacion.delete({
-      id_producto: id,
-    });
+    const product = await Producto.findOneBy({ id: id });
 
-    const result = await Producto.delete({ id: id });
-
-    if (result.affected === 0) {
+    if (!product) {
       return res.status(404).json({
         message: "Producto no encontrado",
       });
     }
+
+    product.deleted = true
+    await product.save()
+    await Preparacion.delete({ id_producto: id });
 
     return res.status(200).json({
       message: "Producto eliminado",
@@ -125,11 +125,16 @@ export const updateProduct = async (req: Request, res: Response) => {
   if (producto) {
     producto.nombre = nombre;
     producto.costo = costo;
-    await updatePreparations(producto, chosen);
-    producto.save()
+    try{
+      await updatePreparations(producto, chosen);
+      await producto.save()
+      res.status(204).json({ message: "Producto actualizado" });
+    }catch(error){
+      if (error instanceof Error)
+        return res.status(500).json({ message: error.message });
+    }
   }
-  //Producto Actualizado con exito
-  res.sendStatus(204)
+  
 };
 
 async function updatePreparations(product: Producto, chosen: any) {

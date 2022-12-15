@@ -29,10 +29,10 @@ export const createIngredient = async(req : Request , res : Response) => {
 
 const searchIngredient = async (nombre : string)  => {
     const ingrediente = await MateriaPrima.findOneBy({
-      nombre : nombre
+        nombre : nombre
     })
     return ingrediente
-  }
+}
 
 
 export const updateIngredient = async (req : Request , res : Response) => {
