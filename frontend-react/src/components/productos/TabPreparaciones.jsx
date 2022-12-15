@@ -51,6 +51,22 @@ export default function TabPreparaciones() {
 
     setSelectedTab(size.key);
     setSelectedSizes((current) => [...current, size]);
+
+    const record = {};
+
+    preparaciones.forEach(
+      (item) => (record[item.id_materia] = item.materiaPrima)
+    );
+
+    const newPreparaciones = Object.values(record).map((item) => ({
+      id_materia: item.id,
+      id_producto: producto.id,
+      tamanio: size.key,
+      cantidad: 1,
+      materiaPrima: item
+    }));
+
+    setPreparaciones((current) => current.concat(newPreparaciones));
   };
 
   const deleteIngrediente = (id) => {
@@ -75,9 +91,7 @@ export default function TabPreparaciones() {
           />
         ))}
       </ul>
-      <TableIngredientesTab
-        selectedTab={selectedTab}
-      />
+      <TableIngredientesTab selectedSizes={selectedSizes} />
       <div className="mt-2">
         <TabContext value={selectedTab}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

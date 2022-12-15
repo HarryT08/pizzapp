@@ -46,6 +46,7 @@ export default function InputIngrediente({ preparacion, onDelete }) {
         type="number"
         className="w-32 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
       />
+      <small>gramos</small>
       <div className="flex items-center">
         <button type="button" onClick={() => onDelete(preparacion.id)}>
           <AiFillCloseCircle className="text-rojo-fuerte/50 hover:text-rojo-fuerte cursor-pointer" />
