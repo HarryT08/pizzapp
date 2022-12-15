@@ -17,7 +17,7 @@ export class DetalleComanda extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
     
-    @ManyToOne(() => Comanda)
+    @ManyToOne(() => Comanda, (comanda) => comanda.detalleComanda)
     @JoinColumn({name: "idComanda"})
     comanda: Comanda;
 

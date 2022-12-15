@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Alert from '@mui/material/Alert';
 import {
     Table,
     TableBody,
@@ -97,7 +98,7 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
     return (
         <>
             {data.length === 0 ? (
-                <p className="text-center">No hay ingredientes</p>
+                <Alert severity="error"><strong>No hay mesas disponibles para Facturar</strong></Alert>
             ) : (
                 <Paper>
                     {filterData().length === 0 ? (

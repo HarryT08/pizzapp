@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { instance } from "../../../../api/api";
 import { ModalEditCuenta } from "../../../";
+import Alert from '@mui/material/Alert';
 import {
   Table,
   TableBody,
@@ -23,10 +24,7 @@ const columns = [
 const TableCuentas = ({
   error,
   data,
-  getUsers,
-  handleCloseModal,
-  handleOpenModal,
-  modalOpen,
+  getUsers
 }) => {
 
   const [modalEditOpen, setModalEditOpen] = useState(false);
@@ -95,13 +93,12 @@ const TableCuentas = ({
 
   return (
     <>
+    {console.log(data)}
+      {data.length === 0 ? (
+        <Alert severity="error"><strong>No hay cuentas registradas.</strong></Alert>
+      ) :(
       <Paper>
         <TableContainer component={Paper}>
-          {error && (
-            <div className="flex justify-center">
-              <p className="text-center">No existen usuarios</p>
-            </div>
-          )}
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow style={{ background: "#D00000" }}>
@@ -163,7 +160,7 @@ const TableCuentas = ({
           </Table>
         </TableContainer>
       </Paper>
-
+      )}
       <ModalEditCuenta
         getUsers={getUsers}
         modalEditOpen={modalEditOpen}
@@ -172,6 +169,7 @@ const TableCuentas = ({
         setUsuario={setUsuario}
         empleado={empleado}
       />
+      
     </>
   );
 };

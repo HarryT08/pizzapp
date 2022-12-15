@@ -11,7 +11,7 @@ import {
 import { Mesa } from './Mesa';
 import { DetalleComanda } from './DetalleComanda';
 
-@Entity('Comanda')
+@Entity('comanda')
 export class Comanda extends BaseEntity{
 
     @PrimaryGeneratedColumn()
@@ -20,7 +20,7 @@ export class Comanda extends BaseEntity{
     @Column()
     total: number;
 
-    @OneToOne('Mesa')
+    @OneToOne(() => Mesa, (mesa) => mesa.id)
     @JoinColumn({name: 'idMesa'})
     mesa: Mesa;
 
@@ -28,19 +28,22 @@ export class Comanda extends BaseEntity{
     fecha: Date;
 
     @Column()
-    observacion: String;
+    observacion: string;
 
     @Column()
-    estado: String;
+    estado: string;
 
     @OneToMany(() => DetalleComanda, (detalleComanda) => detalleComanda.comanda)
-    detalleComandas: DetalleComanda[];
+    detalleComanda: DetalleComanda[];
+
+    @Column()
+    idMesa: number;
 
     constructor(){
         super();
     }
 
-    init(id:number, total:number, mesa:Mesa, fecha:Date, observacion:String, estado:String){
+    init(id:number, total:number, mesa:Mesa, fecha:Date, observacion:string, estado:string){
         this.id = id;
         this.total = total;
         this.mesa = mesa;

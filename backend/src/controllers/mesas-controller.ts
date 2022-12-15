@@ -60,3 +60,24 @@ export const deleteMesa = async (req: Request, res: Response) => {
             return res.status(500).json({message: error.message});
     }
 }
+
+/*
+Metodo para actualizar el estado de una mesa, usando el ORM de typeorm
+*/
+export const updateStateMesa = async (req: Request, res: Response) => {
+    try{
+        const {id} = req.params;
+        const {estado} = req.body;
+        const mesa = await Mesa.findOneBy({id: parseInt(id)});
+        if(mesa){
+            mesa.estado = estado;
+            await mesa.save();
+            res.json({message: 'Mesa actualizada'});
+        }else{
+            res.status(404).json({message: 'Mesa no encontrada'});
+        }
+    }catch(error){
+        if (error instanceof Error)
+            return res.status(500).json({message: error.message});
+    }
+}

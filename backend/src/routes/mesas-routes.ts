@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 
-import { getMesas, createMesa, deleteMesa, getMesasByEstado } from '../controllers/mesas-controller';
+import { getMesas, createMesa, deleteMesa, getMesasByEstado, updateStateMesa } from '../controllers/mesas-controller';
 
 router.route('/')
     .get(getMesas)
@@ -9,6 +9,7 @@ router.route('/')
     .delete(deleteMesa);
 
 router.route('/:id')
+    .put(updateStateMesa)
     .delete(deleteMesa);
 
 router.route('/:estado')

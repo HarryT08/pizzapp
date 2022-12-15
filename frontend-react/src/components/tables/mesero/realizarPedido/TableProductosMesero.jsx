@@ -12,6 +12,7 @@ import {
 import { toast } from 'react-toastify';
 import { FiSearch } from 'react-icons/fi';
 import RowProductosMesero from '@/components/meseros/RowProductosMesero';
+import Alert from '@mui/material/Alert';
 
 const columnas = [
   { id: 'nombre', label: 'Nombre' },
@@ -74,7 +75,7 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
         </div>
       </form>
       {products.length === 0 ? (
-        <p className="text-center">No hay productos</p>
+        <Alert severity="error"><strong>No hay productos.</strong></Alert>
       ) : (
         <Paper>
           {filterProducts().length === 0 ? (

@@ -12,6 +12,7 @@ import {
 import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import Alert from '@mui/material/Alert';
 
 import { instance } from '@/api/api';
 import * as productosService from '@/services/productos';
@@ -92,13 +93,13 @@ const TableProductos = ({
   };
 
   if (products.length === 0) {
-    return <p className="text-center">No hay productos</p>;
+    return <Alert severity="error"><strong>No hay productos.</strong></Alert>
   }
 
   return (
     <Paper>
       {filterData().length === 0 ? (
-        <p className="text-center">Este producto no se ha agregado</p>
+        <Alert severity="error"><strong>No hay productos.</strong></Alert>
       ) : (
         <TableContainer component={Paper} sx={{ minWidth: 650 }}>
           <Table>

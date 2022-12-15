@@ -5,8 +5,7 @@ import {
     PrimaryGeneratedColumn,
     ManyToMany,
     JoinTable,
-    OneToMany,
-    JoinColumn,
+    OneToMany
 } from 'typeorm';
 import { MateriaPrima } from './MateriaPrima';
 import { Preparacion } from './Preparacion';

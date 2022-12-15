@@ -100,6 +100,7 @@ const ModalEditIngrediente = ({
                                 {loading ? <Loader /> : "Editar ingrediente"}
                             </button>
                             <button
+                                type="button"
                                 className="rounded-md py-2 px-8 text-[10px] movilM:text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white"
                                 onClick={handleCloseModalEdit}
                             >

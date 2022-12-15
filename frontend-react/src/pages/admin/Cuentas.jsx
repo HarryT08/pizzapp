@@ -8,17 +8,14 @@ const Cuentas = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
-  const [error, setError] = useState(false);
   const [data, setData] = useState([]);
 
   // Peticion GET
   const getUsers = async () => {
     try {
       const response = await instance.get("/usuarios");
-      setError(false);
       return setData(response.data);
     } catch (err) {
-      setError(true);
       setData([]);
     }
   };
@@ -42,7 +39,6 @@ const Cuentas = () => {
 
       <div className="p-3 bg-white rounded-lg drop-shadow-3xl">
         <TableCuentas
-          error={error}
           data={data}
           getUsers={getUsers}
           modalOpen={modalOpen}
