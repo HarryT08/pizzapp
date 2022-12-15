@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { Preparacion } from "../entities/Preparacion";
-import { Producto } from "../entities/Producto";
-import { cleanProductName } from "../libs/cleanFunctions";
+import { Request, Response } from 'express';
+import { Preparacion } from '../entities/Preparacion';
+import { Producto } from '../entities/Producto';
+import { cleanProductName } from '../libs/cleanFunctions';
 
 /*
 Metodo para obtener un producto por su id, usando el ORM de typeorm
@@ -9,10 +9,10 @@ Metodo para obtener un producto por su id, usando el ORM de typeorm
 export const getProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
   const parseId = {
-    id: Number(id),
+    id: Number(id)
   };
   const product = await Producto.findOne({
-    where: parseId,
+    where: parseId
   });
   return res.json(product);
 };
@@ -26,7 +26,7 @@ export const getProducts = async (req: Request, res: Response) => {
     return res.json(products);
   } catch (error) {
     return res.json({
-      message: "Ha ocurrido algo inesperado",
+      message: 'Ha ocurrido algo inesperado'
     });
   }
 };
@@ -34,38 +34,39 @@ export const getProducts = async (req: Request, res: Response) => {
 Metodo para crear un producto, usando el ORM de typeorm
 */
 export const createProduct = async (req: Request, res: Response) => {
-  let { nombre, precio, presentaciones } = req.body;
+  let { nombre, costo, preparaciones } = req.body;
   const nameClean = cleanProductName(nombre);
   const product = await searchProduct(nameClean);
 
-  if( product ){
+  if (product) {
     return res.status(400).json({
-      message: "El producto ya existe",
-    }); 
+      message: 'El producto ya existe'
+    });
   }
 
   try {
     const newProduct = new Producto();
-    newProduct.init( nameClean, precio );
+    newProduct.init(nameClean, costo);
     const saved = await newProduct.save();
-    createPreparation(saved, presentaciones);
+    createPreparation(saved, preparaciones);
 
     return res.status(201).json({
-      message : "Producto creado con exito"
+      message: 'Producto creado con exito'
     });
-
   } catch (error) {
+    console.error(error);
+
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
   }
 };
 
-const searchProduct = async (nombre : string)  => {
+const searchProduct = async (nombre: string) => {
   const producto = await Producto.findOneBy({
-    nombre : nombre
-  })
-  return producto
-}
+    nombre: nombre
+  });
+  return producto;
+};
 
 /*
 Metodo para crear la preparacion de un producto, usando el ORM de typeorm
@@ -73,40 +74,37 @@ Metodo para crear la preparacion de un producto, usando el ORM de typeorm
 const createPreparation = (producto: Producto, presentaciones: any) => {
   let data: Preparacion[] = [];
   presentaciones.forEach((presentacion: any) => {
-    const size = presentacion["tamaño"];
-    presentacion["ingredientes"].forEach((ingrediente: any) => {
-      const idMateria = ingrediente["id"];
-      const cantidad = ingrediente["cantidad"];
-      const preparacion = new Preparacion();
-      preparacion.init(producto.id, idMateria, size, cantidad);
-      data.push(preparacion);
-    });
+    const { tamanio, cantidad, id_materia } = presentacion;
+    const preparacion = new Preparacion();
+    preparacion.init(producto.id, id_materia, tamanio, cantidad);
+    data.push(preparacion);
   });
+
   Preparacion.save(data);
-}
+};
 
 /*
 Metodo para eliminar un producto, usando el ORM de typeorm
 */
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const id = Number.parseInt(req.params["id"]);
-    console.log("Encontrado", id, typeof id);
+    const id = Number.parseInt(req.params['id']);
+    console.log('Encontrado', id, typeof id);
 
     const product = await Producto.findOneBy({ id: id });
 
     if (!product) {
       return res.status(404).json({
-        message: "Producto no encontrado",
+        message: 'Producto no encontrado'
       });
     }
 
-    product.deleted = true
-    await product.save()
+    product.deleted = true;
+    await product.save();
     await Preparacion.delete({ id_producto: id });
 
     return res.status(200).json({
-      message: "Producto eliminado",
+      message: 'Producto eliminado'
     });
   } catch (error) {
     if (error instanceof Error)
@@ -118,59 +116,78 @@ export const deleteProduct = async (req: Request, res: Response) => {
 Metodo para actualizar un producto, usando el ORM de typeorm
 */
 export const updateProduct = async (req: Request, res: Response) => {
-  const id = Number.parseInt(req.params["id"]);
+  const id = Number.parseInt(req.params['id']);
   //chosen --> Las presentaciones que selecciono el usuario
   let { nombre, costo, preparaciones } = req.body;
   const producto = await Producto.findOneBy({ id: id });
   if (producto) {
     producto.nombre = nombre;
     producto.costo = costo;
-    try{
+    try {
       await updatePreparations(producto, preparaciones);
-      await producto.save()
-      res.status(204).json({ message: "Producto actualizado" });
-    }catch(error){
+      await producto.save();
+      res.status(204).json({ message: 'Producto actualizado' });
+    } catch (error) {
+      console.error(error);
+
       if (error instanceof Error)
         return res.status(500).json({ message: error.message });
     }
   }
-  
 };
 
 async function updatePreparations(product: Producto, chosen: any) {
-  chosen.forEach(  ( presentacion : any ) => {
+  for (const presentacion of chosen) {
     const id = product.id;
-    presentacion.ingredientes.forEach( async ( ingrediente : any ) => {
-      const idMateria = ingrediente.id;
-      const cantidad = ingrediente.cantidad;
-        let query = 'UPDATE preparacion SET cantidad = ?  WHERE id_producto = ? AND id_materia = ? AND tamanio = ?';
-        await Preparacion.query(query, [cantidad, id, idMateria, presentacion.tamanio]);
-    })
-  })
+
+    const idMateria = presentacion.materiaPrima.id;
+    const cantidad = presentacion.cantidad;
+    const query =
+      'UPDATE preparacion SET cantidad = ?  WHERE id_producto = ? AND id_materia = ? AND tamanio = ?';
+    await Preparacion.query(query, [
+      cantidad,
+      id,
+      idMateria,
+      presentacion.tamanio
+    ]);
+  }
 }
 
-export const getProductsAndPreparations = async (req: Request, res: Response) => {
-  const productos = await Producto.find({relations: ["preparaciones", "preparaciones.materiaPrima"]});
+export const getProductsAndPreparations = async (
+  req: Request,
+  res: Response
+) => {
+  const productos = await Producto.find({
+    relations: ['preparaciones', 'preparaciones.materiaPrima']
+  });
   for (const producto of productos) {
-    let records : Record<string, number> = { }
+    let records: Record<string, number> = {};
     for (const preparacion of producto.preparaciones) {
       let tamanio = preparacion.tamanio;
-      let maxToPrepare = Math.floor(preparacion.materiaPrima.existencia / preparacion.cantidad);
+      let maxToPrepare = Math.floor(
+        preparacion.materiaPrima.existencia / preparacion.cantidad
+      );
 
-      if(records[tamanio] === undefined){
-        records[tamanio] = maxToPrepare
+      if (records[tamanio] === undefined) {
+        records[tamanio] = maxToPrepare;
       }
-      records[tamanio] = Math.min(records[tamanio] , maxToPrepare)
+      records[tamanio] = Math.min(records[tamanio], maxToPrepare);
     }
     producto.preparar = records;
   }
   return res.json(productos);
-}
+};
 
-
-export const getProductAndPreparations =async (req : Request, res : Response) => {
+export const getProductAndPreparations = async (
+  req: Request,
+  res: Response
+) => {
   const { id } = req.params;
-  const producto = await Producto.find({where: {id: parseInt(id)}, relations: ["preparaciones", "preparaciones.materiaPrima"]})
-  if(!producto) return res.status(404).json({message: "Producto no encontrado"})
+  const producto = await Producto.find({
+    where: { id: parseInt(id) },
+    relations: ['preparaciones', 'preparaciones.materiaPrima']
+  });
+  if (!producto)
+    return res.status(404).json({ message: 'Producto no encontrado' });
   return res.status(200).json(producto);
-}
+};
