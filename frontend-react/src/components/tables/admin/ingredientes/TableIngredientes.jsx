@@ -99,7 +99,7 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
     return (
         <>
             {data.length === 0 ? (
-                <Alert severity="error"><strong>No hay mesas disponibles para Facturar</strong></Alert>
+                <Alert severity="error"><strong>No hay ingredientes</strong></Alert>
             ) : (
                 <Paper>
                     {filterData().length === 0 ? (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { instance } from "../../api/api";
 import { ModalAggIngrediente, TableIngredientes } from "../../components";
@@ -22,6 +22,8 @@ const Ingredientes = () => {
       const response = await instance.get("/ingredientes");
       return setData(response.data);
     } catch (err) {
+      toast.error("No se pudo obtener los ingredientes");
+
       setData([]);
     }
   };
