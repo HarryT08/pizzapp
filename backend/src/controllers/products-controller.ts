@@ -120,13 +120,13 @@ Metodo para actualizar un producto, usando el ORM de typeorm
 export const updateProduct = async (req: Request, res: Response) => {
   const id = Number.parseInt(req.params["id"]);
   //chosen --> Las presentaciones que selecciono el usuario
-  let { nombre, costo, chosen } = req.body;
+  let { nombre, costo, preparaciones } = req.body;
   const producto = await Producto.findOneBy({ id: id });
   if (producto) {
     producto.nombre = nombre;
     producto.costo = costo;
     try{
-      await updatePreparations(producto, chosen);
+      await updatePreparations(producto, preparaciones);
       await producto.save()
       res.status(204).json({ message: "Producto actualizado" });
     }catch(error){
@@ -144,7 +144,7 @@ async function updatePreparations(product: Producto, chosen: any) {
       const idMateria = ingrediente.id;
       const cantidad = ingrediente.cantidad;
         let query = 'UPDATE preparacion SET cantidad = ?  WHERE id_producto = ? AND id_materia = ? AND tamanio = ?';
-        await Preparacion.query(query, [cantidad, id, idMateria, presentacion.tamaño]);
+        await Preparacion.query(query, [cantidad, id, idMateria, presentacion.tamanio]);
     })
   })
 }
