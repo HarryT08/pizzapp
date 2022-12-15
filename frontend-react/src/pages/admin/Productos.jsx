@@ -98,7 +98,7 @@ const Productos = () => {
       const data = {
         id: producto.id,
         nombre: producto.nombre,
-        precio: producto.precio,
+        costo: producto.costo,
         preparaciones
       };
 

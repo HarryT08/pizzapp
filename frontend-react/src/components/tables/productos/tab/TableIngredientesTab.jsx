@@ -18,13 +18,12 @@ const columns = [
   { id: 'acciones', label: 'Acciones' }
 ];
 
-const TableIngredientesTab = ({ selectedTab = '' }) => {
+const TableIngredientesTab = ({ selectedSizes = [] }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
   const { producto, ingredientes, preparaciones, setPreparaciones } =
     useContext(SelectedProductContext);
 
-  // Paginacion de la tabla del modal
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -36,15 +35,11 @@ const TableIngredientesTab = ({ selectedTab = '' }) => {
 
   // Agregamos un producto al carrito
   const addIngrediente = (id) => {
-    if (!selectedTab) {
+    if (selectedSizes.length === 0) {
       return toast.error('No se ha seleccionado ningún tamaño.');
     }
 
-    if (
-      preparaciones.some(
-        (item) => item.id_materia === id && item.size === selectedTab
-      )
-    ) {
+    if (preparaciones.some((item) => item.id_materia === id)) {
       return toast.error('El producto ya ha sido agregado.');
     }
 
@@ -52,15 +47,15 @@ const TableIngredientesTab = ({ selectedTab = '' }) => {
       (ingrediente) => ingrediente.id === id
     );
 
-    setPreparaciones((current) =>
-      current.concat({
-        id_materia: id,
-        id_producto: producto.id,
-        tamanio: selectedTab,
-        cantidad: 1,
-        materiaPrima: ingrediente
-      })
-    );
+    const newPreparaciones = selectedSizes.map((tamanio) => ({
+      id_materia: id,
+      id_producto: producto.id,
+      tamanio: tamanio.key,
+      cantidad: 1,
+      materiaPrima: ingrediente
+    }));
+
+    setPreparaciones((current) => current.concat(newPreparaciones));
   };
 
   return (

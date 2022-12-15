@@ -42,9 +42,13 @@ const Tap = ({ onClose }) => {
             <button type="submit" className="btn">
               {loading ? <Loader /> : 'Guardar'}
             </button>
-            <span className="btnCancel cursor-pointer" onClick={handleReset}>
+            <button
+              type="button"
+              className="btnCancel cursor-pointer"
+              onClick={handleReset}
+            >
               Cancelar
-            </span>
+            </button>
           </div>
         </form>
       </TabContext>
