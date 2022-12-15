@@ -12,6 +12,7 @@ import {
 import { toast } from 'react-toastify';
 import { FiSearch } from 'react-icons/fi';
 import RowProductosMesero from '@/components/meseros/RowProductosMesero';
+import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
 
 const columnas = [
   { id: 'nombre', label: 'Nombre' },
@@ -120,6 +121,8 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
             page={pageProducts}
             onPageChange={handleChangePageProducts}
             onRowsPerPageChange={handleChangeRowsPerPageProducts}
+            labelRowsPerPage={labelRowsPerPage}
+            labelDisplayedRows={labelDisplayedRows}
           />
         </Paper>
       )}

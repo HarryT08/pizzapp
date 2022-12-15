@@ -13,6 +13,7 @@ import { ModalEditIngrediente } from "../../../";
 import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
 import { instance } from "../../../../api/api";
 import Swal from "sweetalert2";
+import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
 
 const columns = [
     { id: "nombre", label: "Nombre" },
@@ -160,6 +161,8 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
                         page={pageIngredientes}
                         onPageChange={handleChangePageIngredientes}
                         onRowsPerPageChange={handleChangeRowsPerPageIngredientes}
+                        labelRowsPerPage={labelRowsPerPage}
+                        labelDisplayedRows={labelDisplayedRows}
                     />
                 </Paper>
             )}
