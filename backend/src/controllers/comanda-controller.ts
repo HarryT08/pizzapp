@@ -78,8 +78,8 @@ export const crearComanda = async (req: Request, res: Response) => {
         const { data, observacion, id_mesa } = req.body;
         const total = calculateTotal(data);
         const comanda = new Comanda();
-        comanda.init(total, id_mesa, new Date(), observacion, 'Abierta') // Se debe parsear esa fecha
-        setState(id_mesa, 'Ocupada')
+        comanda.init(total, id_mesa, new Date(), observacion, 'Abierta')
+        setState(id_mesa, 'Ocupado')
         const saved = await comanda.save();
 
         //Esto se saca en un metodo aparte para hacer los detalle comanda :D
