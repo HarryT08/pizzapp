@@ -61,11 +61,11 @@ export const dataSidebarMesero = [
     titulo: 'Realizar pedido',
     icon: <BsFillPersonCheckFill/>
   },
-  {
-    path: 'editar-pedido',
-    titulo: 'Editar pedido',
-    icon: <BsFillPersonDashFill/>
-  }
+  // {
+  //   path: 'editar-pedido',
+  //   titulo: 'Editar pedido',
+  //   icon: <BsFillPersonDashFill/>
+  // }
 ]
 
 export const productos = [
