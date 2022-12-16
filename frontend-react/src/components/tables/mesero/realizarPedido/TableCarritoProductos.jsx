@@ -11,11 +11,12 @@ import {
 } from '@mui/material';
 import RowCarritoProductos from '@/components/meseros/RowCarritoProductos';
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
-import { useNavigate } from "react-router-dom";
-import { instance } from '../../../../api/api';
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '@/components/Loader';
+import { useOrden } from '@/context/OrdenContext';
+import { createComanda } from '@/services/comanda';
 
 const columnas = [
   { id: 'nombre', label: 'Nombre' },
@@ -24,63 +25,56 @@ const columnas = [
   { id: 'acciones', label: 'Acciones' }
 ];
 
-const TableCarritoProductos = ({ carrito, setCarrito }) => {
+const TableCarritoProductos = () => {
   const [observacion, setObservacion] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
-  const handleChangeCantidad = (id, cantidad) => {
-    setCarrito((current) =>
-      current.map((item) => {
-        if (item.id === id) {
-          return { ...item, cantidad };
-        }
-
-        return item;
-      })
-    );
-  };
+  const { carrito, onDeleteProducto } = useOrden();
 
   const handleDeleteProduct = (id, tamanio) => {
     Swal.fire({
       title: `¿Estás seguro?`,
       html: `No podrás revertir esto!`,
-      text: "No podrás revertir esta acción",
-      icon: "warning",
+      text: 'No podrás revertir esta acción',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#D00000",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#D00000',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        setCarrito((current) => current.filter((item) => {
-          return (item.id + ' ' + item.tamanio) !== id +' '+ tamanio;
-        }));
+        onDeleteProducto(id, tamanio);
         Swal.fire('Producto eliminado', '', 'success');
       }
     });
   };
 
   const sendComanda = async () => {
-    if(carrito.length === 0){
-      Swal.fire('Error', 'No hay productos en el carrito', 'error')
-      return ;
+    if (carrito.length === 0) {
+      Swal.fire('Error', 'No hay productos en el carrito', 'error');
+      return;
     }
-    try{
-      setLoading(true);
-      const response = await instance.post('/comanda', {
-        id_mesa : id,
-        observacion : observacion,
-        data: carrito,
-      })
-      Swal.fire('Exito', 'Pedido realizado', 'success')
-      .then(() => {
+
+    setLoading(true);
+
+    try {
+      await createComanda({
+        id_mesa: id,
+        observacion: observacion,
+        data: carrito
+      });
+
+      Swal.fire('Exito', 'Pedido realizado', 'success').then(() => {
         navigate('/mesero/realizar-pedido');
       });
-    }catch(err){
-      console.log(err);
+    } catch (err) {
+      toast.error('No se pudo realizar el pedido');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <>
@@ -92,7 +86,7 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
             onClick={sendComanda}
             className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer"
           >
-          {loading ? <Loader/> : 'Terminar pedido'}
+            {loading ? <Loader /> : 'Terminar pedido'}
           </button>
           <Link
             to={'/mesero/realizar-pedido'}
@@ -125,10 +119,9 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
             <TableBody>
               {carrito.map((product) => (
                 <RowCarritoProductos
-                  key={ product.id + ' ' + product.tamanio }
+                  key={product.id + '-' + product.tamanio}
                   product={product}
                   onDelete={handleDeleteProduct}
-                  onChange={handleChangeCantidad}
                 />
               ))}
             </TableBody>

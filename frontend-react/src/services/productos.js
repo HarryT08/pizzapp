@@ -1,5 +1,27 @@
 import { instance } from '@/api/api';
 
+export async function getProductosAndPreparaciones() {
+  const { data } = await instance.get('/productos/productsAndPreparations');
+
+  const ingredientes = {};
+  const disponible = {};
+
+  data.forEach((producto) => {
+    disponible[producto.id] = producto.preparar;
+
+    producto.preparaciones.forEach(
+      (preparacion) =>
+        (ingredientes[preparacion.id_materia] = preparacion.materiaPrima)
+    );
+  });
+
+  return {
+    productos: data,
+    ingredientes,
+    disponible
+  };
+}
+
 export async function getProductoAndPreparaciones(idProducto) {
   const response = await instance.get(
     '/productos/productsAndPreparations/' + idProducto
