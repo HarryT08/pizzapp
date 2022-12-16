@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
+import { Any } from 'typeorm';
 import { Comanda } from '../entities/Comanda';
+import { DetalleComanda } from '../entities/DetalleComanda';
+import { Mesa } from '../entities/Mesa';
+import { setState } from './mesas-controller';
 
 /*
 Metodo para buscar las comandas de una mesa, usando el ORM de typeorm
@@ -47,6 +51,49 @@ export const getComandas = async (req: Request, res: Response) => {
     }catch(error){
         if (error instanceof Error)
             return res.status(500).json({message: error.message});
+    }
+}
+
+/*
+
+    TODO: Metodo para crear una comanda
+    TODO: Crear el detalle comanda
+    TODO: terminar pedido cambia el estado de la mesa a 'OCUPADO'
+    TODO: cancelar pedido cambia el estado de la mesa a 'DISPONIBLE'
+
+*/
+
+const calculateTotal = (data : any) => {
+    let total = 0;
+    for (const product of data) {
+      const { cantidad, costo } = product
+      total += cantidad * costo
+    }
+    return total;
+}
+
+export const crearComanda = async (req: Request, res: Response) => {
+    try {
+
+        const { data, observacion, id_mesa } = req.body;
+        const total = calculateTotal(data);
+        const comanda = new Comanda();
+        comanda.init(total, id_mesa, new Date(), observacion, 'Abierta') // Se debe parsear esa fecha
+        setState(id_mesa, 'Ocupada')
+        const saved = await comanda.save();
+
+        //Esto se saca en un metodo aparte para hacer los detalle comanda :D
+        for (const product of data) {
+            const subtotal = product.costo * product.cantidad
+            const detalleComanda = new DetalleComanda();
+            detalleComanda.init(saved.id, subtotal, product.cantidad, product.id, product.tamanio)
+            await detalleComanda.save(); //Se le podria quitar el await para no esperar a que se guarden todos los detalles
+        }
+        return res.json({message: 'Comanda creada'});
+
+    } catch (error) {
+        if (error instanceof Error)
+            return res.status(500).json({message: error.message});   
     }
 }
 

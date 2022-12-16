@@ -12,9 +12,14 @@ import {
 import RowCarritoProductos from '@/components/meseros/RowCarritoProductos';
 import Swal from 'sweetalert2/dist/sweetalert2.all.js';
 import { useNavigate } from "react-router-dom";
+import { instance } from '../../../../api/api';
+import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
+import Loader from '@/components/Loader';
 
 const columnas = [
   { id: 'nombre', label: 'Nombre' },
+  { id: 'tamanio', label: 'Tamaño' },
   { id: 'cantidad', label: 'Cantidad' },
   { id: 'acciones', label: 'Acciones' }
 ];
@@ -22,7 +27,8 @@ const columnas = [
 const TableCarritoProductos = ({ carrito, setCarrito }) => {
   const [observacion, setObservacion] = useState('');
   const navigate = useNavigate();
-
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
   const handleChangeCantidad = (id, cantidad) => {
     setCarrito((current) =>
       current.map((item) => {
@@ -35,7 +41,7 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
     );
   };
 
-  const handleDeleteProduct = (id) => {
+  const handleDeleteProduct = (id, tamanio) => {
     Swal.fire({
       title: `¿Estás seguro?`,
       html: `No podrás revertir esto!`,
@@ -47,23 +53,30 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        setCarrito((current) => current.filter((item) => item.id !== id));
+        setCarrito((current) => current.filter((item) => {
+          return (item.id + ' ' + item.tamanio) !== id +' '+ tamanio;
+        }));
         Swal.fire('Producto eliminado', '', 'success');
       }
     });
   };
 
   const sendComanda = async () => {
-    if(carrito.length === 0) Swal.fire('Error', 'No hay productos en el carrito', 'error');
+    if(carrito.length === 0){
+      Swal.fire('Error', 'No hay productos en el carrito', 'error')
+      return ;
+    }
     try{
-      console.log("Este es carrito", carrito);
-      /*const response = await instance.post('/comandas', {
-        observacion,
-        productos: carrito
+      setLoading(true);
+      const response = await instance.post('/comanda', {
+        id_mesa : id,
+        observacion : observacion,
+        data: carrito,
       })
-      navigate('/mesero/realizar-pedido');
-      ;*/
-      
+      Swal.fire('Exito', 'Pedido realizado', 'success')
+      .then(() => {
+        navigate('/mesero/realizar-pedido');
+      });
     }catch(err){
       console.log(err);
     }
@@ -79,7 +92,7 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
             onClick={sendComanda}
             className="rounded-md py-2 px-8 text-xs bg-[#008000]/20 text-[#008000] font-bold transition duration-300 ease-in-out hover:bg-[#008000] hover:text-white cursor-pointer"
           >
-            Terminar pedido
+          {loading ? <Loader/> : 'Terminar pedido'}
           </button>
           <Link
             to={'/mesero/realizar-pedido'}
@@ -112,7 +125,7 @@ const TableCarritoProductos = ({ carrito, setCarrito }) => {
             <TableBody>
               {carrito.map((product) => (
                 <RowCarritoProductos
-                  key={product.id}
+                  key={ product.id + ' ' + product.tamanio }
                   product={product}
                   onDelete={handleDeleteProduct}
                   onChange={handleChangeCantidad}

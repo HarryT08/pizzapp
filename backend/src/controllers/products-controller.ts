@@ -23,6 +23,7 @@ Metodo para buscar todos los productos, usando el ORM de typeorm
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await Producto.find({ where: { deleted: false } });
+
     return res.json(products);
   } catch (error) {
     return res.json({
@@ -156,19 +157,11 @@ async function updatePreparations(product: Producto, chosen: any) {
   }
 }
 
-/*
-Metodo para obtener los productos y sus preparaciones, usando el ORM de typeorm
-*/
-export const getProductsAndPreparations = async (
-  req: Request,
-  res: Response
-) => {
+export const getProductsAndPreparations = async (req: Request, res: Response) => {
   const productos = await Producto.find({
     where: { deleted: false },
     relations: ['preparaciones', 'preparaciones.materiaPrima']
   });
-
-  
   for (const producto of productos) {
     let records: Record<string, number> = {};
     for (const preparacion of producto.preparaciones) {

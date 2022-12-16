@@ -2,7 +2,7 @@ import { TableCell, TableRow, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 export default function RowProductosMesero({ product, onAdd }) {
-  const [selected, setSelected] = useState(product.preparar[0]);
+  const [selected, setSelected] = useState(Object.keys(product.preparar)[0]);
   
   let options = Object.keys(product.preparar)
     .filter((key) => product.preparar[key] > 0)

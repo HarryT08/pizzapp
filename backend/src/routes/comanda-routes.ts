@@ -1,10 +1,11 @@
 import { Router } from 'express';
 const router = Router();
 
-import { getComandaByMesa, updateStateComanda, getComandas, getLastComandas } from '../controllers/comanda-controller';
+import { getComandaByMesa, updateStateComanda, getComandas, getLastComandas, crearComanda} from '../controllers/comanda-controller';
 
 router.route("/")
-    .get(getComandas);
+    .get(getComandas)
+    .post(crearComanda)
 
 router.route("/getLastComandas")
     .get(getLastComandas);

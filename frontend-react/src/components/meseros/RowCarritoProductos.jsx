@@ -13,16 +13,18 @@ export default function RowCarritoProductos({ product, onDelete, onChange }) {
 
   const handleAdd = (sum) => {
     const delta = sum ? 1 : -1;
-
-    if (cantidad + delta < 1) return;
+    const newCantidad = cantidad + delta;
+    if (newCantidad < 1) return;
+    if(newCantidad > product.preparar[product.tamanio]) return;
     
-    setCantidad(cantidad + delta);
-    onChange(product.id, cantidad + delta);
+    setCantidad(newCantidad);
+    onChange(product.id, newCantidad);
   };
 
   return (
     <TableRow>
       <TableCell align="center">{product.nombre}</TableCell>
+      <TableCell align="center">{product.tamanio}</TableCell>
       <TableCell align="center">
         <div className="flex gap-5 justify-center">
           <button type='button' onClick={() => handleAdd(false)} className="rounded-full p-1 px-2.5 text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white cursor-pointer">
@@ -38,7 +40,7 @@ export default function RowCarritoProductos({ product, onDelete, onChange }) {
         <div className="flex gap-5 justify-center">
           <button
             className="rounded-full p-1 px-2.5 text-sm border-2 border-rojo-fuerte/20 bg-rojo-fuerte/20 text-rojo-fuerte font-bold transition duration-300 ease-in-out hover:bg-rojo-fuerte hover:text-white cursor-pointer"
-            onClick={() => onDelete(product.id)}
+            onClick={() => onDelete(product.id, product.tamanio)}
           >
             <BsTrashFill className='h-6' />
           </button>

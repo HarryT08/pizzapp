@@ -43,10 +43,9 @@ export class Comanda extends BaseEntity{
         super();
     }
 
-    init(id:number, total:number, mesa:Mesa, fecha:Date, observacion:string, estado:string){
-        this.id = id;
+    init(total:number, idMesa : number, fecha:Date, observacion:string, estado:string){
         this.total = total;
-        this.mesa = mesa;
+        this.idMesa = idMesa;
         this.fecha = fecha;
         this.observacion = observacion;
         this.estado = estado;

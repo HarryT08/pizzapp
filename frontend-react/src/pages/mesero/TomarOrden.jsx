@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { instance } from '@/api/api';
 import { TableCarritoProductos, TableProductosMesero } from '@/components';
+import { ToastContainer } from 'react-toastify';
 
 const TomarOrden = () => {
   const [products, setProducts] = useState([]);
@@ -22,6 +23,7 @@ const TomarOrden = () => {
 
   return (
     <div>
+      <ToastContainer />
       <div className="mb-10">
         <TableCarritoProductos carrito={carrito} setCarrito={setCarrito} />
       </div>

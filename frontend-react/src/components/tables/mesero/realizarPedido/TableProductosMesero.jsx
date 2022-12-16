@@ -36,7 +36,7 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
   };
 
   const handleAddProduct = (id, selected) => {
-    if (carrito.some((item) => item.id === id)) {
+    if (carrito.some((item) => ( item.id === id && item.tamanio === selected))) {
       return toast.error('El producto ya se encuentra en el carrito');
     }
 
@@ -104,7 +104,7 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
                   {filterProducts().map((product) => (
                     <RowProductosMesero
                       product={product}
-                      key={product.id}
+                      key={ product.id }
                       onAdd={handleAddProduct}
                     />
                   ))}
