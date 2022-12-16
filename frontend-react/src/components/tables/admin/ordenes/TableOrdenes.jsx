@@ -65,7 +65,7 @@ const TableOrdenes = () => {
   };
 
   const filterResults = (categoria) => {
-    const results = dataOrders.filter((curElem) => {
+    const results = dataOrdenes.filter((curElem) => {
       return curElem.estado === categoria;
     });
     setDataOrders(results);
@@ -107,10 +107,10 @@ const TableOrdenes = () => {
             onClick={() => filterResults("Facturado")}
           />
           <FormControlLabel
-            value="abierto"
+            value="abierta"
             control={<Radio />}
-            label="Abierto"
-            onClick={() => filterResults("Abierto")}
+            label="Abierta"
+            onClick={() => filterResults("Abierta")}
           />
         </RadioGroup>
       </FormControl>

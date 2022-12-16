@@ -19,7 +19,7 @@
     @apply bg-verde-profundo/20 rounded-md p-1 text-verde-profundo;
   }
 
-  .Abierto {
+  .Abierta {
     @apply bg-naranja-vivido/20 rounded-md p-1 text-naranja-vivido;
   }
 
