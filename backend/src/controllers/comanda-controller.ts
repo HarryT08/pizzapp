@@ -15,7 +15,7 @@ export const getComandaByMesa = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { estado } = req.query;
     const comanda = await Comanda.findOne({
-      where: { idMesa: parseInt(id), mesa: { estado: String(estado) } },
+      where: { idMesa: parseInt(id), estado: String(estado) },
       relations: [
         'detalleComanda',
         'mesa',
