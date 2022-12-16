@@ -3,9 +3,10 @@ import { TableCell, TableRow } from '@mui/material';
 import { BsTrashFill } from 'react-icons/bs';
 
 export default function RowCarritoProductos({ product, onDelete }) {
-  const { onChangeCantidad } = useOrden();
+  const { disponibles, onChangeCantidad } = useOrden();
 
   const cantidad = product.cantidad;
+  const cantidadDisponible = disponibles[product.id];
 
   const handleChange = (e) => {
     let value = e.target.value.replace(/[^0-9]+/g, '');
@@ -28,7 +29,7 @@ export default function RowCarritoProductos({ product, onDelete }) {
     if (
       isNaN(newCantidad) ||
       newCantidad < 1 ||
-      newCantidad > product.preparar[product.tamanio]
+      newCantidad > cantidadDisponible[product.tamanio]
     )
       return;
 

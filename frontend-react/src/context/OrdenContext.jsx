@@ -1,7 +1,13 @@
+import { getComandaEnMesa } from '@/services/comanda';
+import { getEstadoMesas } from '@/services/mesas';
 import { getProductosAndPreparaciones } from '@/services/productos';
-import { calcularDisponiblesRestantes } from '@/utils/productos';
+import {
+  calcularDisponiblesRestantes,
+  normalizeProductos
+} from '@/utils/productos';
 import { useCallback } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export const OrdenContext = createContext({
@@ -23,6 +29,8 @@ export function OrdenProvider({ children }) {
   const [ingredientes, setIngredientes] = useState({});
   const [carrito, setCarrito] = useState([]);
   const [disponibles, setDisponibles] = useState({});
+  const [estado, setEstado] = useState('Disponible');
+  const { id } = useParams();
 
   const getProductsOrder = async () => {
     try {
@@ -36,9 +44,32 @@ export function OrdenProvider({ children }) {
     }
   };
 
-  useEffect(() => {
-    getProductsOrder();
-  }, []);
+  const loadEstadoMesa = useCallback(async () => {
+    const mesas = await getEstadoMesas('Ocupado');
+
+    if (!mesas.some((mesa) => Number(mesa.id) === Number(id))) {
+      setEstado('Disponible');
+      return;
+    }
+
+    setEstado('Ocupado');
+
+    const comanda = await getComandaEnMesa(id);
+    const productosComanda = comanda.detalleComanda.map((item) => {
+      const preparar = calcularDisponiblesRestantes(item);
+
+      return {
+        ...item.producto,
+        cantidad: item.cantidad,
+        tamanio: item.tamanio,
+        preparar
+      };
+    });
+
+    const { ingredientes, productos } = normalizeProductos(productosComanda);
+    setIngredientes(ingredientes);
+    setCarrito(productos);
+  }, [id]);
 
   const onChangeCantidad = useCallback(({ producto, tamanio, cantidad }) => {
     const disponible = calcularDisponiblesRestantes({
@@ -92,6 +123,11 @@ export function OrdenProvider({ children }) {
     return true;
   };
 
+  useEffect(() => {
+    getProductsOrder();
+    loadEstadoMesa();
+  }, [loadEstadoMesa]);
+
   return (
     <OrdenContext.Provider
       value={{
@@ -99,6 +135,7 @@ export function OrdenProvider({ children }) {
         productos,
         carrito,
         disponibles,
+        estado,
         onChangeCantidad,
         onDeleteProducto,
         onAddProducto

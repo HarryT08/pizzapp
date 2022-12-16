@@ -8,9 +8,9 @@ const Inicio = () => {
       <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-[16.5rem] movilM:w-[20rem] movilL:w-[25rem] tableta:w-full portatil:w-[42.5rem]'>
         <LineChart/>
       </div>
-      <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-full portatil:w-[30rem] portatilL:w-[30rem]'>
+      {/* <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-full portatil:w-[30rem] portatilL:w-[30rem]'>
         <LineCharts/>
-      </div>
+      </div> */}
       <div className='p-3 bg-white rounded-lg drop-shadow-3xl w-[16.5rem] movilM:w-[20rem] movilL:w-[25rem] tableta:w-full portatil:w-[42.5rem]'>
         <TableInicio/>
       </div>

@@ -1,6 +1,6 @@
 export const calcularDisponiblesRestantes = ({
   producto,
-  cantidad: cantidadProducto,
+  cantidad: cantidadProducto = 0,
   tamanio: tamanioSolicitado
 }) => {
   const disponibles = {};
@@ -27,6 +27,25 @@ export const calcularDisponiblesRestantes = ({
     disponibles[tamanio] = Math.min(disponibles[tamanio], maxToPrepare);
   }
 
-  console.log(disponibles, tamanioSolicitado);
   return disponibles;
 };
+
+export function normalizeProductos(productos) {
+  const ingredientes = {};
+  const disponible = {};
+
+  productos.forEach((producto) => {
+    disponible[producto.id] = producto.preparar;
+
+    producto.preparaciones.forEach(
+      (preparacion) =>
+        (ingredientes[preparacion.id_materia] = preparacion.materiaPrima)
+    );
+  });
+
+  return {
+    productos,
+    ingredientes,
+    disponible
+  };
+}

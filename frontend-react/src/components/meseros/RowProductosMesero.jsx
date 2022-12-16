@@ -10,7 +10,7 @@ export default function RowProductosMesero({ product }) {
   const { disponibles, onAddProducto } = useOrden();
   const cantidades = disponibles[product.id] || {};
 
-  let options = Object.keys(product.preparar)
+  let options = Object.keys(product.preparar || {})
     .filter((key) => cantidades[key] > 0)
     .map((key) => {
       return (

@@ -15,11 +15,19 @@ export const getComandaByMesa = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { estado } = req.query;
     const comanda = await Comanda.findOne({
-      where: { idMesa: parseInt(id), estado: String(estado) },
-      relations: ['detalleComanda', 'mesa', 'detalleComanda.producto']
+      where: { idMesa: parseInt(id), mesa: { estado: String(estado) } },
+      relations: [
+        'detalleComanda',
+        'mesa',
+        'detalleComanda.producto',
+        'detalleComanda.producto.preparaciones',
+        'detalleComanda.producto.preparaciones.materiaPrima'
+      ]
     });
     res.json(comanda);
   } catch (error) {
+    console.error(error);
+
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
   }

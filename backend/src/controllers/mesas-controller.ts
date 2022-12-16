@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { Mesa } from "../entities/Mesa";
+import { Request, Response } from 'express';
+import { Mesa } from '../entities/Mesa';
 
 /*
 Metodo para buscar todas las mesas, usando el ORM de typeorm
@@ -16,12 +16,10 @@ export const getMesasByEstado = async (req: Request, res: Response) => {
   try {
     const { estado } = req.params;
     const mesas = await Mesa.findBy({ estado: estado });
-    if (mesas.length === 0)
-      return res
-        .status(404)
-        .json({ message: "No hay mesas con el estado " + estado });
     return res.json(mesas);
   } catch (error) {
+    console.log(error);
+
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
   }
@@ -37,12 +35,12 @@ export const createMesa = async (req: Request, res: Response) => {
     if (mesa) {
       return res
         .status(404)
-        .json({ message: "El número de mesa " + id + " ya existe" });
+        .json({ message: 'El número de mesa ' + id + ' ya existe' });
     }
     mesa = new Mesa();
-    mesa.init(id, "Disponible");
+    mesa.init(id, 'Disponible');
     await mesa.save();
-    res.status(202).json({ message: "Mesa creada" });
+    res.status(202).json({ message: 'Mesa creada' });
   } catch (error) {
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
@@ -57,9 +55,9 @@ export const deleteMesa = async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await Mesa.delete({ id: parseInt(id) });
     if (result.affected === 0)
-      return res.status(404).json({ message: "Mesa no encontrada" });
+      return res.status(404).json({ message: 'Mesa no encontrada' });
 
-    return res.status(202).json({ message: "Mesa eliminada" });
+    return res.status(202).json({ message: 'Mesa eliminada' });
   } catch (error) {
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
@@ -74,29 +72,29 @@ export const updateStateMesa = async (req: Request, res: Response) => {
   const { estado } = req.body;
   let response = await setState(parseInt(id), estado);
   return res.status(response.status).json({
-    message : response.message
+    message: response.message
   });
 };
 
-export const setState = async (id : number , estado : string) => {
+export const setState = async (id: number, estado: string) => {
   let response = {
-    message : "Mesa no encontrada",
-    status : 404
-  }
+    message: 'Mesa no encontrada',
+    status: 404
+  };
 
   try {
-    const mesa = await Mesa.findOneBy({ id: id });  
+    const mesa = await Mesa.findOneBy({ id: id });
     if (mesa) {
       mesa.estado = estado;
       await mesa.save();
-      response.message = "Mesa actualizada";
+      response.message = 'Mesa actualizada';
       response.status = 202;
     }
-  }catch (error) {
-    if (error instanceof Error){
-      response.message = error.message
-      response.status = 500
+  } catch (error) {
+    if (error instanceof Error) {
+      response.message = error.message;
+      response.status = 500;
     }
   }
   return response;
-}
+};

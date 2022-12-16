@@ -1,25 +1,9 @@
 import { instance } from '@/api/api';
+import { normalizeProductos } from '@/utils/productos';
 
 export async function getProductosAndPreparaciones() {
   const { data } = await instance.get('/productos/productsAndPreparations');
-
-  const ingredientes = {};
-  const disponible = {};
-
-  data.forEach((producto) => {
-    disponible[producto.id] = producto.preparar;
-
-    producto.preparaciones.forEach(
-      (preparacion) =>
-        (ingredientes[preparacion.id_materia] = preparacion.materiaPrima)
-    );
-  });
-
-  return {
-    productos: data,
-    ingredientes,
-    disponible
-  };
+  return normalizeProductos(data);
 }
 
 export async function getProductoAndPreparaciones(idProducto) {
