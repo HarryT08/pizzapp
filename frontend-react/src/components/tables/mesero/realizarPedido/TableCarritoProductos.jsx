@@ -70,7 +70,14 @@ const TableCarritoProductos = () => {
       });
     } catch (err) {
       toast.error('No se pudo realizar el pedido');
-      console.error(err);
+
+      if (err?.response?.status === 400) {
+        err.response.data.errors.forEach((error) => {
+          toast.error(
+            `No se pudo agregar el producto ${error.nombre} en la presentación ${error.tamanio}`
+          );
+        });
+      }
     } finally {
       setLoading(false);
     }
