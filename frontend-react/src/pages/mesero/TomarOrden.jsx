@@ -1,41 +1,21 @@
-import { useState, useEffect } from 'react';
-import { instance } from '@/api/api';
-import { TableCarritoProductos, TableProductosMesero } from '@/components';
 import { ToastContainer } from 'react-toastify';
 
+import { TableCarritoProductos, TableProductosMesero } from '@/components';
+import { OrdenProvider } from '@/context/OrdenContext';
+
 const TomarOrden = () => {
-  const [products, setProducts] = useState([]);
-  const [carrito, setCarrito] = useState([]);
-
-  const getProductsOrder = async () => {
-    try {
-      const response = await instance.get('/productos/productsAndPreparations');
-      console.log(response.data);
-      setProducts(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getProductsOrder();
-  }, []);
-
   return (
-    <div>
-      <ToastContainer />
-      <div className="mb-10">
-        <TableCarritoProductos carrito={carrito} setCarrito={setCarrito} />
-      </div>
+    <OrdenProvider>
       <div>
-        <TableProductosMesero
-          products={products}
-          setProducts={setProducts}
-          carrito={carrito}
-          setCarrito={setCarrito}
-        />
+        <ToastContainer />
+        <div className="mb-10">
+          <TableCarritoProductos />
+        </div>
+        <div>
+          <TableProductosMesero />
+        </div>
       </div>
-    </div>
+    </OrdenProvider>
   );
 };
 

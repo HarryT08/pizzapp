@@ -1,13 +1,17 @@
-import { Link } from "react-router-dom";
-import { GiKnifeFork } from "react-icons/gi";
+import { Link } from 'react-router-dom';
+import { GiKnifeFork } from 'react-icons/gi';
 
 const MesasPedidos = ({ id, estado }) => {
+  const colorEstado = estado === 'Disponible' ? '[#008000]' : 'rojo-fuerte';
+
   return (
     <Link to={`/mesero/tomar-orden/${id}`}>
       <div className="card-producto">
         {/* Numero de la mesa */}
         <div className="flex justify-end mt-2">
-          <p className="bg-[#008000]/20 text-[#008000] font-medium rounded-full px-4 py-1 m-1">
+          <p
+            className={`bg-${colorEstado}/20 text-${colorEstado} font-medium rounded-full px-4 py-1 m-1`}
+          >
             {estado}
           </p>
         </div>

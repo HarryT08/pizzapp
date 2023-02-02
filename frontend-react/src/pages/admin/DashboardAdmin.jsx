@@ -4,22 +4,26 @@ import {
   Inicio,
   Productos,
   Ingredientes,
+  Bebidas,
+  AgregarBebidas,
   Ordenes,
   Cuentas,
   Mesas,
   Facturar,
-  Factura
+  Factura,
 } from ".";
 import {
   INDEX_ADMIN,
   INICIO_ADMIN,
   PRODUCTOS_ADMIN,
   INGREDIENTES_ADMIN,
+  BEBIDAS_ADMIN,
+  AGREGAR_BEBIDAS_ADMIN,
   ORDENES_ADMIN,
   CUENTAS_ADMIN,
   MESAS_ADMIN,
   FACTURAR_ADMIN,
-  FACTURA_ADMIN
+  FACTURA_ADMIN,
 } from "../../routes/paths";
 import { dataSidebar } from "../../data/datos";
 import { Navbar, Sidebar } from "../../components";
@@ -64,11 +68,16 @@ const DashboardAdmin = () => {
               <Route path={INICIO_ADMIN} element={<Inicio />} />
               <Route path={PRODUCTOS_ADMIN} element={<Productos />} />
               <Route path={INGREDIENTES_ADMIN} element={<Ingredientes />} />
+              <Route path={BEBIDAS_ADMIN} element={<Bebidas />} />
+              <Route
+                path={AGREGAR_BEBIDAS_ADMIN}
+                element={<AgregarBebidas />}
+              />
               <Route path={ORDENES_ADMIN} element={<Ordenes />} />
               <Route path={CUENTAS_ADMIN} element={<Cuentas />} />
               <Route path={MESAS_ADMIN} element={<Mesas />} />
               <Route path={FACTURAR_ADMIN} element={<Facturar />} />
-              <Route path={`${FACTURA_ADMIN}/:id`} element={<Factura/>}/>
+              <Route path={`${FACTURA_ADMIN}/:id`} element={<Factura />} />
             </Routes>
           </div>
         </main>

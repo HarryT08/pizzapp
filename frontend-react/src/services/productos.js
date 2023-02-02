@@ -1,4 +1,10 @@
 import { instance } from '@/api/api';
+import { normalizeProductos } from '@/utils/productos';
+
+export async function getProductosAndPreparaciones() {
+  const { data } = await instance.get('/productos/productsAndPreparations');
+  return normalizeProductos(data);
+}
 
 export async function getProductoAndPreparaciones(idProducto) {
   const response = await instance.get(

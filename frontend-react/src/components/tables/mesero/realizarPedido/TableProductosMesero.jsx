@@ -9,10 +9,11 @@ import {
   Paper,
   TablePagination
 } from '@mui/material';
-import { toast } from 'react-toastify';
 import { FiSearch } from 'react-icons/fi';
 import RowProductosMesero from '@/components/meseros/RowProductosMesero';
 import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
+import { useEffect } from 'react';
+import { useOrden } from '@/context/OrdenContext';
 
 const columnas = [
   { id: 'nombre', label: 'Nombre' },
@@ -20,10 +21,22 @@ const columnas = [
   { id: 'acciones', label: 'Acciones' }
 ];
 
-const TableProductosMesero = ({ products, carrito, setCarrito }) => {
+const TableProductosMesero = () => {
+  const { productos } = useOrden();
+
   const [pageProducts, setPageProducts] = useState(0);
   const [rowsProducts, setRowsProducts] = useState(10);
+  const [filteredProducts, setFilteredProducts] = useState(productos);
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    const array = productos.filter(
+      (val) =>
+        search === '' || val.nombre.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setFilteredProducts(array);
+  }, [search, productos]);
 
   // Paginacion tabla productos
   const handleChangePageProducts = (event, newPage) => {
@@ -33,22 +46,6 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
   const handleChangeRowsPerPageProducts = (event) => {
     setRowsProducts(Number(event.target.value));
     setPageProducts(0);
-  };
-
-  const handleAddProduct = (id, selected) => {
-    if (carrito.some((item) => ( item.id === id && item.tamanio === selected))) {
-      return toast.error('El producto ya se encuentra en el carrito');
-    }
-
-    const product = products.find((product) => product.id === id);
-    setCarrito((current) => current.concat({ ...product, cantidad: 1, tamanio: selected}));
-  };
-
-  const filterProducts = () => {
-    return products.filter(
-      (val) =>
-        search === '' || val.nombre.toLowerCase().includes(search.toLowerCase())
-    );
   };
 
   return (
@@ -74,11 +71,11 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
           </div>
         </div>
       </form>
-      {products.length === 0 ? (
+      {productos.length === 0 ? (
         <p className="text-center">No hay productos</p>
       ) : (
         <Paper sx={{ mb: 3 }}>
-          {filterProducts().length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <p className="text-center">Este producto no se ha agregado</p>
           ) : (
             <TableContainer component={Paper}>
@@ -101,12 +98,8 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filterProducts().map((product) => (
-                    <RowProductosMesero
-                      product={product}
-                      key={ product.id }
-                      onAdd={handleAddProduct}
-                    />
+                  {filteredProducts.map((product) => (
+                    <RowProductosMesero product={product} key={product.id} />
                   ))}
                 </TableBody>
               </Table>
@@ -116,7 +109,7 @@ const TableProductosMesero = ({ products, carrito, setCarrito }) => {
             style={{ width: '100%' }}
             rowsPerPageOptions={[10, 50, 100, 200]}
             component="div"
-            count={products.length}
+            count={filteredProducts.length}
             rowsPerPage={rowsProducts}
             page={pageProducts}
             onPageChange={handleChangePageProducts}
