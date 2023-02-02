@@ -179,7 +179,6 @@ export const getProductsAndPreparations = async (req: Request, res: Response) =>
   }
   return res.json(productos);
 };
-
 /*
 Metodo para obtener los productos y sus preparaciones por id del producto, usando el ORM de typeorm
 */

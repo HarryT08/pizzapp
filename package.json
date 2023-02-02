@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/HarryT08/pizzapp/issues"
   },
-  "homepage": "https://github.com/HarryT08/pizzapp#readme"
+  "homepage": "https://github.com/HarryT08/pizzapp#readme",
+  "dependencies": {
+    "excel4node": "^1.8.0"
+  }
 }
