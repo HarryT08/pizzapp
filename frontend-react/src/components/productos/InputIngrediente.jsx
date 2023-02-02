@@ -1,5 +1,7 @@
 import { useContext, useState } from 'react';
-import { AiFillCloseCircle } from 'react-icons/ai';
+import { IoIosClose } from 'react-icons/io';
+import {DeletedButton} from '@/components/mui/Buttons';
+import { TextField } from '@mui/material';
 
 import { SelectedProductContext } from '@/pages/admin/Productos';
 
@@ -37,20 +39,20 @@ export default function InputIngrediente({ preparacion, onDelete }) {
   return (
     <div className="flex items-center mb-2.5 gap-5 overflow-x-auto">
       <p>{preparacion.materiaPrima.nombre}</p>
-      <input
+      <TextField
+      variant="standard"
         required
         value={cantidad}
         onChange={handleChange}
         onBlur={handleBlur}
         name="cantidad"
         type="number"
-        className="w-32 border-2 rounded-lg border-azul-marino/60 fo-within:border-azul-marino  focus:outline-none"
       />
-      <small>gramos</small>
+      <small>Gramos</small>
       <div className="flex items-center">
-        <button type="button" onClick={() => onDelete(preparacion.id)}>
-          <AiFillCloseCircle className="text-rojo-fuerte/50 hover:text-rojo-fuerte cursor-pointer" />
-        </button>
+        <DeletedButton type="button" onClick={() => onDelete(preparacion.id)}>
+          <IoIosClose size={20}/>
+        </DeletedButton>
       </div>
     </div>
   );

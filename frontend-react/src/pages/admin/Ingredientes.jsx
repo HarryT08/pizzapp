@@ -55,10 +55,7 @@ const Ingredientes = () => {
 
       {/* Boton agg ingredientes */}
       <div className="mt-3">
-        <button
-          className="btn"
-          onClick={handleOpenModal}
-        >
+        <button className="btn" onClick={handleOpenModal}>
           Agregar ingrediente
         </button>
       </div>
