@@ -3,7 +3,7 @@ import { MateriaPrima } from '../entities/MateriaPrima';
 import { cleanProductName } from '../libs/cleanFunctions';
 
 export const createIngredient = async (req: Request, res: Response) => {
-  const { nombre, existencia } = req.body;
+  const { nombre, existencia, pesaje } = req.body;
   const nameClean = cleanProductName(nombre);
   const ingrediente = await searchIngredient(nameClean);
 
@@ -15,7 +15,7 @@ export const createIngredient = async (req: Request, res: Response) => {
 
   try {
     const materiaPrima = new MateriaPrima();
-    materiaPrima.init(nombre, existencia);
+    materiaPrima.init(nombre, existencia, pesaje);
     const saved = await materiaPrima.save();
     return res.status(201).json({
       message: 'Ingrediente creado con exito',

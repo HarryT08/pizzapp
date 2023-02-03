@@ -28,6 +28,9 @@ export class MateriaPrima extends BaseEntity {
   @JoinColumn({ name: 'id_materia' })
   preparaciones: Preparacion[];
 
+  @Column()
+  pesaje: string;
+
   @Column({ default: false, type: 'boolean' })
   deleted: boolean;
 
@@ -35,8 +38,9 @@ export class MateriaPrima extends BaseEntity {
     super();
   }
 
-  init(nombre: string, cantidad: number) {
+  init(nombre: string, cantidad: number, pesaje: string) {
     this.nombre = nombre;
     this.existencia = cantidad;
+    this.pesaje = pesaje;
   }
 }
