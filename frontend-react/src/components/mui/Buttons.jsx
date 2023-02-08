@@ -17,6 +17,22 @@ export const AddedButton = styled(Button)({
   },
 });
 
+export const CancelButton = styled(Button)({
+  boxShadow: "none",
+  textTransform: "none",
+  fontSize: 14,
+  fontWeight: "bold",
+  padding: "8px 32px",
+  border: "1px solid",
+  color: "#D00000",
+  borderColor: "rgba(208, 0, 0, 0.2)",
+  fontFamily: ["Montserrat"],
+  "&:hover": {
+    backgroundColor: "rgba(208, 0, 0, 0.2)",
+    borderColor: "#D00000",
+  },
+})
+
 export const DeletedButton = styled(IconButton)({
   boxShadow: "none",
   fontSize: 16,

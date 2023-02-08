@@ -36,11 +36,12 @@ const searchIngredient = async (nombre: string) => {
 
 export const updateIngredient = async (req: Request, res: Response) => {
   const id = parseInt(req.params['id']);
-  let { nombre, existencia } = req.body;
+  let { nombre, existencia, pesaje } = req.body;
   const materiaPrima = await MateriaPrima.findOneBy({ id: id, deleted: false });
   if (materiaPrima) {
     materiaPrima.nombre = nombre;
-    materiaPrima.existencia += parseInt(existencia);
+    materiaPrima.existencia = parseInt(existencia);
+    materiaPrima.pesaje = pesaje;
     await materiaPrima.save();
     return res.send('Ingrediente actualizado');
   }

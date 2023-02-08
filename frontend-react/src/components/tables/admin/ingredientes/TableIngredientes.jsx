@@ -1,19 +1,19 @@
 import { useState } from "react";
-import Alert from "@mui/material/Alert";
 import {
+  Box,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TablePagination,
 } from "@mui/material";
-import { ModalEditIngrediente } from "@/components";
-import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
+import { ModalEditIngrediente, Alerta } from "@/components";
+import { IoIosTrash, IoMdBuild } from "react-icons/io";
 import { instance } from "@/api/api";
 import { labelDisplayedRows, labelRowsPerPage } from "@/i18n";
+import { DeletedButton, UpdateButton } from "@/components/mui/Buttons";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
 
 const columns = [
@@ -22,7 +22,13 @@ const columns = [
   { id: "acciones", label: "Acciones" },
 ];
 
-const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
+const TableIngredientes = ({
+  data,
+  setData,
+  search,
+  getIngredientes,
+  pesajes,
+}) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
   const handleCloseModalEdit = () => setOpenModalEdit(false);
@@ -32,7 +38,29 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
     id: "",
     nombre: "",
     existencia: "",
+    pesaje: "G",
   });
+
+  const [ingredienteAnterior, setIngredienteAnterior] = useState({
+    existencia: "",
+    pesaje: "",
+  });
+
+  const onEditIngrediente = (item) => {
+    setIngredienteAnterior({
+      existencia: item.existencia,
+      pesaje: item.pesaje,
+    });
+    setIngrediente({
+      id: item.id,
+      nombre: item.nombre,
+      existencia: item.existencia,
+      pesaje: item.pesaje,
+    });
+    handleOpenModalEdit();
+    console.log("Ingrediente Anterior ->", ingredienteAnterior)
+    console.log("Ingrediente ->", ingrediente)
+  };
 
   // Paginacion tabla Ingredientes
   const handleChangePageIngredientes = (event, newPage) => {
@@ -45,12 +73,11 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
   };
 
   const filterData = () => {
-    return data.filter((val) => {
-      if (search === "") {
-        return val;
-      } else if (val.nombre.toLowerCase().includes(search.toLowerCase())) {
-        return val;
-      }
+    return data.filter((ingrediente) => {
+      return (
+        search === "" ||
+        ingrediente.nombre.toLowerCase().includes(search.toLowerCase())
+      );
     });
   };
 
@@ -81,92 +108,93 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
     });
   };
 
-  //Busca el elemento que tenga el ID y setea el hook ingrediente de la linea 26 :D
-  const findAndEdit = (_id) => {
-    //Data contiene todos los ingredientes de la BD, filtramos y buscamos el que tenga el ID que le pasamos
-    let toFind = data.find((ingrediente) => ingrediente.id === _id);
-
-    //Seteamos el hook ingrediente con el ingrediente que encontramos
-    setIngrediente({
-      id: _id,
-      nombre: toFind.nombre,
-      existencia: toFind.existencia,
-    });
-    handleOpenModalEdit();
-  };
+  // const findIngrediente = (id) => {
+  //   let toFind = data.find((ingrediente) => ingrediente.id === id);
+  //   setIngrediente(toFind);
+  //   handleOpenModalEdit();
+  // };
 
   return (
     <>
       {data.length === 0 ? (
-        <Alert severity="error">
-          <strong>No hay ingredientes</strong>
-        </Alert>
+        <Alerta alerta="error" descripcion="No hay ingredientes" />
       ) : (
-        <Paper>
+        <Box height="80vh">
           {filterData().length === 0 ? (
             <p className="text-center">Este ingrediente no ha sido agregado</p>
           ) : (
-            <TableContainer component={Paper} >
-              <Table sx={{ minWidth: 650 }}>
-                <TableHead>
-                  <TableRow style={{ background: "#D00000" }}>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        style={{
-                          color: "#fff",
-                          fontWeight: "bold",
-                        }}
-                        align="center"
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filterData()
-                    .slice(
-                      pageIngredientes * rowsIngredientes,
-                      pageIngredientes * rowsIngredientes + rowsIngredientes
-                    )
-                    .map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell align="center">{item.nombre}</TableCell>
-                        <TableCell align="center">{item.existencia}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-5 justify-center">
-                            <AiFillEdit
-                              size={25}
-                              onClick={() => findAndEdit(item.id)}
-                              className="bg-naranja-vivido rounded-full p-1 text-white cursor-pointer"
-                            />
-                            <AiTwotoneDelete
-                              size={25}
-                              className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
-                              onClick={() => deleteProduct(item.id)}
-                            />
-                          </div>
+            <>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow sx={{ backgroundColor: "#D00000" }}>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.id}
+                          sx={{
+                            color: "#ffffff",
+                            fontWeight: "bold",
+                          }}
+                          align="center"
+                        >
+                          {column.label}
                         </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filterData()
+                      .slice(
+                        pageIngredientes * rowsIngredientes,
+                        pageIngredientes * rowsIngredientes + rowsIngredientes
+                      )
+                      .map((item) => (
+                        <TableRow key={item.id}>
+                          <TableCell align="center">{item.nombre}</TableCell>
+                          <TableCell align="center">
+                            {item.existencia}g
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-5 justify-center">
+                              <DeletedButton
+                                onClick={() => deleteProduct(item.id)}
+                              >
+                                <IoIosTrash size={20} />
+                              </DeletedButton>
+                              <UpdateButton
+                                onClick={() => onEditIngrediente(item)}
+                              >
+                                <IoMdBuild size={20} />
+                              </UpdateButton>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                sx={{
+                  backgroundColor: "#D00000",
+                  color: "#FFFFFF",
+                  width: "100%",
+                  "& .MuiSvgIcon-root": {
+                    color: "rgb(255, 255, 255)",
+                  },
+                }}
+                rowsPerPageOptions={[10, 50, 100, 200]}
+                component="div"
+                count={data.length}
+                rowsPerPage={rowsIngredientes}
+                page={pageIngredientes}
+                onPageChange={handleChangePageIngredientes}
+                onRowsPerPageChange={handleChangeRowsPerPageIngredientes}
+                labelRowsPerPage={labelRowsPerPage}
+                labelDisplayedRows={labelDisplayedRows}
+              />
+            </>
           )}
-          <TablePagination
-            style={{ width: "100%" }}
-            rowsPerPageOptions={[10, 50, 100, 200]}
-            component="div"
-            count={data.length}
-            rowsPerPage={rowsIngredientes}
-            page={pageIngredientes}
-            onPageChange={handleChangePageIngredientes}
-            onRowsPerPageChange={handleChangeRowsPerPageIngredientes}
-            labelRowsPerPage={labelRowsPerPage}
-            labelDisplayedRows={labelDisplayedRows}
-          />
-        </Paper>
+        </Box>
       )}
 
       <ModalEditIngrediente
@@ -177,6 +205,9 @@ const TableIngredientes = ({ data, setData, search, getIngredientes }) => {
         handleCloseModalEdit={handleCloseModalEdit}
         ingrediente={ingrediente}
         setIngrediente={setIngrediente}
+        pesajes={pesajes}
+        ingredienteAnterior={ingredienteAnterior}
+        setIngredienteAnterior={setIngredienteAnterior}
       />
     </>
   );

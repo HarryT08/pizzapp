@@ -8,10 +8,10 @@ const Bebidas = () => {
   const [search, setSearch] = useState("");
 
   return (
-    <div>
+    <div className="w-full">
       <Header
         title="Bebidas"
-        subtitle="Encontraras y administraras todas las bebidas del local"
+        subtitle="Encontraras y administraras todas las bebidas de tu restaurante."
       />
       <div className="flex justify-between my-5">
         <Link to="/admin/bebidas/agregar">

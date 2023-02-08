@@ -1,9 +1,29 @@
 import { useEffect, useState } from "react";
-import { FiSearch } from "react-icons/fi";
+import { IoIosSearch } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { instance } from "../../api/api";
-import { ModalAggIngrediente, TableIngredientes } from "../../components";
+import { instance } from "@/api/api";
+import { ModalAggIngrediente, TableIngredientes, Header } from "@/components";
+import { AddedButton } from "@/components/mui/Buttons";
+
+const pesajes = [
+  {
+    value: "G",
+    label: "G",
+  },
+  {
+    value: "Kg",
+    label: "Kg",
+  },
+  {
+    value: "Oz",
+    label: "Oz",
+  },
+  {
+    value: "Lb",
+    label: "Lb",
+  },
+];
 
 const Ingredientes = () => {
   const [data, setData] = useState([]);
@@ -31,36 +51,31 @@ const Ingredientes = () => {
   return (
     <div className="w-full">
       <ToastContainer />
-      {/* Barra busqueda */}
-      <div className="flex justify-between pb-3 border-b-2">
-        <form>
-          <div className="flex">
-            <input
-              type="text"
-              placeholder="Busqueda"
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-              }}
-              className="px-2 movilM:px-2.5 py-1 movilM:py-2 placeholder-gray-500 text-black rounded-l-lg border-2 border-azul-marino/20 focus-within:border-azul-marino focus:outline-none"
-            />
-            <div className="inline-flex">
-              <button className="bg-azul-marino text-white border-2 border-azul-marino transition duration-500 px-2 movilM:px-2.5 rounded-r-lg hover:bg-white  hover:text-azul-marino">
-                <FiSearch size={20} />
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
+      <Header
+        title="Ingredientes"
+        subtitle="Encontraras y administraras todos los ingredientes de tu restaurante."
+      />
+      <div className="flex justify-between my-5">
+        <AddedButton onClick={handleOpenModal}>Agregar ingrediente</AddedButton>
 
-      {/* Boton agg ingredientes */}
-      <div className="mt-3">
-        <button className="btn" onClick={handleOpenModal}>
-          Agregar ingrediente
-        </button>
+        <div className="bg-white border-2 border-azul-marino/20 focus-within:border-azul-marino flex items-center rounded-md">
+          <div className="px-3">
+            <IoIosSearch size={20} />
+          </div>
+          <input
+            type="text"
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
+            }}
+            placeholder="Buscar..."
+            className="w-full py-2 focus:outline-none sm:text-sm rounded-md"
+          />
+        </div>
       </div>
 
       <ModalAggIngrediente
+        pesajes={pesajes}
         modalOpen={modalOpen}
         handleCloseModal={handleCloseModal}
         setModalOpen={setModalOpen}
@@ -74,6 +89,7 @@ const Ingredientes = () => {
           setData={setData}
           search={search}
           getIngredientes={getIngredientes}
+          pesajes={pesajes}
         />
       </div>
     </div>
