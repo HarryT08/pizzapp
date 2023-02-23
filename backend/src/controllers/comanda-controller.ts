@@ -212,7 +212,6 @@ Metodo para obtener las ultimas cinco comandas, usando el ORM de typeorm
 */
 export const getLastComandas = async (req: Request, res: Response) => {
   try {
-    const date = new Date();
     const comandas = await Comanda.find({ order: { id: 'DESC' }, take: 5 });
     res.json(comandas);
   } catch (error) {

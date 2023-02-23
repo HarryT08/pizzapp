@@ -86,13 +86,13 @@ const Factura = () => {
                 {detalle.producto.nombre}
               </td>
               <td className="text-[#3E5571]  border border-[#91A7BF]/20">
-                {numberFormat.format(detalle.totalComanda)}
+                {numberFormat.format(detalle.totalComanda / detalle.cantidad)}
               </td>
               <td className="text-[#3E5571]  border border-[#91A7BF]/20">
                 {detalle.cantidad}
               </td>
               <td className="text-[#3E5571]  border border-[#91A7BF]/20">
-                {numberFormat.format(detalle.totalComanda * detalle.cantidad)}
+                {numberFormat.format(detalle.totalComanda)}
               </td>
             </tr>
           ))}
