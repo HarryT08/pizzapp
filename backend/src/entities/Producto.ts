@@ -9,9 +9,11 @@ import {
 } from 'typeorm';
 import { MateriaPrima } from './MateriaPrima';
 import { Preparacion } from './Preparacion';
+import { CostoProductoTamanio } from './CostoProductoTamanio';
 
 @Entity('producto')
 export class Producto extends BaseEntity{
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -22,11 +24,13 @@ export class Producto extends BaseEntity{
     costo : number;
 
     @OneToMany(() => Preparacion,(preparacion) => preparacion.producto)
-    // @JoinColumn({name : 'id_producto'})
     preparaciones : Preparacion[];
 
     @Column( {default : false} )
     deleted: boolean;
+
+    @OneToMany(() => CostoProductoTamanio,(costoProductoTamanio) => costoProductoTamanio.producto)
+    costoProductoTamanio : CostoProductoTamanio[];
 
     constructor(){
         super();

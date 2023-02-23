@@ -58,8 +58,6 @@ const TableIngredientes = ({
       pesaje: item.pesaje,
     });
     handleOpenModalEdit();
-    console.log("Ingrediente Anterior ->", ingredienteAnterior)
-    console.log("Ingrediente ->", ingrediente)
   };
 
   // Paginacion tabla Ingredientes
@@ -152,7 +150,7 @@ const TableIngredientes = ({
                         <TableRow key={item.id}>
                           <TableCell align="center">{item.nombre}</TableCell>
                           <TableCell align="center">
-                            {item.existencia}g
+                            {item.existencia} g
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-5 justify-center">

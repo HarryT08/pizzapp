@@ -9,6 +9,7 @@ import { Preparacion } from "./entities/Preparacion";
 import { Producto } from "./entities/Producto";
 import { Rol } from "./entities/Rol";
 import { User } from "./entities/User";
+import { CostoProductoTamanio } from "./entities/CostoProductoTamanio";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -27,5 +28,6 @@ export const AppDataSource = new DataSource({
     Producto,
     Rol,
     User,
+    CostoProductoTamanio
   ],
 });

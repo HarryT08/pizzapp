@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
 import "../../styles/aditional-styles/table.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { instance } from "@/api/api";
+import { Loader } from "@/components";
 
 const columns = [
   { id: "producto", label: "Producto" },
@@ -20,21 +20,34 @@ const numberFormat = new Intl.NumberFormat("es-CO", options);
 
 const Factura = () => {
   const [dataMesa, setDataMesa] = useState({ detalleComanda: [] });
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const getComanda = async () => {
     const response = await instance.get(`/comanda/${id}`, {
       params: { estado: "Abierta" },
     });
     setDataMesa(response.data);
-    updateStateComanda();
   };
 
   const updateStateComanda = async () => {
-    await instance.put(`/comanda/${id}`, {
-      estado: "Facturado",
-    });
-    updateMesa();
+    try{
+      setLoading(true);
+      await instance.put(`/comanda/${id}`, {
+        estado: "Facturado",
+      });
+      updateMesa();
+      setTimeout(() => 
+        {
+          navigate("/admin/facturar");
+          setLoading(false);
+        }
+      , 1000);
+    }catch(err){
+      console.log("Error en updateStateComanda " + err);
+      setLoading(false);
+    }
   };
 
   const updateMesa = async () => {
@@ -93,13 +106,20 @@ const Factura = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-2 mt-6 justify-end">
-        <Link to="/admin/facturar" className="btn">
-          Regresar
-        </Link>
-        <button type="button" onClick={() => window.print()} className="btn">
-          Imprimir
-        </button>
+      <div className="flex gap-2 mt-6 justify-between">
+        <div>
+          <Link to="/admin/facturar" className="btn">
+            Regresar
+          </Link>
+        </div>
+        <div className="flex gap-2">
+          <button type="button" onClick={updateStateComanda} className="btn">
+            {loading ? <Loader /> : "Facturar"}
+          </button>
+          <button type="button" onClick={() => window.print()} className="btn">
+            Imprimir
+          </button>
+        </div>
       </div>
     </>
   );

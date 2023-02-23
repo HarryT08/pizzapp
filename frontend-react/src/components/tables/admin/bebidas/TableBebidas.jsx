@@ -79,7 +79,7 @@ const TableBebidas = ({ search }) => {
                   .map((drink) => (
                     <TableRow key={drink.id}>
                       <TableCell align="center">{drink.nombre}</TableCell>
-                      <TableCell>{drink.precio}</TableCell>
+                      <TableCell align="center">$ {drink.precio} COP</TableCell>
                       <TableCell align="center">
                         <>
                           <DeletedButton>

@@ -3,8 +3,6 @@ import { MoreThanOrEqual, QueryRunner } from 'typeorm';
 import { Comanda } from '../entities/Comanda';
 import { DetalleComanda } from '../entities/DetalleComanda';
 import { MateriaPrima } from '../entities/MateriaPrima';
-import { Mesa } from '../entities/Mesa';
-import { Preparacion } from '../entities/Preparacion';
 import { setState } from './mesas-controller';
 
 /*
@@ -40,7 +38,7 @@ export const updateStateComanda = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { estado } = req.body;
-    const comanda = await Comanda.findOne({ where: { idMesa: parseInt(id) } });
+    const comanda = await Comanda.findOne({ where: { idMesa: parseInt(id), estado: "Abierta" } });
     if (comanda) {
       comanda.estado = estado;
       await comanda.save();

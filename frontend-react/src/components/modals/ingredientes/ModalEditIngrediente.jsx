@@ -10,8 +10,6 @@ const ModalEditIngrediente = ({
   handleCloseModalEdit,
   ingrediente,
   setIngrediente,
-  data,
-  setData,
   getIngredientes,
   pesajes,
   ingredienteAnterior,
@@ -83,13 +81,12 @@ const ModalEditIngrediente = ({
         existencia: nuevaExistencia,
         pesaje: ingrediente.pesaje,
       };
-    }
-
-    if (ingrediente.pesaje === ingredienteAnterior.pesaje) {
+    }else {
+      const existenciaNueva = toGrams(ingrediente.existencia, ingrediente.pesaje);
       newData = {
         nombre: ingrediente.nombre,
         existencia:
-          parseInt(ingrediente.existencia) +
+          parseInt(existenciaNueva) +
           parseInt(ingredienteAnterior.existencia),
         pesaje: ingrediente.pesaje,
       };
