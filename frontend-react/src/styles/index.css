@@ -16,15 +16,15 @@
   }
 
   .Facturado {
-    @apply bg-verde-profundo/20 rounded-md p-1 text-verde-profundo;
+    @apply bg-verde-profundo/20 rounded-md px-2 text-verde-profundo inline-flex uppercase font-medium text-xs;
   }
 
   .Abierta {
-    @apply bg-naranja-vivido/20 rounded-md p-1 text-naranja-vivido;
+    @apply bg-naranja-vivido/20 rounded-md p-1 text-naranja-vivido inline-flex uppercase font-medium text-xs;
   }
 
   .Cancelado {
-    @apply bg-rojo-fuerte/20 rounded-md p-1 text-rojo-fuerte;
+    @apply bg-rojo-fuerte/20 rounded-md p-1 text-rojo-fuerte inline-flex uppercase font-medium text-xs;
   }
 
   /* Boton */

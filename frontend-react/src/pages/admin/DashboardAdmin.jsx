@@ -7,6 +7,7 @@ import {
   Bebidas,
   AgregarBebidas,
   Ordenes,
+  ShowComanda,
   Cuentas,
   Mesas,
   Facturar,
@@ -20,6 +21,7 @@ import {
   BEBIDAS_ADMIN,
   AGREGAR_BEBIDAS_ADMIN,
   ORDENES_ADMIN,
+  SHOW_COMANDA_ADMIN,
   CUENTAS_ADMIN,
   MESAS_ADMIN,
   FACTURAR_ADMIN,
@@ -74,6 +76,7 @@ const DashboardAdmin = () => {
                 element={<AgregarBebidas />}
               />
               <Route path={ORDENES_ADMIN} element={<Ordenes />} />
+              <Route path={`${SHOW_COMANDA_ADMIN}/:id`} element={<ShowComanda/>}/>
               <Route path={CUENTAS_ADMIN} element={<Cuentas />} />
               <Route path={MESAS_ADMIN} element={<Mesas />} />
               <Route path={FACTURAR_ADMIN} element={<Facturar />} />

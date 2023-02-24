@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
+  Box,
   Radio,
   RadioGroup,
   FormControlLabel,
@@ -10,25 +12,36 @@ import {
   TableContainer,
   TableRow,
   TableHead,
-  Paper,
-  TablePagination
-} from '@mui/material';
-import { AiTwotoneDelete } from 'react-icons/ai';
-import { instance } from "../../../../api/api";
-import { labelDisplayedRows, labelRowsPerPage } from '@/i18n';
-import Swal from 'sweetalert2/dist/sweetalert2.all.js';
+  Divider,
+  TablePagination,
+  IconButton,
+  Tooltip
+} from "@mui/material";
+import {  AiOutlineArrowRight } from "react-icons/ai";
+import {HiOutlineTrash} from 'react-icons/hi'
+import { instance } from "@/api/api";
+import { labelDisplayedRows, labelRowsPerPage } from "@/i18n";
+import Swal from "sweetalert2/dist/sweetalert2.all.js";
 
 const columns = [
-  { id: 'orden', label: '#Orden' },
-  { id: 'fecha', label: 'Fecha' },
-  { id: 'totalOrden', label: 'Total Orden' },
-  { id: 'estado', label: 'Estado' },
-  { id: 'acciones', label: 'Acciones' }
+  { id: "orden", label: "#Orden" },
+  { id: "fecha", label: "Fecha" },
+  { id: "totalOrden", label: "Total Orden" },
+  { id: "estado", label: "Estado" },
+  { id: "acciones", label: "Acciones" },
 ];
 
-const options = { style: 'currency', currency: 'COP', minimumFractionDigits: 0 };
-const numberFormat = new Intl.NumberFormat('es-CO', options);
-const fechaFormat = new Intl.DateTimeFormat('es-CO', {year: 'numeric', month: '2-digit', day: '2-digit' });
+const options = {
+  style: "currency",
+  currency: "COP",
+  minimumFractionDigits: 0,
+};
+const numberFormat = new Intl.NumberFormat("es-CO", options);
+const fechaFormat = new Intl.DateTimeFormat("es-CO", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
 
 const TableOrdenes = () => {
   const [page, setPage] = useState(0);
@@ -36,13 +49,24 @@ const TableOrdenes = () => {
   const [dataOrders, setDataOrders] = useState([]);
   const [dataOrdenes, setDataOrdenes] = useState([]);
 
-  const getComandas = async() => {
-    try{
-      const response = await instance.get('/comanda');
+  const navigate = useNavigate();
+
+  const getComandas = async () => {
+    try {
+      const response = await instance.get("/comanda");
       setDataOrdenes(response.data);
       setDataOrders(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getComandaById = async (id) => {
+    try {
+      const response = await instance.get(`/detallecomanda/${id}`);
+      navigate(`/admin/ordenes/comanda/${id}`);
       console.log(response.data);
-    }catch(err) {
+    } catch (err) {
       console.log(err);
     }
   };
@@ -73,18 +97,18 @@ const TableOrdenes = () => {
 
   const showAlert = (id) => {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'No podrás revertir esta acción',
-      icon: 'warning',
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esta acción",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#008000',
-      cancelButtonColor: '#D00000',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: "#008000",
+      cancelButtonColor: "#D00000",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteTableOrder(id);
-        Swal.fire('Eliminado', 'El producto ha sido eliminado', 'success');
+        Swal.fire("Eliminado", "El producto ha sido eliminado", "success");
       }
     });
   };
@@ -92,41 +116,54 @@ const TableOrdenes = () => {
   return (
     <>
       {/* Inputs filter */}
-      <FormControl>
-        <RadioGroup row defaultValue="todos" name="row-radio-buttons-group">
-          <FormControlLabel
-            value="todos"
-            control={<Radio />}
-            label="Todos"
-            onClick={() => setDataOrders(dataOrdenes)}
-          />
-          <FormControlLabel
-            value="facturado"
-            control={<Radio />}
-            label="Facturado"
-            onClick={() => filterResults("Facturado")}
-          />
-          <FormControlLabel
-            value="abierta"
-            control={<Radio />}
-            label="Abierta"
-            onClick={() => filterResults("Abierta")}
-          />
-        </RadioGroup>
-      </FormControl>
+      <Box sx={{marginBottom: "10px"}}>
+        <FormControl sx={{padding: "10px 20px 0 20px"}}>
+          <RadioGroup row defaultValue="todos" name="row-radio-buttons-group">
+            <FormControlLabel
+              value="todos"
+              control={<Radio />}
+              label="Todos"
+              onClick={() => setDataOrders(dataOrdenes)}
+            />
+            <FormControlLabel
+              value="facturado"
+              control={<Radio />}
+              label="Facturado"
+              onClick={() => filterResults("Facturado")}
+            />
+            <FormControlLabel
+              value="abierta"
+              control={<Radio />}
+              label="Abierta"
+              onClick={() => filterResults("Abierta")}
+            />
+          </RadioGroup>
+        </FormControl>
+        <Divider sx={{
+          "&.MuiDivider-root": {
+            borderColor: "rgba(0, 0, 0, 0.05)",
+          }
+        }}/>
+      </Box>
       {/* Data table */}
-      <Paper>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Box>
+        <TableContainer
+          sx={{
+            "&.MuiTableContainer-root": {
+              borderRadius: "0px",
+              border: "none",
+            },
+          }}
+        >
+          <Table>
             <TableHead>
-              <TableRow style={{ background: '#D00000' }}>
+              <TableRow sx={{ background: "#f8f9fa" }}>
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
-                    style={{
-                      color: '#fff',
-                      fontWeight: 'bold',
-                      fontFamily: 'Montserrat'
+                    sx={{
+                      color: "#000000",
+                      fontWeight: "600",
                     }}
                     align="center"
                   >
@@ -140,39 +177,28 @@ const TableOrdenes = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell
-                      style={{ fontFamily: 'Montserrat' }}
-                      align="center"
-                    >
-                      {item.id}
-                    </TableCell>
-                    <TableCell
-                      style={{ fontFamily: 'Montserrat' }}
-                      align="center"
-                    >
+                    <TableCell align="center">{item.id}</TableCell>
+                    <TableCell align="center">
                       {fechaFormat.format(new Date(item.fecha))}
                     </TableCell>
-                    <TableCell
-                      style={{ fontFamily: 'Montserrat' }}
-                      align="center"
-                    >
+                    <TableCell align="center">
                       {numberFormat.format(item.total)}
                     </TableCell>
-                    <TableCell
-                      style={{ fontFamily: 'Montserrat' }}
-                      align="center"
-                    >
-                      {' '}
+                    <TableCell align="center">
                       <p className={`${item.estado}`}>{item.estado}</p>
-                      {' '}
                     </TableCell>
                     <TableCell align="center">
-                      <div className="flex items-center gap-5 justify-center">
-                        <AiTwotoneDelete
-                          size={25}
-                          className="bg-rojo-fuerte rounded-full p-1 text-white cursor-pointer"
-                          onClick={() => showAlert(item.id)}
-                        />
+                      <div className="flex items-center gap-3 justify-center">
+                        <Tooltip title="Eliminar" arrow>
+                          <IconButton onClick={() => showAlert(item.id)}>
+                            <HiOutlineTrash />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Ver orden" arrow>
+                          <IconButton onClick={() => getComandaById(item.id)}>
+                            <AiOutlineArrowRight />
+                          </IconButton>
+                        </Tooltip>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -191,7 +217,7 @@ const TableOrdenes = () => {
           labelRowsPerPage={labelRowsPerPage}
           labelDisplayedRows={labelDisplayedRows}
         />
-      </Paper>
+      </Box>
     </>
   );
 };

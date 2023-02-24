@@ -29,6 +29,7 @@ const Factura = () => {
       params: { estado: "Abierta" },
     });
     setDataMesa(response.data);
+    console.log("Comanda ->", response.data)
   };
 
   const updateStateComanda = async () => {
