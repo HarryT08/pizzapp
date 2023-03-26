@@ -112,7 +112,7 @@ const AgregarProductos = () => {
                   <div key={key}>
             
                     <Controller
-                      name={`costos.${value.key}.precio`}
+                      name={`costos.${value.key}`}
                       control={methodsProducts.control}
                       render={({ field }) => {
                         return (

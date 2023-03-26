@@ -101,9 +101,8 @@ console.log("Valores producto:",valoresProducto)
         costos: valoresProducto.costos,
         preparaciones,
       };
-
-      console.log("Dataaaaaa:",data)
-  /*     if (action === "create") {
+      
+      if (action === "create") {
         await productosServices.createProduct(data);
         console.log("Data ->", data)
       } else if (action === "update") {
@@ -113,7 +112,7 @@ console.log("Valores producto:",valoresProducto)
       toast.success("Producto agregado correctamente");
       setPreparaciones([]);
       navigate("/admin/productos");
-      getProductos(); */
+      getProductos();
     } catch (err) {
       toast.error("No se pudo guardar el producto");
       console.error(err);

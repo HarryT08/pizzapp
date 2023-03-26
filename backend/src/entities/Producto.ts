@@ -20,16 +20,13 @@ export class Producto extends BaseEntity{
     @Column()
     nombre: string;
 
-    @Column()
-    costo : number;
-
     @OneToMany(() => Preparacion,(preparacion) => preparacion.producto)
     preparaciones : Preparacion[];
 
     @Column( {default : false} )
     deleted: boolean;
 
-    @OneToMany(() => CostoProductoTamanio,(costoProductoTamanio) => costoProductoTamanio.producto)
+    @OneToMany(() => CostoProductoTamanio,(costoProductoTamanio) => costoProductoTamanio.producto, {cascade: true})
     costoProductoTamanio : CostoProductoTamanio[];
 
     constructor(){
@@ -49,8 +46,8 @@ export class Producto extends BaseEntity{
 
     preparar : Record<string, number>;
     
-    init(nombre:string, costo:number): void {
+    init(nombre:string, costo:[]): void {
         this.nombre = nombre;
-        this.costo = costo;
+        this.costoProductoTamanio = costo;
     }
 }

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { Preparacion } from '../entities/Preparacion';
 import { Producto } from '../entities/Producto';
 import { cleanProductName } from '../libs/cleanFunctions';
+import { CostoProductoTamanio } from '~/entities/CostoProductoTamanio';
 
 /*
 Metodo para obtener un producto por su id, usando el ORM de typeorm
@@ -22,7 +23,10 @@ Metodo para buscar todos los productos, usando el ORM de typeorm
 */
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Producto.find({ where: { deleted: false } });
+    const products = await Producto.find({ 
+      where: { deleted: false },
+      relations: ['costoProductoTamanio']
+    });
 
     return res.json(products);
   } catch (error) {
@@ -35,7 +39,7 @@ export const getProducts = async (req: Request, res: Response) => {
 Metodo para crear un producto, usando el ORM de typeorm
 */
 export const createProduct = async (req: Request, res: Response) => {
-  let { nombre, costo, preparaciones } = req.body;
+  let { nombre, costos, preparaciones } = req.body;
   const nameClean = cleanProductName(nombre);
   const product = await searchProduct(nameClean);
 
@@ -43,11 +47,20 @@ export const createProduct = async (req: Request, res: Response) => {
     return res.status(400).json({
       message: 'El producto ya existe'
     });
-  }
+  }  
 
   try {
     const newProduct = new Producto();
-    newProduct.init(nameClean, costo);
+    newProduct.init(nameClean, costos);
+    //Mapeo de costo de producto por tamanio
+    let costosProductos :CostoProductoTamanio[] = new Array();
+    Object.entries(costos).forEach(([tamanio, costo]) => {
+      const costoProducto = new CostoProductoTamanio();
+      costoProducto.init(newProduct.id, tamanio, Number(costo));
+      costosProductos.push(costoProducto);
+    });
+    newProduct.costoProductoTamanio = costosProductos;
+    
     const saved = await newProduct.save();
     createPreparation(saved, preparaciones);
 
@@ -63,9 +76,12 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 const searchProduct = async (nombre: string) => {
-  const producto = await Producto.findOneBy({
-    nombre: nombre,
-    deleted: false
+  const producto = await Producto.findOne({
+    where: {
+      nombre: nombre,
+      deleted: false
+    },
+    relations: ['costoProductoTamanio']
   });
   return producto;
 };
@@ -120,14 +136,23 @@ Metodo para actualizar un producto, usando el ORM de typeorm
 export const updateProduct = async (req: Request, res: Response) => {
   const id = Number.parseInt(req.params['id']);
   //chosen --> Las presentaciones que selecciono el usuario
-  let { nombre, costo, preparaciones } = req.body;
+  let { nombre, costos, preparaciones } = req.body;
   const producto = await Producto.findOneBy({ id: id, deleted: false });
 
   if (!producto)
     return res.status(404).json({ message: 'Producto no encontrado' });
 
   producto.nombre = nombre;
-  producto.costo = costo;
+  producto.costoProductoTamanio = costos;
+  //Mapeo de costo de producto por tamanio
+  let costosProductos :CostoProductoTamanio[] = new Array();
+  Object.entries(costos).forEach(([tamanio, costo]) => {
+    const costoProducto = new CostoProductoTamanio();
+    costoProducto.init(producto.id, tamanio, Number(costo));
+    costosProductos.push(costoProducto);
+  });
+  producto.costoProductoTamanio = costosProductos;
+  
   try {
     await updatePreparations(producto, preparaciones);
     await producto.save();
