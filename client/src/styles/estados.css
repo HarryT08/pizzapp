@@ -1,0 +1,30 @@
+.Abierta,
+.mesero {
+  background-color: #f790091f;
+  color: #b54708;
+  border-radius: 12px;
+  cursor: default;
+  display: inline-flex;
+  line-height: 2;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 20px;
+  padding: 0 8px 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.Facturado,
+.admin {
+  background-color: #10b9811f;
+  color: #0b815a;
+  border-radius: 12px;
+  cursor: default;
+  display: inline-flex;
+  line-height: 2;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 20px;
+  padding: 0 8px 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
