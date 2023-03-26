@@ -14,10 +14,10 @@ export class CostoProductoTamanio extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({select: false})
+    @Column()
     idProducto: number;
 
-    @JoinColumn({name : 'idProducto'})
+    @JoinColumn({name : 'idProducto', referencedColumnName : 'id'})
     @ManyToOne(() => Producto,(producto) => producto.costoProductoTamanio)
     producto : Producto;
 
@@ -33,7 +33,4 @@ export class CostoProductoTamanio extends BaseEntity{
         this.costo = costo;
     }
 
-    constructor(){
-        super();
-    }
 }

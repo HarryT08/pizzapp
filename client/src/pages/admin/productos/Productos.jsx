@@ -15,12 +15,17 @@ import { Header, TableProductos } from "@/components";
 
 const Productos = () => {
   const [search, setSearch] = useState("");
-  const { products } = useContext(SelectedProductContext);
+  const { products, methodsProducts, setSelectedPreparations, handleCreate } =
+    useContext(SelectedProductContext);
   const smUp = useMediaQuery((theme) => theme.breakpoints.up("sm"), {
     defaultMatches: true,
     noSsr: false,
   });
-
+  const limpiarCampos = () => {
+    methodsProducts.reset({});
+    setSelectedPreparations([]);
+    handleCreate();
+  };
   const searchProductos = () => {
     return products.filter((product) => {
       return (
@@ -37,7 +42,12 @@ const Productos = () => {
           <Header title="Productos" subtitle="Administrar productos." />
         </Stack>
         <div>
-          <Link to="/admin/productos/agregar">
+          <Link
+            to="/admin/productos/agregar"
+            onClick={() => {
+              limpiarCampos();
+            }}
+          >
             <Button
               sx={{
                 fontSize: smUp ? "1rem" : "0.75rem",
@@ -70,6 +80,7 @@ const Productos = () => {
           sx={{ maxWidth: 500 }}
         />
       </Card>
+      {console.log("Lista de productos:", products)}
       <TableProductos searchProductos={searchProductos} />
     </Stack>
   );

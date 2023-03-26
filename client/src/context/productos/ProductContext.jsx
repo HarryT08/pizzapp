@@ -27,18 +27,13 @@ const preparations = {
 };
 
 export const ProductProvider = ({ children }) => {
-  const methodsProducts=useForm()
+  const methodsProducts = useForm();
   const [products, setProducts] = useState([]);
   const [action, setAction] = useState("create");
   const [producto, setProducto] = useState(initialProduct);
   const [preparaciones, setPreparaciones] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedPreparations, setSelectedPreparations] = useState(() =>
-    producto.selectedSizes.map((item) => ({
-      key: item,
-      value: preparations[item],
-    }))
-  );
+  const [selectedPreparations, setSelectedPreparations] = useState([]);
   const navigate = useNavigate();
 
   const handleCreate = () => {
@@ -68,14 +63,11 @@ export const ProductProvider = ({ children }) => {
     setPreparaciones(preparaciones);
   }, []);
 
-
-  const handleChangeValuesProducto=()=>{
-
-  }
+  const handleChangeValuesProducto = () => {};
   const handleSubmit = async (valoresProducto) => {
-/*     e.preventDefault(); */
+    /*     e.preventDefault(); */
 
-  /*   if (producto.nombre.trim() === "") {
+    /*   if (producto.nombre.trim() === "") {
       return toast.error("El nombre del producto es obligatorio.");
     }
 
@@ -91,21 +83,23 @@ export const ProductProvider = ({ children }) => {
       return toast.error("No se ha seleccionado ningún ingrediente.");
     }
  */
-console.log("Valores producto:",valoresProducto)
+    console.log("Valores producto:", valoresProducto);
     setLoading(true);
 
     try {
       const data = {
-        id: producto.id,
+        id: valoresProducto.id,
         nombre: valoresProducto.nombre,
         costos: valoresProducto.costos,
         preparaciones,
       };
-      
+
       if (action === "create") {
+        console.log("Tipo de accion create: ", action);
         await productosServices.createProduct(data);
-        console.log("Data ->", data)
+        console.log("Data ->", data);
       } else if (action === "update") {
+        console.log("Tipo de accion update: ", action);
         await productosServices.updateProduct(data);
       }
 
@@ -137,10 +131,10 @@ console.log("Valores producto:",valoresProducto)
     loading,
     getProductos,
     setSelectedPreparations,
+    action,
     selectedPreparations,
     preparations,
-    methodsProducts
-
+    methodsProducts,
   };
 
   return (

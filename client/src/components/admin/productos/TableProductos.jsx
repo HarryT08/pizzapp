@@ -19,6 +19,7 @@ import { labelDisplayedRows, labelRowsPerPage } from "@/i18n";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
 import * as productosServices from "@/services/productos/productos";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 // Columnas de los productos
 const columns = [
@@ -37,13 +38,50 @@ const numberFormat = new Intl.NumberFormat("es-CO", options);
 const TableProductos = ({ searchProductos }) => {
   const [pageProductos, setPageProductos] = useState(0);
   const [rowsProductos, setRowsProductos] = useState(10);
-  const { getProductos, onUpdate, products } = useContext(
-    SelectedProductContext
-  );
+  const {
+    getProductos,
+    onUpdate,
+    products,
+    methodsProducts,
+    setSelectedPreparations,
+    preparations
+  } = useContext(SelectedProductContext);
+  const navigate = useNavigate();
 
   // Paginacion tabla Ingredientes
   const handleChangePageProductos = (event, newPage) => {
     setPageProductos(newPage);
+  };
+
+  const formatearObjetoProductoCostos = (objeto) => {
+  
+    const nuevoObjetoCostos = {
+      mediana: "",
+      grande: "",
+      pequeña: "",
+      unico: "",
+    };
+    objeto.forEach((item) => {
+   
+      switch (item.tamanio) {
+        case "mediana":
+          nuevoObjetoCostos.mediana = item.costo;
+          break;
+        case "grande":
+          nuevoObjetoCostos.grande = item.costo;
+          break;
+        case "pequeña":
+          nuevoObjetoCostos.pequeña = item.costo;
+          break;
+        case "unico":
+          nuevoObjetoCostos.unico = item.costo;
+          break;
+        default:
+          break;
+      }
+    });
+
+    return { ...nuevoObjetoCostos };
   };
 
   const handleChangeRowsPerPageProductos = (event) => {
@@ -79,12 +117,29 @@ const TableProductos = ({ searchProductos }) => {
 
   const handleEdit = async (producto) => {
     try {
-      const object = await productosServices.getProductoAndPreparaciones(
-        producto.id
+      const objectProductoConPreparaciones =
+        await productosServices.getProductoAndPreparaciones(producto.id);
+
+      const costosProducto = formatearObjetoProductoCostos(
+        producto.costoProductoTamanio
       );
-      console.log("Object ->", object);
-      console.log("Producto ->", producto);
-      onUpdate(object);
+
+      methodsProducts.reset({
+        ...objectProductoConPreparaciones,
+        costos: costosProducto,
+      });
+      setSelectedPreparations(() => {
+        return (
+          methodsProducts.getValues("selectedSizes")?.map((item) => ({
+            key: item,
+            value: preparations[item],
+          })) || []
+        );
+      });
+
+      navigate("/admin/productos/editar");
+
+      onUpdate(objectProductoConPreparaciones);
     } catch (error) {
       toast.error("No se pudo obtener el producto");
       console.error(error);

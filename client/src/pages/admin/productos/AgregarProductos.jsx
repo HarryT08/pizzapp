@@ -15,7 +15,7 @@ import { Header, Loader, Alerta, PreparacionProductos } from "@/components";
 import { Controller } from "react-hook-form";
 
 const AgregarProductos = () => {
-  const { onSubmit, loading, selectedPreparations, methodsProducts } =
+  const { onSubmit, loading, selectedPreparations, methodsProducts ,action} =
     useContext(SelectedProductContext);
   const formRef = useRef(null);
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const AgregarProductos = () => {
     <Stack spacing={3}>
       <Stack spacing={1}>
         <Header
-          title="Agregar productos"
+          title={action==="update"?"Actualizar producto":"Agregar producto"}
           subtitle="Añadir productos del restaurante."
         />
       </Stack>
@@ -102,6 +102,7 @@ const AgregarProductos = () => {
                 alignItems: "center",
               }}
             >
+             
               {selectedPreparations.length === 0 ? (
                 <Alerta
                   descripcion="No se ha seleccionado ninguna presentacion."
@@ -110,6 +111,7 @@ const AgregarProductos = () => {
               ) : (
                 Object.entries(selectedPreparations).map(([key, value]) => (
                   <div key={key}>
+                 
             
                     <Controller
                       name={`costos.${value.key}`}

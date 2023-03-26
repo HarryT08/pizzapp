@@ -143,17 +143,19 @@ export const updateProduct = async (req: Request, res: Response) => {
     return res.status(404).json({ message: 'Producto no encontrado' });
 
   producto.nombre = nombre;
-  producto.costoProductoTamanio = costos;
+  
   //Mapeo de costo de producto por tamanio
   let costosProductos :CostoProductoTamanio[] = new Array();
   Object.entries(costos).forEach(([tamanio, costo]) => {
     const costoProducto = new CostoProductoTamanio();
-    costoProducto.init(producto.id, tamanio, Number(costo));
+    costoProducto.init(id, tamanio, Number(costo));
+    costoProducto.producto = producto;
     costosProductos.push(costoProducto);
   });
   producto.costoProductoTamanio = costosProductos;
 
   try {
+    console.log("costoProducto " , producto.costoProductoTamanio)
     await updatePreparations(producto, preparaciones);
     await producto.save();
     res.status(204).json({ message: 'Producto actualizado' });

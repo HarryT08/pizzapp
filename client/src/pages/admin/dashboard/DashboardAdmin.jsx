@@ -23,6 +23,7 @@ import {
   CUENTAS_ADMIN,
   MESAS_ADMIN,
   FACTURAR_ADMIN,
+  EDITAR_PRODUCTO_ADMIN,
 } from "@/routes/paths";
 
 import { IngredienteProvider } from "@/context/ingredientes/IngredientesContext";
@@ -68,6 +69,16 @@ const DashboardAdmin = () => {
             />
             <Route
               path={AGREGAR_PRODUCTO_ADMIN}
+              element={
+                <ProductProvider>
+                  <IngredienteProvider>
+                    <AgregarProductos />
+                  </IngredienteProvider>
+                </ProductProvider>
+              }
+            />
+               <Route
+              path={EDITAR_PRODUCTO_ADMIN}
               element={
                 <ProductProvider>
                   <IngredienteProvider>
