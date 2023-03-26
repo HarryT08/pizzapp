@@ -12,11 +12,11 @@ import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { SelectedProductContext } from "@/context/productos/ProductContext";
 import { Header, Loader, Alerta, PreparacionProductos } from "@/components";
+import { Controller } from "react-hook-form";
 
 const AgregarProductos = () => {
-  const { onSubmit, loading, selectedPreparations } = useContext(
-    SelectedProductContext
-  );
+  const { onSubmit, loading, selectedPreparations, methodsProducts } =
+    useContext(SelectedProductContext);
   const formRef = useRef(null);
   const navigate = useNavigate();
 
@@ -34,7 +34,11 @@ const AgregarProductos = () => {
           subtitle="Añadir productos del restaurante."
         />
       </Stack>
-      <form id="form" onSubmit={onSubmit} ref={formRef}>
+      <form
+        id="form"
+        onSubmit={methodsProducts.handleSubmit(onSubmit)}
+        ref={formRef}
+      >
         <Box
           sx={{
             display: "flex",
@@ -55,7 +59,27 @@ const AgregarProductos = () => {
             </Typography>
             <Divider />
             <Box sx={{ my: "1.25rem" }}>
-              <TextField name="nombre" label="Nombre" variant="outlined" />
+              <Controller
+                control={methodsProducts.control}
+                name="nombre"
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Campo requerido",
+                  },
+                }}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <TextField
+                      {...field}
+                      label="Nombre"
+                      variant="outlined"
+                      helperText={error?.message}
+                      error={error ? true : false}
+                    />
+                  );
+                }}
+              />
             </Box>
             <Typography
               sx={{
@@ -86,11 +110,20 @@ const AgregarProductos = () => {
               ) : (
                 Object.entries(selectedPreparations).map(([key, value]) => (
                   <div key={key}>
-                    <TextField
-                      name={key}
-                      label={value.value}
-                      variant="outlined"
-                      type="number"
+            
+                    <Controller
+                      name={`costos.${value.key}.precio`}
+                      control={methodsProducts.control}
+                      render={({ field }) => {
+                        return (
+                          <TextField
+                            {...field}
+                            label={value.value}
+                            variant="outlined"
+                            type="number"
+                          />
+                        );
+                      }}
                     />
                   </div>
                 ))

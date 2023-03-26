@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from "react";
+import { useForm } from "react-hook-form";
 import * as productosServices from "@/services/productos/productos";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -26,6 +27,7 @@ const preparations = {
 };
 
 export const ProductProvider = ({ children }) => {
+  const methodsProducts=useForm()
   const [products, setProducts] = useState([]);
   const [action, setAction] = useState("create");
   const [producto, setProducto] = useState(initialProduct);
@@ -66,10 +68,14 @@ export const ProductProvider = ({ children }) => {
     setPreparaciones(preparaciones);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    if (producto.nombre.trim() === "") {
+  const handleChangeValuesProducto=()=>{
+
+  }
+  const handleSubmit = async (valoresProducto) => {
+/*     e.preventDefault(); */
+
+  /*   if (producto.nombre.trim() === "") {
       return toast.error("El nombre del producto es obligatorio.");
     }
 
@@ -84,18 +90,20 @@ export const ProductProvider = ({ children }) => {
     if (preparaciones.length === 0) {
       return toast.error("No se ha seleccionado ningún ingrediente.");
     }
-
+ */
+console.log("Valores producto:",valoresProducto)
     setLoading(true);
 
     try {
       const data = {
         id: producto.id,
-        nombre: producto.nombre,
-        costo: producto.costo,
+        nombre: valoresProducto.nombre,
+        costos: valoresProducto.costos,
         preparaciones,
       };
 
-      if (action === "create") {
+      console.log("Dataaaaaa:",data)
+  /*     if (action === "create") {
         await productosServices.createProduct(data);
         console.log("Data ->", data)
       } else if (action === "update") {
@@ -105,7 +113,7 @@ export const ProductProvider = ({ children }) => {
       toast.success("Producto agregado correctamente");
       setPreparaciones([]);
       navigate("/admin/productos");
-      getProductos();
+      getProductos(); */
     } catch (err) {
       toast.error("No se pudo guardar el producto");
       console.error(err);
@@ -132,6 +140,8 @@ export const ProductProvider = ({ children }) => {
     setSelectedPreparations,
     selectedPreparations,
     preparations,
+    methodsProducts
+
   };
 
   return (
