@@ -3,18 +3,20 @@ import {
     Entity,
     BaseEntity,
     ManyToOne,
-    PrimaryColumn,
-    JoinColumn
+    JoinColumn,
+    PrimaryGeneratedColumn
 } from 'typeorm';
 import { Producto } from './Producto';
 
 @Entity('costoProductoTamanio')
 export class CostoProductoTamanio extends BaseEntity{
 
+    @PrimaryGeneratedColumn()
+    id: number;
+
     @Column({select: false})
     idProducto: number;
 
-    @PrimaryColumn({name : 'idProducto', type : 'int' , insert : false, update : true})
     @JoinColumn({name : 'idProducto'})
     @ManyToOne(() => Producto,(producto) => producto.costoProductoTamanio)
     producto : Producto;

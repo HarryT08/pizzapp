@@ -31,7 +31,7 @@ export const getProducts = async (req: Request, res: Response) => {
     return res.json(products);
   } catch (error) {
     return res.json({
-      message: 'Ha ocurrido algo inesperado'
+      message: error
     });
   }
 };
@@ -152,7 +152,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     costosProductos.push(costoProducto);
   });
   producto.costoProductoTamanio = costosProductos;
-  
+
   try {
     await updatePreparations(producto, preparaciones);
     await producto.save();
