@@ -4,7 +4,8 @@
   "description": "",
   "workspaces": [
     "backend",
-    "frontend-react"
+    "frontend-react",
+    "client"
   ],
   "repository": {
     "type": "git",
