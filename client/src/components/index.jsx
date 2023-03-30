@@ -32,3 +32,6 @@ export { default as ChipPreparations } from "./admin/productos/ChipPreparations"
 export { default as TableCuentas } from "./admin/cuentas/TableCuentas";
 export { default as ModalCuentas } from "./admin/cuentas/ModalCuentas";
 export { default as EditarCuentas } from "./admin/cuentas/EditarCuentas";
+
+export { default as Mesa } from "./Mesa";
+export { default as ModalMesas } from "./admin/mesas/ModalMesas";
