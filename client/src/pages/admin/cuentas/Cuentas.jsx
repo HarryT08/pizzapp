@@ -1,10 +1,16 @@
 import { useState } from "react";
-import { Header, TableCuentas, ModalCuentas } from "@/components";
+import {
+  Header,
+  TableCuentas,
+  ModalCuentas,
+  EditarCuentas,
+} from "@/components";
 import { MdAdd } from "react-icons/md";
 import { Button, Stack, SvgIcon, useMediaQuery } from "@mui/material";
 
 const Cuentas = () => {
   const [modalCuentaOpen, setModalCuentaOpen] = useState(false);
+  const [modalEditOpen, setModalEditOpen] = useState(false);
   const smUp = useMediaQuery((theme) => theme.breakpoints.up("sm"), {
     defaultMatches: true,
     noSsr: false,
@@ -12,6 +18,10 @@ const Cuentas = () => {
 
   const handleOpenModalCuenta = () => {
     setModalCuentaOpen(true);
+  };
+
+  const handleOpenModalEditCuenta = () => {
+    setModalEditOpen(true);
   };
 
   return (
@@ -45,10 +55,15 @@ const Cuentas = () => {
           </Button>
         </div>
       </Stack>
-      <TableCuentas />
+      <TableCuentas handleOpenModalEditCuenta={handleOpenModalEditCuenta} />
       <ModalCuentas
-        modalCuentaOpen={modalCuentaOpen}
         setModalCuentaOpen={setModalCuentaOpen}
+        modalCuentaOpen={modalCuentaOpen}
+        modalEditOpen={modalEditOpen}
+      />
+      <EditarCuentas
+        setModalEditOpen={setModalEditOpen}
+        modalEditOpen={modalEditOpen}
       />
     </Stack>
   );

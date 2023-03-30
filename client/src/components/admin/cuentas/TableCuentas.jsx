@@ -25,8 +25,9 @@ const columns = [
   { id: "acciones", label: "Acciones" },
 ];
 
-const TableCuentas = () => {
-  const { cuentas, isLoading, deleteCuenta } = useContext(CuentaContext);
+const TableCuentas = ({ handleOpenModalEditCuenta }) => {
+  const { cuentas, isLoading, deleteCuenta, setSelectPerson } =
+    useContext(CuentaContext);
   const [pageCuentas, setPageCuentas] = useState(0);
   const [rowsCuentas, setRowsCuentas] = useState(5);
 
@@ -38,6 +39,12 @@ const TableCuentas = () => {
   const handleChangeRowsPerPageCuentas = (event) => {
     setRowsCuentas(+event.target.value);
     setPageCuentas(0);
+  };
+
+  const findUser = (id) => {
+    const user = cuentas.find((cuenta) => cuenta.cedula === id);
+    setSelectPerson(user);
+    handleOpenModalEditCuenta(user);
   };
 
   const handleDeleteCuenta = (id) => {
@@ -99,7 +106,11 @@ const TableCuentas = () => {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Editar" arrow>
-                    <IconButton color="primary" size="small">
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      onClick={() => findUser(cuenta.cedula)}
+                    >
                       <AiOutlineArrowRight />
                     </IconButton>
                   </Tooltip>

@@ -22,3 +22,12 @@ export const registerUser = async (userData) => {
     console.error(error);
   }
 };
+
+export const updateUser = async (userData) => {
+  try {
+    const response = await bohemiaApi.put("/usuarios", userData);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

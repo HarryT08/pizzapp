@@ -15,6 +15,7 @@ export const CuentasProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cuentaReducer, INITIAL_STATE);
   const [loading, setLoading] = useState(false);
   const [calledFetchCuentas, setCalledFetchCuentas] = useState(false);
+  const [selectPerson, setSelectPerson] = useState(null);
   const [person, setPerson] = useState({
     cedula: "",
     nombre: "",
@@ -104,6 +105,25 @@ export const CuentasProvider = ({ children }) => {
     }
   };
 
+  const handleEditUser = async (userData) => {
+    try {
+      setLoading(true);
+      console.log("userData Context ->", userData)
+      const response = await cuentasServices.updateUser(userData);
+      dispatch({
+        type: "UPDATE_CUENTA",
+        payload: response,
+      });
+      fetchCuentas();
+      setLoading(false);
+      toast.success("Cuenta actualizada correctamente");
+    } catch (error) {
+      console.error(error);
+      toast.error("Ocurrio un error al actualizar la cuenta");
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!calledFetchCuentas) {
       fetchCuentas();
@@ -118,7 +138,10 @@ export const CuentasProvider = ({ children }) => {
         isLoading: state.isLoading,
         deleteCuenta,
         handleCreateUser,
+        handleEditUser,
         handleGetPerson,
+        setSelectPerson,
+        selectPerson,
         loading,
         person,
       }}

@@ -41,6 +41,18 @@ export const cuentaReducer = (state, action) => {
         ...state,
         cuentas: [...state.cuentas, action.payload],
       };
+    case "UPDATE_CUENTA":
+      const updateCuentas = state.cuentas.map((cuenta) => {
+        if (cuenta.cedula === action.payload.cedula) {
+          return { ...cuenta, ...action.payload };
+        } else {
+          return cuenta;
+        }
+      });
+      return {
+        ...state,
+        cuentas: updateCuentas,
+      };
     default:
       return state;
   }
