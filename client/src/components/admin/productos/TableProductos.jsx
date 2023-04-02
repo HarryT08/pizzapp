@@ -11,6 +11,7 @@ import {
   TableRow,
   Tooltip,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -44,9 +45,12 @@ const TableProductos = ({ searchProductos }) => {
     products,
     methodsProducts,
     setSelectedPreparations,
-    preparations
+    preparations,
+    loading,
   } = useContext(SelectedProductContext);
   const navigate = useNavigate();
+
+  console.log("Productos ->", products);
 
   // Paginacion tabla Ingredientes
   const handleChangePageProductos = (event, newPage) => {
@@ -54,7 +58,6 @@ const TableProductos = ({ searchProductos }) => {
   };
 
   const formatearObjetoProductoCostos = (objeto) => {
-  
     const nuevoObjetoCostos = {
       mediana: "",
       grande: "",
@@ -62,7 +65,6 @@ const TableProductos = ({ searchProductos }) => {
       unico: "",
     };
     objeto.forEach((item) => {
-   
       switch (item.tamanio) {
         case "mediana":
           nuevoObjetoCostos.mediana = item.costo;
@@ -146,10 +148,6 @@ const TableProductos = ({ searchProductos }) => {
     }
   };
 
-  if (products.length === 0) {
-    return <Alerta info="error" descripcion="No hay productos." />;
-  }
-
   return (
     <>
       <Card
@@ -158,7 +156,14 @@ const TableProductos = ({ searchProductos }) => {
         }}
       >
         <Box sx={{ minWidth: 800 }}>
-          {searchProductos().length === 0 ? (
+          {loading ? (
+            <div className="loader"></div>
+          ) : products.length === 0 ? (
+            <Alerta
+              descripcion="No se ha creado ningun producto"
+              alerta="info"
+            />
+          ) : searchProductos().length === 0 ? (
             <Alerta
               descripcion="No se ha podido encontrar ningun producto"
               alerta="info"
@@ -184,8 +189,33 @@ const TableProductos = ({ searchProductos }) => {
                     .map((producto) => (
                       <TableRow hover key={producto.id}>
                         <TableCell align="center">{producto.nombre}</TableCell>
-                        <TableCell align="center">
-                          {numberFormat.format(producto.costo)}
+                        <TableCell
+                          align="center"
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          {producto.costoProductoTamanio.map((item) => (
+                            <Box key={item.id}>
+                              <Typography
+                                sx={{
+                                  textTransform: "uppercase",
+                                  fontWeight: "500",
+                                  backgroundColor: "#1e88e5",
+                                  color: "#fff",
+                                  padding: "2px",
+                                  borderRadius: "5px",
+                                  fontSize: "12px",
+                                }}
+                              >
+                                {item.tamanio}
+                              </Typography>
+                              <div>{numberFormat.format(item.costo)}</div>
+                            </Box>
+                          ))}
                         </TableCell>
                         <TableCell align="center">
                           <Tooltip title="Eliminar" arrow>

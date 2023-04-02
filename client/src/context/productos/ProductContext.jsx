@@ -48,10 +48,13 @@ export const ProductProvider = ({ children }) => {
   };
 
   const getProductos = async () => {
+    setLoading(true);
     try {
       const { data } = await productosServices.getProducts();
       setProducts(data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };

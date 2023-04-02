@@ -80,7 +80,6 @@ const Productos = () => {
           sx={{ maxWidth: 500 }}
         />
       </Card>
-      {console.log("Lista de productos:", products)}
       <TableProductos searchProductos={searchProductos} />
     </Stack>
   );
