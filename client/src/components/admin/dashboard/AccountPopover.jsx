@@ -1,11 +1,14 @@
+import { useContext } from "react";
+import { AuthContext } from "@/context/auth/AuthContext";
 import { Box, MenuItem, MenuList, Popover, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const AccountPopover = ({ anchorEl, onClose, open, userName, cargo }) => {
   const navigate = useNavigate();
+  const { dispatch } = useContext(AuthContext);
 
   const logout = () => {
-    localStorage.removeItem("Authorization");
+    dispatch({ type: "LOGOUT" });
     navigate("/login");
   };
 

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { HOME, LOGIN, DASHBOARD_ADMIN, DASHBOARD_MESERO } from "@/routes/paths";
 import { RutasPrivadas, RutasPublicas, RutaAdmin, RutaMesero } from "@/routes";
 import { Login, DashboardAdmin, DashboardMesero } from "@/pages";
@@ -7,11 +7,13 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "@/theme";
 import "react-toastify/dist/ReactToastify.css";
 
+import { AuthProvider } from "@/context/auth/AuthContext";
+
 function App() {
   return (
-    <div>
-      <ToastContainer hideProgressBar theme="colored" />
-      <BrowserRouter>
+    <AuthProvider>
+      <div>
+        <ToastContainer hideProgressBar theme="colored" />
         <ThemeProvider theme={theme}>
           <Routes>
             <Route
@@ -53,8 +55,8 @@ function App() {
             />
           </Routes>
         </ThemeProvider>
-      </BrowserRouter>
-    </div>
+      </div>
+    </AuthProvider>
   );
 }
 
