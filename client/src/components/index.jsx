@@ -33,5 +33,7 @@ export { default as TableCuentas } from "./admin/cuentas/TableCuentas";
 export { default as ModalCuentas } from "./admin/cuentas/ModalCuentas";
 export { default as EditarCuentas } from "./admin/cuentas/EditarCuentas";
 
-export { default as Mesa } from "./Mesa";
+export { default as Mesa } from "./admin/mesas/Mesa";
 export { default as ModalMesas } from "./admin/mesas/ModalMesas";
+
+export { default as MesasFacturar } from "./admin/facturar/MesasFacturar";

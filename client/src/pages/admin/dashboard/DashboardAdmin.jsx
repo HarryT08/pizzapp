@@ -10,6 +10,7 @@ import {
   Ordenes,
   Cuentas,
   Mesas,
+  Facturar,
   Factura,
 } from "@/pages";
 import {
@@ -23,6 +24,7 @@ import {
   CUENTAS_ADMIN,
   MESAS_ADMIN,
   FACTURAR_ADMIN,
+  FACTURA_ADMIN,
   EDITAR_PRODUCTO_ADMIN,
 } from "@/routes/paths";
 
@@ -77,7 +79,7 @@ const DashboardAdmin = () => {
                 </ProductProvider>
               }
             />
-               <Route
+            <Route
               path={EDITAR_PRODUCTO_ADMIN}
               element={
                 <ProductProvider>
@@ -113,7 +115,8 @@ const DashboardAdmin = () => {
               }
             />
             <Route path={MESAS_ADMIN} element={<Mesas />} />
-            <Route path={FACTURAR_ADMIN} element={<Factura />} />
+            <Route path={FACTURAR_ADMIN} element={<Facturar />} />
+            <Route path={`${FACTURA_ADMIN}/:id`} element={<Factura />} />
           </Routes>
         </Container>
       </Box>

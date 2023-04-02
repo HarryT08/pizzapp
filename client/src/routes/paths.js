@@ -15,6 +15,7 @@ export const ORDENES_ADMIN = "/ordenes";
 export const CUENTAS_ADMIN = "/cuentas";
 export const MESAS_ADMIN = "/mesas";
 export const FACTURAR_ADMIN = "/facturar";
+export const FACTURA_ADMIN = "/factura";
 
 // Dashboard mesero
 export const INDEX_MESERO = "/";
