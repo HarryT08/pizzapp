@@ -54,9 +54,11 @@ const Mesas = () => {
         bohemiaApi
           .delete(`/mesas/${id}`)
           .then((res) => {
+            toast.success("Mesa eliminada correctamente");
             getMesas();
           })
           .catch((err) => {
+            toast.error("Error al eliminar la mesa");
             console.log(err);
           });
       }
@@ -127,7 +129,11 @@ const Mesas = () => {
           )}
         </Box>
       </Stack>
-      <ModalMesas setModalMesaOpen={setModalMesaOpen} modalMesaOpen={open} getMesas={getMesas}/>
+      <ModalMesas
+        setModalMesaOpen={setModalMesaOpen}
+        modalMesaOpen={open}
+        getMesas={getMesas}
+      />
     </>
   );
 };
