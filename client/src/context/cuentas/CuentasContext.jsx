@@ -94,6 +94,11 @@ export const CuentasProvider = ({ children }) => {
         type: "CREATE_CUENTA",
         payload: response,
       });
+      setPerson({
+        nombre: "",
+        apellido: "",
+        celular: "",
+      });
       fetchCuentas();
       toast.success("Cuenta creada correctamente");
       setLoading(false);
@@ -108,7 +113,7 @@ export const CuentasProvider = ({ children }) => {
   const handleEditUser = async (userData) => {
     try {
       setLoading(true);
-      console.log("userData Context ->", userData)
+      console.log("userData Context ->", userData);
       const response = await cuentasServices.updateUser(userData);
       dispatch({
         type: "UPDATE_CUENTA",
@@ -144,6 +149,7 @@ export const CuentasProvider = ({ children }) => {
         selectPerson,
         loading,
         person,
+        setPerson,
       }}
     >
       {children}

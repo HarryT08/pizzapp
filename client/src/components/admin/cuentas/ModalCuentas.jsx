@@ -36,7 +36,7 @@ const useStyles = () => {
 };
 
 const ModalCuentas = ({ modalCuentaOpen, setModalCuentaOpen }) => {
-  const { handleCreateUser, handleGetPerson, loading, person } =
+  const { handleCreateUser, handleGetPerson, loading, person, setPerson } =
     useContext(CuentaContext);
   const {
     control,
@@ -57,7 +57,7 @@ const ModalCuentas = ({ modalCuentaOpen, setModalCuentaOpen }) => {
   };
 
   useEffect(() => {
-    if (person) {
+    if (modalCuentaOpen && person) {
       setValue("nombre", person.nombre);
       setValue("apellido", person.apellido);
       setValue("celular", person.celular);
@@ -66,9 +66,11 @@ const ModalCuentas = ({ modalCuentaOpen, setModalCuentaOpen }) => {
 
   const handleCloseModal = () => {
     reset();
-    setValue("nombre", "");
-    setValue("apellido", "");
-    setValue("celular", "");
+    setPerson({
+      nombre: "",
+      apellido: "",
+      celular: "",
+    });
     setModalCuentaOpen(false);
   };
 
@@ -126,19 +128,18 @@ const ModalCuentas = ({ modalCuentaOpen, setModalCuentaOpen }) => {
                 <Controller
                   name="nombre"
                   control={control}
-                  defaultValue=""
+                  defaultValue={person.nombre || ""}
                   rules={{
                     required: "Este campo es requerido",
                   }}
-                  render={({ field: { value, onChange } }) => (
+                  render={({ field, fieldState: { error } }) => (
                     <TextField
+                      {...field}
                       label="Nombre"
                       type="text"
-                      error={!!errors.nombre}
-                      disabled={person && person.nombre ? true : false}
-                      helperText={errors.nombre && errors.nombre.message}
-                      value={value}
-                      onChange={onChange}
+                      error={error ? true : false}
+                      disabled={person.nombre ? true : false}
+                      helperText={error?.message}
                     />
                   )}
                 />
@@ -154,7 +155,7 @@ const ModalCuentas = ({ modalCuentaOpen, setModalCuentaOpen }) => {
                       label="Apellido"
                       type="text"
                       error={!!errors.apellido}
-                      disabled={person && person.apellido ? true : false}
+                      disabled={person.apellido ? true : false}
                       helperText={errors.apellido && errors.apellido.message}
                       value={value}
                       onChange={onChange}
