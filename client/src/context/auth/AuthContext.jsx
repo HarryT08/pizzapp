@@ -28,7 +28,10 @@ export const AuthProvider = ({ children }) => {
       const decodedToken = jwtDecode(token);
       const role = decodedToken.cargo;
       localStorage.setItem("cargo", role);
-      dispatch({ type: "LOGIN", payload: { user: user, token: token } });
+      dispatch({
+        type: "LOGIN",
+        payload: { user: user, token: token },
+      });
       if (role === "admin") {
         navigate("/admin");
       } else if (role === "mesero") {

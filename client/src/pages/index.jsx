@@ -16,3 +16,7 @@ export { default as Facturar } from "./admin/factura/Facturar";
 export { default as Factura } from "./admin/factura/Factura";
 
 export { default as DashboardMesero } from "./mesero/dashboard/DashboardMesero";
+
+
+export {default as RealizarPedido} from "./mesero/realizarPedido/RealizarPedido";
+export {default as EditarPedido} from "./mesero/editarPedido/EditarPedido";

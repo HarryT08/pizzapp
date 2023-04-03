@@ -21,4 +21,4 @@ export const FACTURA_ADMIN = "/factura";
 export const INDEX_MESERO = "/";
 export const REALIZAR_PEDIDO_MESERO = "/realizar-pedido";
 export const TOMAR_ORDEN_MESERO = "/tomar-orden";
-export const ESITAR_PEDIDO_MESERO = "/editar-pedido";
+export const EDITAR_PEDIDO_MESERO = "/editar-pedido";

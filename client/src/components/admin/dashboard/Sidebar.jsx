@@ -8,11 +8,12 @@ import {
   IoMdPersonAdd,
   IoIosPaper,
 } from "react-icons/io";
+import { BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
 import { GiTabletopPlayers } from "react-icons/gi";
 import { NavItem } from "@/components";
 import logo from "@/assets/images/logoBohemia.png";
 
-const items = [
+const itemsAdmin = [
   {
     href: "/admin/inicio",
     icon: <IoMdHome fontSize="small" />,
@@ -55,13 +56,38 @@ const items = [
   },
 ];
 
+const itemsMesero = [
+  {
+    href: "/mesero/realizar-pedido",
+    icon: <BsFillPersonCheckFill fontSize="small" />,
+    title: "Realizar pedido",
+  },
+  {
+    href: "/mesero/editar-pedido",
+    icon: <BsFillPersonDashFill fontSize="small" />,
+    title: "Editar pedido",
+  },
+];
+
 const Sidebar = ({ onClose, open }) => {
+  const cargo = localStorage.getItem("cargo");
+  console.log("Cargo ->", cargo);
+
   const year = new Date().getFullYear();
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
     noSsr: false,
   });
+
+  let items = [];
+  if (cargo === "admin") {
+    items = itemsAdmin;
+  } else if (cargo === "mesero") {
+    items = itemsMesero;
+  }
+
+  console.log("Items ->", items);
 
   const content = (
     <>
