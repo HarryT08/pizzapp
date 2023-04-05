@@ -1,5 +1,8 @@
 import { useState, useContext } from "react";
 import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { TomarOrdenContext } from "@/context/mesero/tomarOrden/TomarOrdenContext";
+import { Alerta } from "@/components";
+import { labelDisplayedRows, labelRowsPerPage } from "@/i18n";
 import {
   Box,
   Card,
@@ -9,20 +12,12 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Tooltip,
-  IconButton,
+  Button,
+  Checkbox,
   Typography,
 } from "@mui/material";
-import { AiOutlineArrowRight } from "react-icons/ai";
-import { HiOutlineTrash } from "react-icons/hi";
-import { Alerta } from "@/components";
-import { labelDisplayedRows, labelRowsPerPage } from "@/i18n";
-import Swal from "sweetalert2/dist/sweetalert2.all.js";
-import * as productosServices from "@/services/productos/productos";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-// Columnas de los productos
 const columns = [
   { id: "nombre", label: "Nombre" },
   { id: "precio", label: "Precio" },
@@ -36,114 +31,68 @@ const options = {
 };
 const numberFormat = new Intl.NumberFormat("es-CO", options);
 
-const TableProductos = ({ searchProductos }) => {
+const TableProductosMesero = ({ searchProductos }) => {
+  const { loading, products } = useContext(SelectedProductContext);
+  const {
+    tamaniosSeleccionados,
+    setTamaniosSeleccionados,
+    carrito,
+    setCarrito,
+  } = useContext(TomarOrdenContext);
   const [pageProductos, setPageProductos] = useState(0);
   const [rowsProductos, setRowsProductos] = useState(10);
-  const {
-    getProductos,
-    onUpdate,
-    products,
-    methodsProducts,
-    setSelectedPreparations,
-    preparations,
-    loading,
-  } = useContext(SelectedProductContext);
-  const navigate = useNavigate();
 
   // Paginacion tabla Ingredientes
   const handleChangePageProductos = (event, newPage) => {
     setPageProductos(newPage);
   };
-
-  const formatearObjetoProductoCostos = (objeto) => {
-    const nuevoObjetoCostos = {
-      mediana: "",
-      grande: "",
-      pequeña: "",
-      unico: "",
-    };
-    objeto.forEach((item) => {
-      switch (item.tamanio) {
-        case "mediana":
-          nuevoObjetoCostos.mediana = item.costo;
-          break;
-        case "grande":
-          nuevoObjetoCostos.grande = item.costo;
-          break;
-        case "pequeña":
-          nuevoObjetoCostos.pequeña = item.costo;
-          break;
-        case "unico":
-          nuevoObjetoCostos.unico = item.costo;
-          break;
-        default:
-          break;
-      }
-    });
-
-    return { ...nuevoObjetoCostos };
-  };
-
   const handleChangeRowsPerPageProductos = (event) => {
     setRowsProductos(+event.target.value);
     setPageProductos(0);
   };
 
-  const deleteProducto = (id) => {
-    Swal.fire({
-      title: `¿Estás seguro?`,
-      html: `No podrás revertir esto!`,
-      text: "No podrás revertir esta acción",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#008000",
-      cancelButtonColor: "#D00000",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Eliminado!", "El ingrediente ha sido eliminado.", "success");
-        productosServices
-          .deleteProduct(id)
-          .then((res) => {
-            getProductos();
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    });
+  /* Funcion para seleccionar el tamanio + precio */
+  const handleTamanioSeleccionado = (item) => {
+    const tamanioSeleccionado = {
+      id: item.id,
+      tamanio: item.tamanio,
+      precio: item.costo,
+    };
+    if (tamaniosSeleccionados.some((t) => t.id === tamanioSeleccionado.id)) {
+      setTamaniosSeleccionados(
+        tamaniosSeleccionados.filter((t) => t.id !== tamanioSeleccionado.id)
+      );
+    } else {
+      setTamaniosSeleccionados([...tamaniosSeleccionados, tamanioSeleccionado]);
+    }
   };
 
-  const handleEdit = async (producto) => {
-    try {
-      const objectProductoConPreparaciones =
-        await productosServices.getProductoAndPreparaciones(producto.id);
-
-      const costosProducto = formatearObjetoProductoCostos(
-        producto.costoProductoTamanio
-      );
-
-      methodsProducts.reset({
-        ...objectProductoConPreparaciones,
-        costos: costosProducto,
-      });
-      setSelectedPreparations(() => {
-        return (
-          methodsProducts.getValues("selectedSizes")?.map((item) => ({
-            key: item,
-            value: preparations[item],
-          })) || []
-        );
-      });
-
-      navigate("/admin/productos/editar");
-
-      onUpdate(objectProductoConPreparaciones);
-    } catch (error) {
-      toast.error("No se pudo obtener el producto");
-      console.error(error);
+  /* Funcion para seleccionar el productos y añadirle CostoProductoTamanio */
+  const handleAgregarProducto = (producto) => {
+    if (tamaniosSeleccionados.length === 0) {
+      toast.error("Debe seleccionar al menos un tamaño");
+      return;
     }
+
+    // Verificar si el producto ya esta en el carrito
+    const productoExistente = carrito.find((p) => p.id === producto.id);
+    if (productoExistente) {
+      toast.error("El producto ya se encuentra en el carrito");
+      return;
+    }
+
+    const nuevosProductos = tamaniosSeleccionados.map((tamanio) => ({
+      id: producto.id,
+      nombre: producto.nombre,
+      tamanio: tamanio.tamanio,
+      costo: tamanio.precio,
+      cantidad: 0,
+      total: 0,
+    }));
+
+    // Agregar los nuevos productos al carrito
+    setCarrito([...carrito, ...nuevosProductos]);
+    setTamaniosSeleccionados([]);
   };
 
   return (
@@ -198,6 +147,12 @@ const TableProductos = ({ searchProductos }) => {
                         >
                           {producto.costoProductoTamanio.map((item) => (
                             <Box key={item.id}>
+                              <Checkbox
+                                checked={tamaniosSeleccionados.some(
+                                  (t) => t.id === item.id
+                                )}
+                                onChange={() => handleTamanioSeleccionado(item)}
+                              />
                               <Typography
                                 sx={{
                                   textTransform: "uppercase",
@@ -216,24 +171,13 @@ const TableProductos = ({ searchProductos }) => {
                           ))}
                         </TableCell>
                         <TableCell align="center">
-                          <Tooltip title="Eliminar" arrow>
-                            <IconButton
-                              color="error"
-                              size="small"
-                              onClick={() => deleteProducto(producto.id)}
-                            >
-                              <HiOutlineTrash />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Editar" arrow>
-                            <IconButton
-                              color="primary"
-                              size="small"
-                              onClick={() => handleEdit(producto)}
-                            >
-                              <AiOutlineArrowRight />
-                            </IconButton>
-                          </Tooltip>
+                          <Button
+                            type="button"
+                            variant="outlined"
+                            onClick={() => handleAgregarProducto(producto)}
+                          >
+                            Agregar
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -258,4 +202,4 @@ const TableProductos = ({ searchProductos }) => {
   );
 };
 
-export default TableProductos;
+export default TableProductosMesero;

@@ -18,6 +18,19 @@ li {
   list-style: none;
 }
 
+textarea {
+  resize: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 0.25rem;
+  border: "1px solid #E6E8F0";
+}
+
+textarea:focus {
+  outline: none;
+  border: 1px solid #3A53EE;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }

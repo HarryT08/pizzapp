@@ -71,7 +71,6 @@ const itemsMesero = [
 
 const Sidebar = ({ onClose, open }) => {
   const cargo = localStorage.getItem("cargo");
-  console.log("Cargo ->", cargo);
 
   const year = new Date().getFullYear();
 
@@ -86,8 +85,6 @@ const Sidebar = ({ onClose, open }) => {
   } else if (cargo === "mesero") {
     items = itemsMesero;
   }
-
-  console.log("Items ->", items);
 
   const content = (
     <>

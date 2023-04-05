@@ -37,3 +37,7 @@ export { default as Mesa } from "./admin/mesas/Mesa";
 export { default as ModalMesas } from "./admin/mesas/ModalMesas";
 
 export { default as MesasFacturar } from "./admin/facturar/MesasFacturar";
+
+export { default as MesasDisponibles } from "./mesero/realizarPedidos/MesasDisponibles";
+export { default as TableProductosMesero } from "./mesero/realizarPedidos/TableProductosMesero";
+export { default as DrawerCarrito } from "./mesero/realizarPedidos/DrawerCarrito";
