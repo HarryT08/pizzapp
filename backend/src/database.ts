@@ -13,10 +13,10 @@ import { CostoProductoTamanio } from "./entities/CostoProductoTamanio";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: "47.89.245.144",
-  username: "artdev",
-  password: "desarrollo2022*",
-  database: "pizzapp",
+  host: process.env.HOST,
+  username: process.env.USERNAME,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
   entities: [
     Comanda,
     DetalleComanda,

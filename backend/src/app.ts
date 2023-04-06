@@ -2,7 +2,6 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
 //Importación de rutas
 import productsRoutes from './routes/productos-routes';
 import mesasRoutes from './routes/mesas-routes';
@@ -12,6 +11,8 @@ import authRoutes from './routes/auth-routes';
 import ingredientesRoutes from './routes/ingredientes-routes';
 import comandaRoutes from './routes/comanda-routes';
 import detalleComandaRoutes from './routes/detallecomanda-routes';
+
+
 export class App {
   private app: Application;
 

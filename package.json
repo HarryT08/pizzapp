@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/HarryT08/pizzapp#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "excel4node": "^1.8.0"
   }
 }
