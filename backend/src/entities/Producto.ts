@@ -20,11 +20,13 @@ export class Producto extends BaseEntity{
     @Column()
     nombre: string;
 
-    @OneToMany(() => Preparacion,(preparacion) => preparacion.producto)
+    @OneToMany(() => Preparacion,(preparacion) => preparacion.producto, {cascade: true})
     preparaciones : Preparacion[];
 
     @Column( {default : false} )
     deleted: boolean;
+
+    //category : string
 
     @OneToMany(() => CostoProductoTamanio,(costoProductoTamanio) => costoProductoTamanio.producto, {cascade: true})
     costoProductoTamanio : CostoProductoTamanio[];
@@ -32,6 +34,7 @@ export class Producto extends BaseEntity{
     constructor(){
         super();
     }
+    
     @ManyToMany(() => MateriaPrima, materiaPrima => materiaPrima.productos)
     @JoinTable({
         name : 'preparacion',

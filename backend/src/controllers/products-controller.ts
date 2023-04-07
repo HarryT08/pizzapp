@@ -50,23 +50,16 @@ export const createProduct = async (req: Request, res: Response) => {
   }  
 
   try {
+
     const newProduct = new Producto();
     newProduct.init(nameClean, costos);
-    //Mapeo de costo de producto por tamanio
-    let costosProductos :CostoProductoTamanio[] = new Array();
-    Object.entries(costos).forEach(([tamanio, costo]) => {
-      const costoProducto = new CostoProductoTamanio();
-      costoProducto.init(newProduct.id, tamanio, Number(costo));
-      costosProductos.push(costoProducto);
-    });
-    newProduct.costoProductoTamanio = costosProductos;
-    
-    const saved = await newProduct.save();
-    createPreparation(saved, preparaciones);
+    //Initialize atributes of newProduct
+    uploadPreparationsAndPriceBySize(newProduct, costos, preparaciones);  
 
     return res.status(201).json({
       message: 'Producto creado con exito'
     });
+    
   } catch (error) {
     console.error(error);
 
@@ -74,6 +67,46 @@ export const createProduct = async (req: Request, res: Response) => {
       return res.status(500).json({ message: error.message });
   }
 };
+
+const uploadPreparationsAndPriceBySize = async (product : Producto, costos : {}, preparaciones : {}) => {
+  product.costoProductoTamanio = initializePriceBySize(product.id, costos);
+  product.preparaciones = initializePreparation(product.id, preparaciones);   
+  await product.save();
+}
+
+/**
+ * Mapeo de costo de producto por tamanio
+ * @param provisional ID provisional para poder ejecutar el init de costoProducto
+ * @param costos objeto con los costos por tamaño del producto
+ * @returns array con cada uno de los 'costoProducto' inicializado
+ */
+const initializePriceBySize = (provisional : number, costos : {}) => {
+  let costosProductos : CostoProductoTamanio[] = [];
+  Object.entries(costos).forEach(([tamanio, costo]) => {
+    const costoProducto = new CostoProductoTamanio();
+    costoProducto.init(provisional, tamanio, Number(costo));
+    costosProductos.push(costoProducto);
+  });
+  return costosProductos;
+}
+
+/**
+ * 
+ * @param provisional ID provisional para poder ejecutar el init de Preparacion
+ * @param presentaciones Objeto con las presentaciones de cada producto
+ * @returns array con cada una de las 'Preparaciones' inicializado
+ */
+const initializePreparation = (provisional: number, presentaciones: any) => {
+  let data: Preparacion[] = [];
+  presentaciones.forEach((presentacion: any) => {
+    const { tamanio, cantidad, id_materia } = presentacion;
+    const preparacion = new Preparacion();
+    preparacion.init(provisional, id_materia, tamanio, cantidad);
+    data.push(preparacion);
+  });
+  return data;
+};
+
 
 const searchProduct = async (nombre: string) => {
   const producto = await Producto.findOne({
@@ -84,21 +117,6 @@ const searchProduct = async (nombre: string) => {
     relations: ['costoProductoTamanio']
   });
   return producto;
-};
-
-/*
-Metodo para crear la preparacion de un producto, usando el ORM de typeorm
-*/
-const createPreparation = (producto: Producto, presentaciones: any) => {
-  let data: Preparacion[] = [];
-  presentaciones.forEach((presentacion: any) => {
-    const { tamanio, cantidad, id_materia } = presentacion;
-    const preparacion = new Preparacion();
-    preparacion.init(producto.id, id_materia, tamanio, cantidad);
-    data.push(preparacion);
-  });
-
-  Preparacion.save(data);
 };
 
 /*

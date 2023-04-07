@@ -25,7 +25,6 @@ export const getComandaByMesa = async (req: Request, res: Response) => {
     res.json(comanda);
   } catch (error) {
     console.error(error);
-
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
   }
@@ -84,42 +83,7 @@ const calculateTotal = (data: any) => {
 };
 
 export const crearComanda = async (req: Request, res: Response) => {
-  const queryRunner =
-    MateriaPrima.getRepository().manager.connection.createQueryRunner();
-
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
-
-  try {
-    const { data, observacion, id_mesa } = req.body;
-    const total = calculateTotal(data);
-
-    const comanda = new Comanda();
-    comanda.init(total, id_mesa, new Date(), observacion, 'Abierta');
-    setState(id_mesa, 'Ocupado');
-
-    const saved = await queryRunner.manager.save(comanda);
-    const errors = await crearDetalles(saved, data, queryRunner);
-
-    if (errors.length > 0) {
-      await queryRunner.rollbackTransaction();
-      return res
-        .status(400)
-        .json({ message: 'No hay inventario suficiente', errors });
-    }
-
-    await queryRunner.commitTransaction();
-    return res.json({ message: 'Comanda creada' });
-  } catch (error) {
-    console.error(error);
-
-    await queryRunner.rollbackTransaction();
-
-    if (error instanceof Error)
-      return res.status(500).json({ message: error.message });
-  } finally {
-    await queryRunner.release();
-  }
+  
 };
 
 const crearDetalles = async (

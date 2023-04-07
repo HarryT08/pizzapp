@@ -23,7 +23,6 @@ const UltimosProductos = ({ sx }) => {
       <List>
         {products.map((product, index) => {
           const hasDivider = index < products.length - 1;
-
           return (
             <ListItem divider={hasDivider} key={product.id}>
               <ListItemText
