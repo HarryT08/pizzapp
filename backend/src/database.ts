@@ -14,7 +14,7 @@ import { CostoProductoTamanio } from "./entities/CostoProductoTamanio";
 export const AppDataSource = new DataSource({
   type: "mysql",
   host: process.env.HOST,
-  username: process.env.USERNAME,
+  username: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   entities: [

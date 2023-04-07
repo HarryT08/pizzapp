@@ -74,8 +74,11 @@ const TableProductosMesero = ({ searchProductos }) => {
       return;
     }
 
-    // Verificar si el producto ya esta en el carrito
-    const productoExistente = carrito.find((p) => p.id === producto.id);
+    // Verificar si el producto ya esta en el carrito por ID y tamanio
+    const productoExistente = carrito.find(
+      (p) =>
+        p.id === producto.id && p.tamanio === tamaniosSeleccionados[0].tamanio
+    );
     if (productoExistente) {
       toast.error("El producto ya se encuentra en el carrito");
       return;
