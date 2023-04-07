@@ -1,10 +1,11 @@
 import * as dotenv from "dotenv";
-let path;
+var path = require('path');
+let pathenv;
 switch (process.env.NODE_ENV) {
     case "production":
-        path = `${__dirname}/../../.env.production`
+        pathenv = path.join(__dirname, '/../../.env.production')
         break;
     default:
-        path = `${__dirname}/../../.env.development`
+        pathenv = path.join(__dirname, '/../../.env.development')
 }
-dotenv.config({ path : path })
+dotenv.config({ path : pathenv })
