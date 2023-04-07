@@ -89,8 +89,8 @@ const TableProductosMesero = ({ searchProductos }) => {
       nombre: producto.nombre,
       tamanio: tamanio.tamanio,
       costo: tamanio.precio,
-      cantidad: 0,
-      total: 0,
+      cantidad: 1,
+      total: tamanio.precio,
     }));
 
     // Agregar los nuevos productos al carrito

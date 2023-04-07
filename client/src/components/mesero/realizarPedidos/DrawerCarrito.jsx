@@ -71,8 +71,8 @@ const DrawerCarrito = ({ setOpen, open }) => {
     const newCarrito = carrito.map((producto) => {
       if (producto.tamanio === tamanio) {
         const nuevaCantidad = producto.cantidad - 1;
-        if (nuevaCantidad < 0) {
-          toast.error("No puedes tener menos de 0 productos");
+        if (nuevaCantidad < 1) {
+          toast.error("No puedes tener menos de 1 productos");
           return producto;
         }
         const nuevoTotal = nuevaCantidad * producto.costo;
