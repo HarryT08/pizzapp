@@ -28,6 +28,8 @@ export { default as PreparacionProductos } from "./admin/productos/PreparacionPr
 export { default as TableIngredientesProductos } from "./admin/productos/TableIngredientesProductos";
 export { default as InputIngrediente } from "./admin/productos/InputIngrediente";
 export { default as ChipPreparations } from "./admin/productos/ChipPreparations";
+export {default as TabsProductos} from "./admin/productos/TabsProductos";
+export {default as TabsAgregarProducto} from "./admin/productos/TabsAgregarProducto";
 
 export { default as TableCuentas } from "./admin/cuentas/TableCuentas";
 export { default as ModalCuentas } from "./admin/cuentas/ModalCuentas";

@@ -2,7 +2,6 @@ import {
   Button,
   Stack,
   Card,
-  TextField,
   Box,
   Typography,
   Divider,
@@ -11,12 +10,17 @@ import {
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { SelectedProductContext } from "@/context/productos/ProductContext";
-import { Header, Loader, Alerta, PreparacionProductos } from "@/components";
-import { Controller } from "react-hook-form";
+import {
+  Header,
+  Loader,
+  PreparacionProductos,
+  TabsAgregarProducto,
+} from "@/components";
 
 const AgregarProductos = () => {
-  const { onSubmit, loading, selectedPreparations, methodsProducts ,action} =
-    useContext(SelectedProductContext);
+  const { onSubmit, loading, methodsProducts, action } = useContext(
+    SelectedProductContext
+  );
   const formRef = useRef(null);
   const navigate = useNavigate();
 
@@ -30,7 +34,9 @@ const AgregarProductos = () => {
     <Stack spacing={3}>
       <Stack spacing={1}>
         <Header
-          title={action==="update"?"Actualizar producto":"Agregar producto"}
+          title={
+            action === "update" ? "Actualizar producto" : "Agregar producto"
+          }
           subtitle="Añadir productos del restaurante."
         />
       </Stack>
@@ -47,91 +53,9 @@ const AgregarProductos = () => {
             gap: "20px",
           }}
         >
-          <Card sx={{ width: "100%", p: "0.75rem" }}>
-            <Typography
-              sx={{
-                fontSize: "1.125rem",
-                lineHeight: "1.75rem",
-              }}
-              fontWeight="semibold"
-            >
-              Producto
-            </Typography>
-            <Divider />
-            <Box sx={{ my: "1.25rem" }}>
-              <Controller
-                control={methodsProducts.control}
-                name="nombre"
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Campo requerido",
-                  },
-                }}
-                render={({ field, fieldState: { error } }) => {
-                  return (
-                    <TextField
-                      {...field}
-                      label="Nombre"
-                      variant="outlined"
-                      helperText={error?.message}
-                      error={error ? true : false}
-                    />
-                  );
-                }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                fontSize: "1.125rem",
-                lineHeight: "1.75rem",
-              }}
-              fontWeight="semibold"
-            >
-              Precios
-            </Typography>
-            <Divider />
-            <Box
-              sx={{
-                mt: "1.25rem",
-                display: "flex",
-                flexWrap: "wrap",
-                columnGap: "0.5rem",
-                rowGap: "1rem",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-             
-              {selectedPreparations.length === 0 ? (
-                <Alerta
-                  descripcion="No se ha seleccionado ninguna presentacion."
-                  alerta="info"
-                />
-              ) : (
-                Object.entries(selectedPreparations).map(([key, value]) => (
-                  <div key={key}>
-                 
-            
-                    <Controller
-                      name={`costos.${value.key}`}
-                      control={methodsProducts.control}
-                      render={({ field }) => {
-                        return (
-                          <TextField
-                            {...field}
-                            label={value.value}
-                            variant="outlined"
-                            type="number"
-                          />
-                        );
-                      }}
-                    />
-                  </div>
-                ))
-              )}
-            </Box>
-          </Card>
+          <TabsAgregarProducto />
+
+          {/* Card presentaciones */}
           <Card sx={{ width: "100%", p: "0.75rem" }}>
             <Typography
               sx={{

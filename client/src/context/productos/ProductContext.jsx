@@ -28,6 +28,7 @@ const preparations = {
 
 export const ProductProvider = ({ children }) => {
   const methodsProducts = useForm();
+  const [category, setCategory] = useState("Producto");
   const [products, setProducts] = useState([]);
   const [action, setAction] = useState("create");
   const [producto, setProducto] = useState(initialProduct);
@@ -65,27 +66,7 @@ export const ProductProvider = ({ children }) => {
     setProducto(rest);
     setPreparaciones(preparaciones);
   }, []);
-
-  const handleChangeValuesProducto = () => {};
   const handleSubmit = async (valoresProducto) => {
-    /*     e.preventDefault(); */
-
-    /*   if (producto.nombre.trim() === "") {
-      return toast.error("El nombre del producto es obligatorio.");
-    }
-
-    if (!producto.costo) {
-      return toast.error("El precio del producto es obligatorio.");
-    }
-
-    if (isNaN(producto.costo)) {
-      return toast.error("El precio del producto no es válido.");
-    }
-
-    if (preparaciones.length === 0) {
-      return toast.error("No se ha seleccionado ningún ingrediente.");
-    }
- */
     console.log("Valores producto:", valoresProducto);
     setLoading(true);
 
@@ -138,6 +119,8 @@ export const ProductProvider = ({ children }) => {
     selectedPreparations,
     preparations,
     methodsProducts,
+    category,
+    setCategory
   };
 
   return (

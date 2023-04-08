@@ -11,7 +11,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { MdAdd, MdOutlineSearch } from "react-icons/md";
-import { Header, TableProductos } from "@/components";
+import { Header, TableProductos, TabsProductos } from "@/components";
 
 const Productos = () => {
   const [search, setSearch] = useState("");
@@ -80,7 +80,7 @@ const Productos = () => {
           sx={{ maxWidth: 500 }}
         />
       </Card>
-      <TableProductos searchProductos={searchProductos} />
+      <TabsProductos searchProductos={searchProductos}/>
     </Stack>
   );
 };
