@@ -65,8 +65,6 @@ const DrawerCarrito = ({ setOpen, open }) => {
     setCarrito(newCarrito);
   };
 
-  console.log("Carrito ->", carrito);
-
   const handleDecrement = (tamanio) => {
     const newCarrito = carrito.map((producto) => {
       if (producto.tamanio === tamanio) {

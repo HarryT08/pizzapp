@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { TomarOrdenContext } from "@/context/mesero/tomarOrden/TomarOrdenContext";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { MdKeyboardBackspace } from "react-icons/md";
 import {
   Box,
@@ -13,6 +13,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import * as comandasServices from "@/services/comanda/comanda";
+import { toast } from "react-toastify";
+import Swal from 'sweetalert2/dist/sweetalert2.all.js';
+import { Loader } from "@/components";
 
 const columns = [
   { id: "producto", label: "Producto" },
@@ -31,8 +35,10 @@ const numberFormat = new Intl.NumberFormat("es-CO", options);
 
 const ConfirmarOrden = () => {
   const { carrito, setCarrito } = useContext(TomarOrdenContext);
+  const [loading, setLoading] = useState(false);
   const [observaciones, setObservaciones] = useState("");
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const carritoGuardado = JSON.parse(localStorage.getItem("carrito"));
@@ -44,13 +50,22 @@ const ConfirmarOrden = () => {
   }, 0);
 
   const handleConfirmarOrden = () => {
-    const orden = {
-      mesa: id,
-      carrito,
-      observaciones,
-      total,
-    };
-    console.log(orden);
+    try {
+      setLoading(true);
+      comandasServices.createComandas({
+        mesa: id,
+        carrito,
+        observaciones,
+        total,
+      });
+      toast.success("Orden creada con exito");
+      navigate("/mesero/realizar-pedido");
+      setCarrito([]);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Error al crear la orden");
+      console.log(error);
+    }
   };
 
   return (
@@ -103,6 +118,26 @@ const ConfirmarOrden = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          mt={2}
+        >
+          <Typography variant="subtitle1">Total a pagar:</Typography>
+          <Box
+            bgcolor="#FFFFFF"
+            borderRadius="md"
+            p={1}
+            ml={1}
+            border="1px solid #91A7BF"
+            borderColor="#91A7BF"
+          >
+            <Typography variant="h6" fontWeight="medium">
+              {numberFormat.format(total)}
+            </Typography>
+          </Box>
+        </Box>
         <Box sx={{ mt: 3 }}>
           <Typography variant="subtitle1" fontWeight="bold">
             Observaciones
@@ -136,7 +171,7 @@ const ConfirmarOrden = () => {
           type="submit"
           onClick={handleConfirmarOrden}
         >
-          Realizar
+          {loading ? <Loader /> : "Realizar"}
         </Button>
       </Box>
     </>
