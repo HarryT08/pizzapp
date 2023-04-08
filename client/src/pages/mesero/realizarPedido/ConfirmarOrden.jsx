@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import * as comandasServices from "@/services/comanda/comanda";
 import { toast } from "react-toastify";
-import Swal from 'sweetalert2/dist/sweetalert2.all.js';
+import Swal from "sweetalert2/dist/sweetalert2.all.js";
 import { Loader } from "@/components";
 
 const columns = [
@@ -50,22 +50,28 @@ const ConfirmarOrden = () => {
   }, 0);
 
   const handleConfirmarOrden = () => {
-    try {
-      setLoading(true);
-      comandasServices.createComandas({
-        mesa: id,
-        carrito,
-        observaciones,
-        total,
-      });
-      toast.success("Orden creada con exito");
-      navigate("/mesero/realizar-pedido");
-      setCarrito([]);
-      setLoading(false);
-    } catch (error) {
-      toast.error("Error al crear la orden");
-      console.log(error);
+    const orden = {
+      mesa: id,
+      data: carrito,
+      observaciones,
     }
+    console.log("orden", orden);
+    // try {
+    //   setLoading(true);
+    //   comandasServices.createComandas({
+    //     mesa: id,
+    //     carrito,
+    //     observaciones,
+    //     total,
+    //   });
+    //   toast.success("Orden creada con exito");
+    //   navigate("/mesero/realizar-pedido");
+    //   setCarrito([]);
+    //   setLoading(false);
+    // } catch (error) {
+    //   toast.error("Error al crear la orden");
+    //   console.log(error);
+    // }
   };
 
   return (
@@ -96,25 +102,44 @@ const ConfirmarOrden = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {carrito?.map((detalle) => (
-                <TableRow key={detalle.tamanio}>
-                  <TableCell align="center" sx={{ backgroundColor: "#FFFFFF" }}>
-                    {detalle.nombre}
-                  </TableCell>
-                  <TableCell align="center" sx={{ backgroundColor: "#FFFFFF" }}>
-                    {detalle.tamanio}
-                  </TableCell>
-                  <TableCell align="center" sx={{ backgroundColor: "#FFFFFF" }}>
-                    {numberFormat.format(detalle.costo)}
-                  </TableCell>
-                  <TableCell align="center" sx={{ backgroundColor: "#FFFFFF" }}>
-                    {detalle.cantidad}
-                  </TableCell>
-                  <TableCell align="center" sx={{ backgroundColor: "#FFFFFF" }}>
-                    {numberFormat.format(detalle.total)}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {carrito.map((producto) => {
+                return Object.entries(producto.costoProductoTamanio).map(
+                  ([key, item]) => (
+                    <TableRow key={`${producto.id}-${key}`}>
+                      <TableCell
+                        align="center"
+                        sx={{ backgroundColor: "#FFFFFF" }}
+                      >
+                        {item.nombre}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{ backgroundColor: "#FFFFFF" }}
+                      >
+                        {item.tamanio}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{ backgroundColor: "#FFFFFF" }}
+                      >
+                        {numberFormat.format(item.costo)}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{ backgroundColor: "#FFFFFF" }}
+                      >
+                        {item.cantidad}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{ backgroundColor: "#FFFFFF" }}
+                      >
+                        {numberFormat.format(item.total)}
+                      </TableCell>
+                    </TableRow>
+                  )
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

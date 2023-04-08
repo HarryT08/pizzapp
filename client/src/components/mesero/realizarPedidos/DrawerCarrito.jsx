@@ -28,10 +28,14 @@ const DrawerCarrito = ({ setOpen, open }) => {
   const { id } = useParams();
 
   useEffect(() => {
-    const total = carrito.reduce((acc, { cantidad, costo }) => {
-      return acc + cantidad * costo;
+    const subtotal = carrito.reduce((total, producto) => {
+      const totalProducto = producto.costoProductoTamanio.reduce(
+        (total, item) => total + item.costo * item.cantidad,
+        0
+      );
+      return total + totalProducto;
     }, 0);
-    setSubtotal(total);
+    setSubtotal(subtotal);
   }, [carrito]);
 
   useEffect(() => {
@@ -42,45 +46,89 @@ const DrawerCarrito = ({ setOpen, open }) => {
     setOpen(false);
   };
 
-  const handleCleanCarrito = (tamanio) => {
-    const cleanCarrito = carrito.filter((producto) => {
-      return producto.tamanio !== tamanio;
-    });
+  const handleCleanCarrito = (tamanio, idTamanio) => {
+    const cleanCarrito = carrito
+      .map((producto) => {
+        const newCostoProductoTamanio = producto.costoProductoTamanio.filter(
+          (item) => {
+            if (item.tamanio === tamanio && item.idTamanio === idTamanio) {
+              return false;
+            }
+            return true;
+          }
+        );
+        const totalProducto = newCostoProductoTamanio.reduce(
+          (total, item) => total + item.costo * item.cantidad,
+          0
+        );
+        return {
+          ...producto,
+          costoProductoTamanio: newCostoProductoTamanio,
+          total: totalProducto,
+        };
+      })
+      .filter((producto) => producto.costoProductoTamanio.length > 0);
     setCarrito(cleanCarrito);
   };
 
-  const handleIncrement = (tamanio) => {
+  const handleIncrement = (tamanio, idTamanio) => {
     const newCarrito = carrito.map((producto) => {
-      if (producto.tamanio === tamanio) {
-        const nuevaCantidad = producto.cantidad + 1;
-        const nuevoTotal = nuevaCantidad * producto.costo;
-        return {
-          ...producto,
-          cantidad: nuevaCantidad,
-          total: nuevoTotal,
-        };
-      }
-      return producto;
+      const newCostoProductoTamanio = producto.costoProductoTamanio.map(
+        (item) => {
+          if (item.tamanio === tamanio && item.idTamanio === idTamanio) {
+            const nuevaCantidad = item.cantidad + 1;
+            const nuevoTotal = nuevaCantidad * item.costo;
+            return {
+              ...item,
+              cantidad: nuevaCantidad,
+              total: nuevoTotal,
+            };
+          }
+          return item;
+        }
+      );
+      const totalProducto = newCostoProductoTamanio.reduce(
+        (total, item) => total + item.total,
+        0
+      );
+      return {
+        ...producto,
+        costoProductoTamanio: newCostoProductoTamanio,
+        total: totalProducto,
+      };
     });
     setCarrito(newCarrito);
   };
 
-  const handleDecrement = (tamanio) => {
+  const handleDecrement = (tamanio, idTamanio) => {
     const newCarrito = carrito.map((producto) => {
-      if (producto.tamanio === tamanio) {
-        const nuevaCantidad = producto.cantidad - 1;
-        if (nuevaCantidad < 1) {
-          toast.error("No puedes tener menos de 1 productos");
-          return producto;
+      const newCostoProductoTamanio = producto.costoProductoTamanio.map(
+        (item) => {
+          if (item.tamanio === tamanio && item.idTamanio === idTamanio) {
+            const nuevaCantidad = item.cantidad - 1;
+            if (nuevaCantidad < 1) {
+              toast.error("No puedes tener menos de 1 producto");
+              return item;
+            }
+            const nuevoTotal = nuevaCantidad * item.costo;
+            return {
+              ...item,
+              cantidad: nuevaCantidad,
+              total: nuevoTotal,
+            };
+          }
+          return item;
         }
-        const nuevoTotal = nuevaCantidad * producto.costo;
-        return {
-          ...producto,
-          cantidad: nuevaCantidad,
-          total: nuevoTotal,
-        };
-      }
-      return producto;
+      );
+      const totalProducto = newCostoProductoTamanio.reduce(
+        (total, item) => total + item.total,
+        0
+      );
+      return {
+        ...producto,
+        costoProductoTamanio: newCostoProductoTamanio,
+        total: totalProducto,
+      };
     });
     setCarrito(newCarrito);
   };
@@ -161,66 +209,108 @@ const DrawerCarrito = ({ setOpen, open }) => {
               <Typography variant="h6">Productos</Typography>
               {carrito.map((c) => (
                 <Box
+                  key={c.id}
                   sx={{
-                    borderBottom: "1px solid #E6E8F0",
+                    backgroundColor: "#f8f9fa",
+                    padding: "5px",
+                    marginY: "10px",
+                    borderRadius: "5px",
+                    boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.18)",
                   }}
                 >
-                  <Box
-                    key={c.id}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body1">{c.nombre}</Typography>
-                    <IconButton
-                      color="warning"
-                      onClick={() => handleCleanCarrito(c.tamanio)}
-                    >
-                      <IoClose />
-                    </IconButton>
-                  </Box>
-                  <Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        mb: "5px",
-                      }}
-                    >
-                      <Typography variant="body1">{c.tamanio}</Typography>
+                  {c.costoProductoTamanio.map((item) => (
+                    <>
                       <Box
+                        key={item.idTamanio}
                         sx={{
                           display: "flex",
                           alignItems: "center",
+                          justifyContent: "space-between",
                         }}
                       >
-                        <IconButton
-                          color="success"
-                          size="medium"
-                          onClick={() => handleIncrement(c.tamanio)}
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            fontWeight: "500",
+                          }}
                         >
-                          <MdKeyboardArrowUp />
-                        </IconButton>
-                        <Typography variant="body1">{c.cantidad}</Typography>
+                          {item.nombre}
+                        </Typography>
                         <IconButton
                           color="error"
-                          size="medium"
-                          onClick={() => handleDecrement(c.tamanio)}
+                          onClick={() =>
+                            handleCleanCarrito(item.tamanio, item.idTamanio)
+                          }
                         >
-                          <MdKeyboardArrowDown />
+                          <IoClose />
                         </IconButton>
                       </Box>
-                      <Typography variant="body1">
-                        {numberFormat.format(c.total)}
-                      </Typography>
-                    </Box>
+                      <Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            borderBottom: "1px solid #dee2e6",
+                            mb: "5px",
+                          }}
+                        >
+                          <Typography variant="body1">
+                            {item.tamanio}
+                          </Typography>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <IconButton
+                              color="success"
+                              size="medium"
+                              onClick={() =>
+                                handleIncrement(item.tamanio, item.idTamanio)
+                              }
+                            >
+                              <MdKeyboardArrowUp />
+                            </IconButton>
+                            <Typography variant="body1">
+                              {item.cantidad}
+                            </Typography>
+                            <IconButton
+                              color="error"
+                              size="medium"
+                              onClick={() =>
+                                handleDecrement(item.tamanio, item.idTamanio)
+                              }
+                            >
+                              <MdKeyboardArrowDown />
+                            </IconButton>
+                          </Box>
+                          <Typography variant="body1">
+                            {numberFormat.format(item.total)}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </>
+                  ))}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      backgroundColor: "#6c757d",
+                      color: "#fff",
+                      padding: "5px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <Typography variant="body1" sx={{ fontWeight: "500" }}>
+                      SubTotal:
+                    </Typography>
+                    <Typography variant="body1">
+                      {numberFormat.format(c.total)}
+                    </Typography>
                   </Box>
-                  <Typography variant="body1" sx={{ fontWeight: "500" }}>
-                    SubTotal: {numberFormat.format(c.total)}
-                  </Typography>
                 </Box>
               ))}
             </Box>

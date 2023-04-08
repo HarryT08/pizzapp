@@ -52,50 +52,111 @@ const TableProductosMesero = ({ searchProductos }) => {
   };
 
   /* Funcion para seleccionar el tamanio + precio */
-  const handleTamanioSeleccionado = (item) => {
-    const tamanioSeleccionado = {
-      id: item.id,
-      tamanio: item.tamanio,
-      precio: item.costo,
+  const handleTamanioSeleccionado = (producto, tamanio, costo, itemId) => {
+    const productoTamanioSeleccionado = {
+      idProducto: producto.id,
+      idTamanio: itemId,
+      nombre: producto.nombre,
+      tamanio: tamanio,
+      cantidad: 1,
+      total: costo,
+      costo: costo,
     };
-    if (tamaniosSeleccionados.some((t) => t.id === tamanioSeleccionado.id)) {
+    if (
+      tamaniosSeleccionados.some(
+        (t) =>
+          t.idProducto === productoTamanioSeleccionado.idProducto &&
+          t.tamanio === productoTamanioSeleccionado.tamanio
+      )
+    ) {
       setTamaniosSeleccionados(
-        tamaniosSeleccionados.filter((t) => t.id !== tamanioSeleccionado.id)
+        tamaniosSeleccionados.filter(
+          (t) =>
+            t.idProducto !== productoTamanioSeleccionado.idProducto ||
+            t.tamanio !== tamanio
+        )
       );
     } else {
-      setTamaniosSeleccionados([...tamaniosSeleccionados, tamanioSeleccionado]);
+      setTamaniosSeleccionados([
+        ...tamaniosSeleccionados,
+        productoTamanioSeleccionado,
+      ]);
     }
   };
 
-  /* Funcion para seleccionar el productos y añadirle CostoProductoTamanio */
-  const handleAgregarProducto = (producto) => {
-    if (tamaniosSeleccionados.length === 0) {
+  const limpiarTamaniosSeleccionados = (productoAgregado) => {
+    setTamaniosSeleccionados((tamaniosSeleccionados) => {
+      return tamaniosSeleccionados.filter(
+        (tamanioSeleccionado) =>
+          tamanioSeleccionado.idProducto !== productoAgregado.id ||
+          !productoAgregado.costoProductoTamanio.some(
+            (tamanio) =>
+              tamanioSeleccionado.tamanio === tamanio.tamanio &&
+              tamanioSeleccionado.costo === tamanio.costo
+          )
+      );
+    });
+  };
+
+  const handleAgregarProducto = (producto, id) => {
+    const tamaniosSeleccionadosParaProducto = tamaniosSeleccionados.filter(
+      (tamanio) => tamanio.idProducto === id
+    );
+
+    if (tamaniosSeleccionadosParaProducto.length === 0) {
       toast.error("Debe seleccionar al menos un tamaño");
       return;
     }
 
-    // Verificar si el producto ya esta en el carrito por ID y tamanio
-    const productoExistente = carrito.find(
-      (p) =>
-        p.id === producto.id && p.tamanio === tamaniosSeleccionados[0].tamanio
-    );
-    if (productoExistente) {
-      toast.error("El producto ya se encuentra en el carrito");
+    let tamanioRepetidoEnCarrito = false;
+    carrito.forEach((item) => {
+      if (item.id === producto.id) {
+        item.costoProductoTamanio.forEach((tamanio) => {
+          if (
+            tamanio.tamanio === tamaniosSeleccionadosParaProducto[0].tamanio
+          ) {
+            tamanioRepetidoEnCarrito = true;
+          }
+        });
+      }
+    });
+
+    if (tamanioRepetidoEnCarrito) {
+      toast.error("No se puede agregar el mismo tamaño");
       return;
     }
 
-    const nuevosProductos = tamaniosSeleccionados.map((tamanio) => ({
-      id: producto.id,
-      nombre: producto.nombre,
-      tamanio: tamanio.tamanio,
-      costo: tamanio.precio,
-      cantidad: 1,
-      total: tamanio.precio,
-    }));
+    let productoAgregado = false;
+    const nuevoCarrito = carrito.map((item) => {
+      if (item.id === producto.id) {
+        productoAgregado = true;
+        return {
+          ...item,
+          total: item.total + tamaniosSeleccionadosParaProducto[0].total,
+          costoProductoTamanio: [
+            ...item.costoProductoTamanio,
+            tamaniosSeleccionadosParaProducto[0],
+          ],
+        };
+      } else {
+        return item;
+      }
+    });
 
-    // Agregar los nuevos productos al carrito
-    setCarrito([...carrito, ...nuevosProductos]);
-    setTamaniosSeleccionados([]);
+    const totalProductoInicial = tamaniosSeleccionadosParaProducto.reduce(
+      (total, tamanio) => total + tamanio.total,
+      0
+    );
+    if (!productoAgregado) {
+      nuevoCarrito.push({
+        id: producto.id,
+        total: totalProductoInicial,
+        costoProductoTamanio: tamaniosSeleccionadosParaProducto,
+      });
+    }
+
+    setCarrito(nuevoCarrito);
+    limpiarTamaniosSeleccionados(producto);
   };
 
   return (
@@ -151,10 +212,22 @@ const TableProductosMesero = ({ searchProductos }) => {
                           {producto.costoProductoTamanio.map((item) => (
                             <Box key={item.id}>
                               <Checkbox
-                                checked={tamaniosSeleccionados.some(
-                                  (t) => t.id === item.id
-                                )}
-                                onChange={() => handleTamanioSeleccionado(item)}
+                                // Cambiar el valor del checked para que se seleccione el tamaño y tambien se pueda deseleccionar
+                                checked={
+                                  tamaniosSeleccionados.find(
+                                    (t) =>
+                                      t.idProducto === producto.id &&
+                                      t.tamanio === item.tamanio
+                                  ) !== undefined
+                                }
+                                onChange={() =>
+                                  handleTamanioSeleccionado(
+                                    producto,
+                                    item.tamanio,
+                                    item.costo,
+                                    item.id
+                                  )
+                                }
                               />
                               <Typography
                                 sx={{
@@ -177,7 +250,9 @@ const TableProductosMesero = ({ searchProductos }) => {
                           <Button
                             type="button"
                             variant="outlined"
-                            onClick={() => handleAgregarProducto(producto)}
+                            onClick={() =>
+                              handleAgregarProducto(producto, producto.id)
+                            }
                           >
                             Agregar
                           </Button>
