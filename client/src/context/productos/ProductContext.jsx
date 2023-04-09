@@ -79,11 +79,11 @@ export const ProductProvider = ({ children }) => {
       };
 
       if (action === "create") {
-        console.log("Tipo de accion create: ", action);
         await productosServices.createProduct(data);
         console.log("Data ->", data);
       } else if (action === "update") {
         console.log("Tipo de accion update: ", action);
+        console.log("DATA::", data);
         await productosServices.updateProduct(data);
       }
 
@@ -120,7 +120,7 @@ export const ProductProvider = ({ children }) => {
     preparations,
     methodsProducts,
     category,
-    setCategory
+    setCategory,
   };
 
   return (

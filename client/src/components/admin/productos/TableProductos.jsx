@@ -56,29 +56,9 @@ const TableProductos = ({ searchProductos }) => {
   };
 
   const formatearObjetoProductoCostos = (objeto) => {
-    const nuevoObjetoCostos = {
-      mediana: "",
-      grande: "",
-      pequeña: "",
-      unico: "",
-    };
+    const nuevoObjetoCostos = {};
     objeto.forEach((item) => {
-      switch (item.tamanio) {
-        case "mediana":
-          nuevoObjetoCostos.mediana = item.costo;
-          break;
-        case "grande":
-          nuevoObjetoCostos.grande = item.costo;
-          break;
-        case "pequeña":
-          nuevoObjetoCostos.pequeña = item.costo;
-          break;
-        case "unico":
-          nuevoObjetoCostos.unico = item.costo;
-          break;
-        default:
-          break;
-      }
+      nuevoObjetoCostos[item.tamanio] = item.costo;
     });
 
     return { ...nuevoObjetoCostos };
@@ -128,6 +108,7 @@ const TableProductos = ({ searchProductos }) => {
         ...objectProductoConPreparaciones,
         costos: costosProducto,
       });
+
       setSelectedPreparations(() => {
         return (
           methodsProducts.getValues("selectedSizes")?.map((item) => ({
@@ -140,6 +121,7 @@ const TableProductos = ({ searchProductos }) => {
       navigate("/admin/productos/editar");
 
       onUpdate(objectProductoConPreparaciones);
+      console.log("Este es el nuevo Get Values", methodsProducts.getValues());
     } catch (error) {
       toast.error("No se pudo obtener el producto");
       console.error(error);
