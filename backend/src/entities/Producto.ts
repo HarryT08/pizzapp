@@ -28,14 +28,14 @@ export class Producto extends BaseEntity{
 
     //category : string
 
-    @OneToMany(() => CostoProductoTamanio,(costoProductoTamanio) => costoProductoTamanio.producto, {cascade: true})
+    @OneToMany(() => CostoProductoTamanio,(costoProductoTamanio) => costoProductoTamanio.producto, {cascade : true})
     costoProductoTamanio : CostoProductoTamanio[];
 
     constructor(){
         super();
     }
     
-    @ManyToMany(() => MateriaPrima, materiaPrima => materiaPrima.productos)
+    @ManyToMany(() => MateriaPrima, materiaPrima => materiaPrima.productos, {cascade : true})
     @JoinTable({
         name : 'preparacion',
         joinColumn : {
