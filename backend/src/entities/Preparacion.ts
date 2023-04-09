@@ -24,11 +24,11 @@ export class Preparacion extends BaseEntity{
     cantidad : number;
 
     @PrimaryColumn({name : 'id_producto', type : 'int' , insert : false, update : true})
-    @ManyToOne(() => Producto, (producto) => producto.preparaciones)
+    @ManyToOne(() => Producto, (producto) => producto.preparaciones, {onUpdate : 'CASCADE'})
     @JoinColumn({name : 'id_producto'})
     producto : Producto;
 
-    @PrimaryColumn({name : 'id_materia', type : 'int', insert: false})
+    @PrimaryColumn({name : 'id_materia', type : 'int', insert: false, update : true})
     @ManyToOne(() => MateriaPrima, (materiaPrima) => materiaPrima.preparaciones)
     @JoinColumn({name : 'id_materia'})
     materiaPrima : MateriaPrima;

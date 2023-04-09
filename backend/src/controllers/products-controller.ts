@@ -59,7 +59,7 @@ export const createProduct = async (req: Request, res: Response) => {
     return res.status(201).json({
       message: 'Producto creado con exito'
     });
-    
+
   } catch (error) {
     console.error(error);
 
@@ -75,6 +75,7 @@ const uploadPreparationsAndPriceBySize = async (product : Producto, costos : {},
 }
 
 /**
+ *
  * Mapeo de costo de producto por tamanio
  * @param provisional ID provisional para poder ejecutar el init de costoProducto
  * @param costos objeto con los costos por tamaño del producto
@@ -91,7 +92,6 @@ const initializePriceBySize = (provisional : number, costos : {}) => {
 }
 
 /**
- * 
  * @param provisional ID provisional para poder ejecutar el init de Preparacion
  * @param presentaciones Objeto con las presentaciones de cada producto
  * @returns array con cada una de las 'Preparaciones' inicializado
@@ -153,33 +153,19 @@ Metodo para actualizar un producto, usando el ORM de typeorm
 */
 export const updateProduct = async (req: Request, res: Response) => {
   const id = Number.parseInt(req.params['id']);
-  //chosen --> Las presentaciones que selecciono el usuario
+  console.log('id del producto' , id)
   let { nombre, costos, preparaciones } = req.body;
   const producto = await Producto.findOneBy({ id: id, deleted: false });
-
-  if (!producto)
-    return res.status(404).json({ message: 'Producto no encontrado' });
-
-  producto.nombre = nombre;
+  if (!producto) return res.status(404).json({ message: 'Producto no encontrado' });
   
-  //Mapeo de costo de producto por tamanio
-  let costosProductos :CostoProductoTamanio[] = new Array();
-  Object.entries(costos).forEach(([tamanio, costo]) => {
-    const costoProducto = new CostoProductoTamanio();
-    costoProducto.init(id, tamanio, Number(costo));
-    costoProducto.producto = producto;
-    costosProductos.push(costoProducto);
-  });
-  producto.costoProductoTamanio = costosProductos;
-
   try {
-    console.log("costoProducto " , producto.costoProductoTamanio)
-    await updatePreparations(producto, preparaciones);
+    producto.nombre = nombre;
+    uploadPreparationsAndPriceBySize(producto, costos, preparaciones);
+    //await updatePreparations(producto, preparaciones); // esta linea debemos quitarla o hacer el cascade para ambas cosas    
     await producto.save();
     res.status(204).json({ message: 'Producto actualizado' });
   } catch (error) {
     console.error(error);
-
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
   }

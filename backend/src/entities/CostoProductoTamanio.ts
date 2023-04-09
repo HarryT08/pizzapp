@@ -18,7 +18,7 @@ export class CostoProductoTamanio extends BaseEntity{
     idProducto: number;
 
     @JoinColumn({name : 'idProducto', referencedColumnName : 'id'})
-    @ManyToOne(() => Producto,(producto) => producto.costoProductoTamanio)
+    @ManyToOne(() => Producto,(producto) => producto.costoProductoTamanio, {onUpdate : 'CASCADE'})
     producto : Producto;
 
     @Column()
