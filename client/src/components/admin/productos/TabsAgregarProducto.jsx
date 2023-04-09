@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { SelectedProductContext } from "@/context/productos/ProductContext";
 import {
   Card,
@@ -83,14 +83,22 @@ const TabsAgregarProducto = () => {
                   <div key={key}>
                     <Controller
                       name={`costos.${value.key}`}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "No ha ingresado un precio",
+                        },
+                      }}
                       control={methodsProducts.control}
-                      render={({ field }) => {
+                      render={({ field, fieldState: { error } }) => {
                         return (
                           <TextField
                             {...field}
                             label={value.value}
                             variant="outlined"
                             type="number"
+                            error={error ? true : false}
+                            helperText={error?.message}
                           />
                         );
                       }}

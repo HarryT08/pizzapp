@@ -62,7 +62,19 @@ const PreparacionProductos = () => {
 
   const deleteIngrediente = (id) => {
     setPreparaciones((current) =>
-      current.filter((item) => item.id !== id && item.tamanio === selectedTab)
+      current.filter((item) => item.id_materia !== id)
+    );
+    setSelectedPreparations((current) =>
+      current.map((size) => {
+        const preparacion = preparaciones.find(
+          (item) => item.id_materia === id && item.tamanio === size.key
+        );
+        if (preparacion) {
+          preparacion.tamanio = size.key;
+          return size;
+        }
+        return size;
+      })
     );
   };
 

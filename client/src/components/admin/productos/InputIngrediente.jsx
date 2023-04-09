@@ -60,7 +60,7 @@ const InputIngrediente = ({ preparacion, onDelete }) => {
         <IconButton
           color="error"
           type="button"
-          onClick={() => onDelete(preparacion.id)}
+          onClick={() => onDelete(preparacion.id_materia)}
         >
           <IoIosClose />
         </IconButton>
