@@ -48,6 +48,10 @@ export const ProductProvider = ({ children }) => {
     handleChangeProducto(producto);
   };
 
+  useEffect(() => {
+    getProductos();
+  }, []);
+
   const getProductos = async () => {
     setLoading(true);
     try {
@@ -66,6 +70,7 @@ export const ProductProvider = ({ children }) => {
     setProducto(rest);
     setPreparaciones(preparaciones);
   }, []);
+
   const handleSubmit = async (valoresProducto) => {
     console.log("Valores producto:", valoresProducto);
     setLoading(true);
@@ -80,17 +85,19 @@ export const ProductProvider = ({ children }) => {
 
       if (action === "create") {
         await productosServices.createProduct(data);
-        console.log("Data ->", data);
+        console.log("Data create ->", data);
       } else if (action === "update") {
         console.log("Tipo de accion update: ", action);
-        console.log("DATA::", data);
+        console.log("Data update ->", data);
         await productosServices.updateProduct(data);
       }
 
       toast.success("Producto agregado correctamente");
       setPreparaciones([]);
-      navigate("/admin/productos");
-      getProductos();
+      setTimeout(() => {
+        getProductos();
+        navigate("/admin/productos");
+      }, 1000);
     } catch (err) {
       toast.error("No se pudo guardar el producto");
       console.error(err);
@@ -99,9 +106,7 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getProductos();
-  }, []);
+  console.log("Products ->", products);
 
   const value = {
     products,

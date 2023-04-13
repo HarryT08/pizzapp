@@ -11,12 +11,16 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { MdAdd, MdOutlineSearch } from "react-icons/md";
-import { Header, TableProductos, TabsProductos } from "@/components";
+import { Header, TabsProductos } from "@/components";
 
 const Productos = () => {
   const [search, setSearch] = useState("");
-  const { products, methodsProducts, setSelectedPreparations, handleCreate } =
-    useContext(SelectedProductContext);
+  const {
+    products,
+    methodsProducts,
+    setSelectedPreparations,
+    handleCreate,
+  } = useContext(SelectedProductContext);
   const smUp = useMediaQuery((theme) => theme.breakpoints.up("sm"), {
     defaultMatches: true,
     noSsr: false,
@@ -80,7 +84,7 @@ const Productos = () => {
           sx={{ maxWidth: 500 }}
         />
       </Card>
-      <TabsProductos searchProductos={searchProductos}/>
+      <TabsProductos searchProductos={searchProductos} />
     </Stack>
   );
 };

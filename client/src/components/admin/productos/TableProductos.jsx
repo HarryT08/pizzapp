@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { SelectedProductContext } from "@/context/productos/ProductContext";
 import {
   Box,
