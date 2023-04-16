@@ -1,82 +1,49 @@
 import { useContext, useState } from "react";
-import { Tab, Box } from "@mui/material";
+import { Tab, Box, Tabs } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   TableIngredientesProductos,
   InputIngrediente,
   ChipPreparations,
 } from "@/components";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 
 const PreparacionProductos = () => {
   const {
     producto,
     preparaciones,
     setPreparaciones,
-    selectedPreparations,
-    setSelectedPreparations,
     preparations,
-  } = useContext(SelectedProductContext);
+    listaCostoTamanio,
+    setListaCostoTamanio,
+  } = useContext(ProductContext);
 
-  const [selectedTab, setSelectedTab] = useState(
-    () => producto.selectedSizes.at(-1) || ""
-  );
+  const [selectedTab, setSelectedTab] = useState(() => {
+    return listaCostoTamanio.at(-1) || "";
+  });
 
-  const handleChecked = (e, size) => {
-    if (!e.target.checked) {
-      const nextSizes = selectedPreparations.filter((a) => a.key !== size.key);
-      setSelectedTab(nextSizes.at(-1)?.key || "");
-      setSelectedPreparations(nextSizes);
-      setPreparaciones((draft) =>
-        draft.filter((it) => it.tamanio !== size.key)
-      );
-      return;
-    }
+  const handleChecked = (e, key) => {
+    const isChecked = e.target.checked;
 
-    if (size.key === "unico") {
-      setSelectedTab("unico");
-      setSelectedPreparations([size]);
-      setPreparaciones((draft) => draft.filter((it) => it.tamanio !== "unico"));
-      return;
-    }
+    const value = key;
 
-    setSelectedTab(size.key);
-    setSelectedPreparations((current) => [...current, size]);
-
-    const record = {};
-
-    preparaciones.forEach(
-      (item) => (record[item.id_materia] = item.materiaPrima)
-    );
-
-    const newPreparaciones = Object.values(record).map((item) => ({
-      id_materia: item.id,
-      id_producto: producto.id,
-      tamanio: size.key,
-      cantidad: 1,
-      materiaPrima: item,
-    }));
-
-    setPreparaciones((current) => current.concat(newPreparaciones));
-  };
-
-  const deleteIngrediente = (id) => {
-    setPreparaciones((current) =>
-      current.filter((item) => item.id_materia !== id)
-    );
-    setSelectedPreparations((current) =>
-      current.map((size) => {
-        const preparacion = preparaciones.find(
-          (item) => item.id_materia === id && item.tamanio === size.key
+    if (isChecked) {
+      if (key === "unico") {
+        setListaCostoTamanio([value]);
+      } else {
+        const listaCostoTamanioSinUnico = listaCostoTamanio.filter(
+          (item) => item !== "unico"
         );
-        if (preparacion) {
-          preparacion.tamanio = size.key;
-          return size;
-        }
-        return size;
-      })
-    );
+        setListaCostoTamanio([...listaCostoTamanioSinUnico, value]);
+      }
+    } else {
+      setListaCostoTamanio((prev) => prev.filter((item) => item !== value));
+    }
   };
+
+  console.log("listaCostoTamanio ->", listaCostoTamanio);
+
+  const deleteIngrediente = (id) => {};
 
   return (
     <>
@@ -90,19 +57,20 @@ const PreparacionProductos = () => {
         }}
       >
         {Object.entries(preparations).map(([key, value]) => (
-          <ChipPreparations
-            key={key}
-            item={{ key, value }}
-            isChecked={selectedPreparations.some((size) => size.key === key)}
-            isDisabled={
-              selectedPreparations.some((size) => size.key === "unico") &&
-              key !== "unico"
-            }
-            onChange={(e) => handleChecked(e, { key, value })}
-          />
+          <li key={key}>
+            <input
+              type="checkbox"
+              id={key}
+              value={key}
+              checked={listaCostoTamanio.includes(key)}
+              // disabled={listaCostoTamanio.includes("unico")}
+              onChange={(e) => handleChecked(e, key)}
+            />
+            <label htmlFor={key}>{value}</label>
+          </li>
         ))}
       </ul>
-      <TableIngredientesProductos selectedPreparations={selectedPreparations} />
+      <TableIngredientesProductos />
       <Box
         sx={{
           mt: "0.5rem",
@@ -111,12 +79,12 @@ const PreparacionProductos = () => {
         <TabContext value={selectedTab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={(event, value) => setSelectedTab(value)}>
-              {selectedPreparations.map((item) => (
-                <Tab key={item.key} label={item.value} value={item.key} />
+              {listaCostoTamanio.map((item) => (
+                <Tab key={item} label={item} value={item} />
               ))}
             </TabList>
           </Box>
-          {selectedPreparations.map((size) => (
+          {/* {selectedPreparations.map((size) => (
             <TabPanel value={size.key} key={size.key}>
               {preparaciones
                 .filter((it) => it.tamanio === selectedTab)
@@ -128,7 +96,7 @@ const PreparacionProductos = () => {
                   />
                 ))}
             </TabPanel>
-          ))}
+          ))} */}
         </TabContext>
       </Box>
     </>

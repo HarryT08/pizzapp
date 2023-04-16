@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 import {
   Card,
   TextField,
@@ -13,17 +13,12 @@ import { Controller } from "react-hook-form";
 import { Alerta } from "@/components";
 
 const TabsAgregarProducto = () => {
-  const { selectedPreparations, methodsProducts, category, setCategory } =
-    useContext(SelectedProductContext);
+  const { methodsProducts, category, setCategory, listaCostoTamanio } =
+    useContext(ProductContext);
 
   const handleChange = (event, newValue) => {
     setCategory(newValue);
   };
-
-  //Si se cierra una preparacion, limpia los campos
-  useEffect(() => {
-    methodsProducts.reset();
-  }, [selectedPreparations]);
 
   return (
     <>
@@ -78,17 +73,17 @@ const TabsAgregarProducto = () => {
                 alignItems: "center",
               }}
             >
-              {selectedPreparations.length === 0 ? (
+              {listaCostoTamanio.length === 0 ? (
                 <Alerta
                   descripcion="No se ha seleccionado ninguna presentacion."
                   alerta="info"
                 />
               ) : (
-                Object.entries(selectedPreparations).map(([key, value]) => (
-                  <div key={key}>
-                    {console.log("value ->", value, "key ->", key)}
+                listaCostoTamanio.map((lista, index) => (
+                  <div key={`lista.${lista}.${index}`}>
                     <Controller
-                      name={`costos.${value.key}`}
+                      name={`costos.${lista}`}
+                      shouldUnregister={true}
                       rules={{
                         required: {
                           value: true,
@@ -100,7 +95,7 @@ const TabsAgregarProducto = () => {
                         return (
                           <TextField
                             {...field}
-                            label={value.value}
+                            label={lista}
                             variant="outlined"
                             type="number"
                             error={error ? true : false}

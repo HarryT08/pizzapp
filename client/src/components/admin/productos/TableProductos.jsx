@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 import {
   Box,
   Card,
@@ -44,11 +44,10 @@ const TableProductos = ({ searchProductos }) => {
     onUpdate,
     products,
     methodsProducts,
-    setSelectedPreparations,
-    selectedPreparations,
     preparations,
     loading,
-  } = useContext(SelectedProductContext);
+    setListaCostoTamanio,
+  } = useContext(ProductContext);
   const navigate = useNavigate();
 
   // Paginacion tabla Ingredientes
@@ -112,28 +111,20 @@ const TableProductos = ({ searchProductos }) => {
         costos: costosProducto,
       });
 
-      // Metodo para seleccionar las preparaciones del producto
-      setSelectedPreparations(() => {
-        return (
-          methodsProducts.getValues("selectedSizes")?.map((item) => ({
-            key: item,
-            value: preparations[item],
-          })) || []
-        );
-      });
+      console.log("objetoProductoPreparaciones ->", objectProductoConPreparaciones);
+
+      setListaCostoTamanio(objectProductoConPreparaciones.selectedSizes);
 
       navigate("/admin/productos/editar");
 
       console.log("Este es el objeto", objectProductoConPreparaciones);
-      onUpdate(objectProductoConPreparaciones);
+      onUpdate("");
       console.log("Este es el nuevo Get Values", methodsProducts.getValues());
     } catch (error) {
       toast.error("No se pudo obtener el producto");
       console.error(error);
     }
   };
-
-  console.log("selectedPreparations ->", selectedPreparations);
 
   return (
     <>

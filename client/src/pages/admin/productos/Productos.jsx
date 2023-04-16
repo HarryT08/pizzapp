@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -18,16 +18,14 @@ const Productos = () => {
   const {
     products,
     methodsProducts,
-    setSelectedPreparations,
     handleCreate,
-  } = useContext(SelectedProductContext);
+  } = useContext(ProductContext);
   const smUp = useMediaQuery((theme) => theme.breakpoints.up("sm"), {
     defaultMatches: true,
     noSsr: false,
   });
   const limpiarCampos = () => {
     methodsProducts.reset({});
-    setSelectedPreparations([]);
     handleCreate();
   };
   const searchProductos = () => {

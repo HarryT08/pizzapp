@@ -1,37 +1,13 @@
 import { useState, useContext } from "react";
 import { IoIosClose } from "react-icons/io";
 import { TextField, Box, Button, IconButton } from "@mui/material";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 
 const InputIngrediente = ({ preparacion, onDelete }) => {
-  const { setPreparaciones } = useContext(SelectedProductContext);
   const [cantidad, setCantidad] = useState(preparacion.cantidad || 1);
 
   const handleChange = (e) => {
     setCantidad(e.target.value);
-  };
-
-  const handleBlur = (e) => {
-    let value = Number(e.target.value.replace(/[^0-9]+/g, ""));
-
-    if (value < 1 || isNaN(value)) {
-      value = 1;
-    }
-
-    setCantidad(value);
-
-    setPreparaciones((draft) => {
-      return draft.map((it) => {
-        if (
-          it.id_materia === preparacion.id_materia &&
-          it.tamanio === preparacion.tamanio
-        ) {
-          it.cantidad = value;
-        }
-
-        return it;
-      });
-    });
   };
 
   return (

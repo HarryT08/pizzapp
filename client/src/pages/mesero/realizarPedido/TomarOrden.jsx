@@ -12,7 +12,7 @@ import {
   Badge,
   Button,
 } from "@mui/material";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 import { TomarOrdenContext } from "@/context/mesero/tomarOrden/TomarOrdenContext";
 import {
   MdOutlineSearch,
@@ -23,7 +23,7 @@ import {
 const TomarOrden = () => {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const { products } = useContext(SelectedProductContext);
+  const { products } = useContext(ProductContext);
   const { carrito } = useContext(TomarOrdenContext);
   const { id } = useParams();
 

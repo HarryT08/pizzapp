@@ -11,7 +11,7 @@ const initialProduct = {
   selectedSizes: [],
 };
 
-export const SelectedProductContext = createContext({
+export const ProductContext = createContext({
   producto: initialProduct,
   setProducto: () => {},
   ingredientes: [],
@@ -33,21 +33,18 @@ export const ProductProvider = ({ children }) => {
   const [action, setAction] = useState("create");
   const [producto, setProducto] = useState(initialProduct);
   const [preparaciones, setPreparaciones] = useState([]);
+  const [listaCostoTamanio, setListaCostoTamanio] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedPreparations, setSelectedPreparations] = useState([]);
   const navigate = useNavigate();
-
-  console.log("Preparaciones:", preparaciones);
 
   const handleCreate = () => {
     setAction("create");
     setProducto(initialProduct);
-    setPreparaciones([]);
+    setListaCostoTamanio([]);
   };
 
   const handleUpdate = (producto) => {
     setAction("update");
-    handleChangeProducto(producto);
   };
 
   useEffect(() => {
@@ -66,44 +63,17 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  const handleChangeProducto = useCallback((producto) => {
-    const { preparaciones, ...rest } = producto;
-
-    setProducto(rest);
-    setPreparaciones(preparaciones);
-  }, []);
-
   const handleSubmit = async (valoresProducto) => {
     console.log("Valores producto:", valoresProducto);
-    let costosFormateados = {}
-    if (action === "update") {
-      const costos = valoresProducto.selectedSizes.map((size) => {
-        return {
-          size,
-          price: valoresProducto.costos[size],
-        };
-      });
-
-      const costosFiltrados = costos.filter((costo) => {
-        return selectedPreparations.some((preparation) => {
-          return preparation.key === costo.size;
-        });
-      });
-
-      // Formateamos el objeto de costosFiltrados (tamanio: precio)
-      costosFormateados = costosFiltrados?.reduce((acc, curr) => {
-        acc[curr.size] = curr.price;
-        return acc;
-      }, {});
-    }
     try {
       setLoading(true);
       const data = {
         id: valoresProducto.id,
         nombre: valoresProducto.nombre,
-        costos:
-          action === "update" ? costosFormateados : valoresProducto.costos,
-        preparaciones: preparaciones,
+        costos: {
+          ...valoresProducto.costos,
+        },
+        preparaciones: [],
       };
 
       if (action === "create") {
@@ -116,10 +86,10 @@ export const ProductProvider = ({ children }) => {
 
       toast.success("Producto agregado correctamente");
       setPreparaciones([]);
-      setTimeout(() => {
-        getProductos();
-        navigate("/admin/productos");
-      }, 1500);
+      // setTimeout(() => {
+      //   getProductos();
+      //   navigate("/admin/productos");
+      // }, 1500);
       setLoading(false);
     } catch (err) {
       toast.error("No se pudo guardar el producto");
@@ -128,6 +98,8 @@ export const ProductProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  console.log("costoTamanio ->", listaCostoTamanio);
 
   const value = {
     products,
@@ -140,18 +112,16 @@ export const ProductProvider = ({ children }) => {
     onSubmit: handleSubmit,
     loading,
     getProductos,
-    setSelectedPreparations,
     action,
-    selectedPreparations,
     preparations,
     methodsProducts,
     category,
     setCategory,
+    listaCostoTamanio,
+    setListaCostoTamanio,
   };
 
   return (
-    <SelectedProductContext.Provider value={value}>
-      {children}
-    </SelectedProductContext.Provider>
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
   );
 };

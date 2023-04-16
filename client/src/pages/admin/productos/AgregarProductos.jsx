@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 import {
   Header,
   Loader,
@@ -19,7 +19,7 @@ import {
 
 const AgregarProductos = () => {
   const { onSubmit, loading, methodsProducts, action } = useContext(
-    SelectedProductContext
+    ProductContext
   );
   const formRef = useRef(null);
   const navigate = useNavigate();

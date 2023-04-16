@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import { MdArrowRightAlt } from "react-icons/md";
 import { useContext } from "react";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 
 const UltimosProductos = ({ sx }) => {
-  const { products } = useContext(SelectedProductContext);
+  const { products } = useContext(ProductContext);
 
   return (
     <Card sx={sx}>

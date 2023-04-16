@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { SelectedProductContext } from "@/context/productos/ProductContext";
+import { ProductContext } from "@/context/productos/ProductContext";
 import { TomarOrdenContext } from "@/context/mesero/tomarOrden/TomarOrdenContext";
 import { Alerta } from "@/components";
 import { labelDisplayedRows, labelRowsPerPage } from "@/i18n";
@@ -32,7 +32,7 @@ const options = {
 const numberFormat = new Intl.NumberFormat("es-CO", options);
 
 const TableProductosMesero = ({ searchProductos }) => {
-  const { loading, products } = useContext(SelectedProductContext);
+  const { loading, products } = useContext(ProductContext);
   const {
     tamaniosSeleccionados,
     setTamaniosSeleccionados,
