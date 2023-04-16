@@ -99,7 +99,7 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  console.log("costoTamanio ->", listaCostoTamanio);
+  
 
   const value = {
     products,

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Tab, Box, Tabs } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
@@ -36,12 +36,11 @@ const PreparacionProductos = () => {
         );
         setListaCostoTamanio([...listaCostoTamanioSinUnico, value]);
       }
+      setSelectedTab(key);
     } else {
       setListaCostoTamanio((prev) => prev.filter((item) => item !== value));
     }
   };
-
-  console.log("listaCostoTamanio ->", listaCostoTamanio);
 
   const deleteIngrediente = (id) => {};
 
@@ -76,28 +75,34 @@ const PreparacionProductos = () => {
           mt: "0.5rem",
         }}
       >
-        <TabContext value={selectedTab}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={(event, value) => setSelectedTab(value)}>
-              {listaCostoTamanio.map((item) => (
-                <Tab key={item} label={item} value={item} />
-              ))}
-            </TabList>
-          </Box>
-          {/* {selectedPreparations.map((size) => (
+        {selectedTab && (
+          <TabContext value={selectedTab}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={(event, value) => {
+                  setSelectedTab(value);
+                }}
+              >
+                {listaCostoTamanio.map((item) => (
+                  <Tab key={item} label={item} value={item} />
+                ))}
+              </TabList>
+            </Box>
+            {/* {selectedPreparations.map((size) => (
             <TabPanel value={size.key} key={size.key}>
               {preparaciones
-                .filter((it) => it.tamanio === selectedTab)
+                .filter((preparacion) => preparacion.tamanio === selectedTab)
                 .map((it) => (
                   <InputIngrediente
-                    key={`${it.id_materia}-${it.tamanio}`}
-                    preparacion={it}
+                    key={`${preparacion.id_materia}-${preparacion.tamanio}`}
+                    preparacion={preparacion}
                     onDelete={deleteIngrediente}
                   />
                 ))}
             </TabPanel>
           ))} */}
-        </TabContext>
+          </TabContext>
+        )}
       </Box>
     </>
   );
