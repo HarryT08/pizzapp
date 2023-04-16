@@ -45,6 +45,7 @@ const TableProductos = ({ searchProductos }) => {
     products,
     methodsProducts,
     setSelectedPreparations,
+    selectedPreparations,
     preparations,
     loading,
   } = useContext(SelectedProductContext);
@@ -100,15 +101,18 @@ const TableProductos = ({ searchProductos }) => {
       const objectProductoConPreparaciones =
         await productosServices.getProductoAndPreparaciones(producto.id);
 
+      // Se obtienen los costosProducto del producto (tamanio : precio)
       const costosProducto = formatearObjetoProductoCostos(
         producto.costoProductoTamanio
       );
 
+      // Se resetea el formulario de productos
       methodsProducts.reset({
         ...objectProductoConPreparaciones,
         costos: costosProducto,
       });
 
+      // Metodo para seleccionar las preparaciones del producto
       setSelectedPreparations(() => {
         return (
           methodsProducts.getValues("selectedSizes")?.map((item) => ({
@@ -120,6 +124,7 @@ const TableProductos = ({ searchProductos }) => {
 
       navigate("/admin/productos/editar");
 
+      console.log("Este es el objeto", objectProductoConPreparaciones);
       onUpdate(objectProductoConPreparaciones);
       console.log("Este es el nuevo Get Values", methodsProducts.getValues());
     } catch (error) {
@@ -127,6 +132,8 @@ const TableProductos = ({ searchProductos }) => {
       console.error(error);
     }
   };
+
+  console.log("selectedPreparations ->", selectedPreparations);
 
   return (
     <>

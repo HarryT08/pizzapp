@@ -37,6 +37,8 @@ export const ProductProvider = ({ children }) => {
   const [selectedPreparations, setSelectedPreparations] = useState([]);
   const navigate = useNavigate();
 
+  console.log("Preparaciones:", preparaciones);
+
   const handleCreate = () => {
     setAction("create");
     setProducto(initialProduct);
@@ -73,23 +75,43 @@ export const ProductProvider = ({ children }) => {
 
   const handleSubmit = async (valoresProducto) => {
     console.log("Valores producto:", valoresProducto);
-    setLoading(true);
+    let costosFormateados = {}
+    if (action === "update") {
+      const costos = valoresProducto.selectedSizes.map((size) => {
+        return {
+          size,
+          price: valoresProducto.costos[size],
+        };
+      });
 
+      const costosFiltrados = costos.filter((costo) => {
+        return selectedPreparations.some((preparation) => {
+          return preparation.key === costo.size;
+        });
+      });
+
+      // Formateamos el objeto de costosFiltrados (tamanio: precio)
+      costosFormateados = costosFiltrados?.reduce((acc, curr) => {
+        acc[curr.size] = curr.price;
+        return acc;
+      }, {});
+    }
     try {
+      setLoading(true);
       const data = {
         id: valoresProducto.id,
         nombre: valoresProducto.nombre,
-        costos: valoresProducto.costos,
-        preparaciones,
+        costos:
+          action === "update" ? costosFormateados : valoresProducto.costos,
+        preparaciones: preparaciones,
       };
 
       if (action === "create") {
-        await productosServices.createProduct(data);
+        // await productosServices.createProduct(data);
         console.log("Data create ->", data);
       } else if (action === "update") {
-        console.log("Tipo de accion update: ", action);
         console.log("Data update ->", data);
-        await productosServices.updateProduct(data);
+        // await productosServices.updateProduct(data);
       }
 
       toast.success("Producto agregado correctamente");
@@ -97,7 +119,8 @@ export const ProductProvider = ({ children }) => {
       setTimeout(() => {
         getProductos();
         navigate("/admin/productos");
-      }, 1000);
+      }, 1500);
+      setLoading(false);
     } catch (err) {
       toast.error("No se pudo guardar el producto");
       console.error(err);
@@ -105,8 +128,6 @@ export const ProductProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
-  console.log("Products ->", products);
 
   const value = {
     products,

@@ -1,15 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button, ListItem, Typography, ButtonBase, Box } from "@mui/material";
+import { Button, ListItem, Typography } from "@mui/material";
 
 const NavItem = ({ href, icon, title }) => {
-  const active = window.location.pathname === href ? true : false;
   const location = useLocation();
+  const [active, setActive] = useState(false);
 
-  // Efectura para actualizar el estado de la ruta activa
   useEffect(() => {
-    console.log(location.pathname);
-  }, [location]);
+    setActive(location.pathname === href);
+  }, [location, href]);
 
   return (
     <Link to={href}>

@@ -39,6 +39,7 @@ const TableIngredientesProductos = ({ selectedPreparations = [] }) => {
 
   // Agregamos un producto al carrito
   const addIngrediente = (id) => {
+
     if (selectedPreparations.length === 0) {
       return toast.error("No se ha seleccionado ningún tamaño.");
     }
@@ -47,6 +48,7 @@ const TableIngredientesProductos = ({ selectedPreparations = [] }) => {
       return toast.error("El producto ya ha sido agregado.");
     }
 
+    // Info del ingrediente
     const ingrediente = ingredientes.find(
       (ingrediente) => ingrediente.id === id
     );

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { SelectedProductContext } from "@/context/productos/ProductContext";
 import {
   Card,
@@ -19,6 +19,11 @@ const TabsAgregarProducto = () => {
   const handleChange = (event, newValue) => {
     setCategory(newValue);
   };
+
+  //Si se cierra una preparacion, limpia los campos
+  useEffect(() => {
+    methodsProducts.reset();
+  }, [selectedPreparations]);
 
   return (
     <>
@@ -81,6 +86,7 @@ const TabsAgregarProducto = () => {
               ) : (
                 Object.entries(selectedPreparations).map(([key, value]) => (
                   <div key={key}>
+                    {console.log("value ->", value, "key ->", key)}
                     <Controller
                       name={`costos.${value.key}`}
                       rules={{
