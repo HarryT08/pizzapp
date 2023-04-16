@@ -1,10 +1,11 @@
 import { useState, useContext } from "react";
 import { IoIosClose } from "react-icons/io";
-import { TextField, Box, Button, IconButton } from "@mui/material";
+import { TextField, Box, IconButton } from "@mui/material";
 import { ProductContext } from "@/context/productos/ProductContext";
 
 const InputIngrediente = ({ preparacion, onDelete }) => {
   const [cantidad, setCantidad] = useState(preparacion.cantidad || 1);
+  const { setPreparaciones } = useContext(ProductContext);
 
   const handleChange = (e) => {
     setCantidad(e.target.value);
@@ -27,7 +28,6 @@ const InputIngrediente = ({ preparacion, onDelete }) => {
         required
         value={cantidad}
         onChange={handleChange}
-        onBlur={handleBlur}
         name="cantidad"
         type="number"
       />

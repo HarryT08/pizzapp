@@ -20,12 +20,11 @@ const columns = [
   { id: "acciones", label: "Acciones" },
 ];
 
-const TableIngredientesProductos = () => {
+const TableIngredientesProductos = ({ listaCostoTamanio = [] }) => {
   const [pageIngredientesProductos, setPageIngredientesProductos] = useState(0);
   const [rowsIngredientesProductos, setRowsIngredientesProductos] = useState(3);
-  const { producto, preparaciones, setPreparaciones } = useContext(
-    ProductContext
-  );
+  const { producto, preparaciones, setPreparaciones } =
+    useContext(ProductContext);
   const { ingredientes } = useContext(IngredienteContext);
 
   const handleChangePageIngredientesProductos = (event, newPage) => {
@@ -35,6 +34,35 @@ const TableIngredientesProductos = () => {
   const handleChangeRowsPerPageIngredientesProductos = (event) => {
     setRowsIngredientesProductos(Number(event.target.value));
     setPageIngredientesProductos(0);
+  };
+
+  // Agregar ingrediente a la preparación
+  const addIngrediente = (id) => {
+    if (listaCostoTamanio.length === 0) {
+      toast.error("Debe seleccionar un tamaño.");
+      return;
+    }
+
+    if (preparaciones.some((preparacion) => preparacion.id_materia === id)) {
+      toast.error("El ingrediente ya ha sido agregado.");
+      return;
+    }
+
+    const ingrediente = ingredientes.find(
+      (ingrediente) => ingrediente.id === id
+    );
+
+    console.log("ingrediente ->", ingrediente);
+
+    const newPreparaciones = listaCostoTamanio.map((tamanio) => ({
+      id_materia: id,
+      id_producto: producto.id,
+      tamanio,
+      cantidad: 1,
+      materiaPrima: ingrediente,
+    }));
+
+    setPreparaciones((current) => current.concat(newPreparaciones))
   };
 
   return (
@@ -72,7 +100,7 @@ const TableIngredientesProductos = () => {
                       <Button
                         type="button"
                         variant="outlined"
-                        // onClick={() => addIngrediente(ingrediente.id)}
+                        onClick={() => addIngrediente(ingrediente.id)}
                       >
                         Agregar
                       </Button>

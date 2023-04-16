@@ -42,7 +42,12 @@ const PreparacionProductos = () => {
     }
   };
 
-  const deleteIngrediente = (id) => {};
+  const deleteIngrediente = (id) => {
+    const newPreparaciones = preparaciones.filter(
+      (preparacion) => preparacion.id_materia !== id
+    );
+    setPreparaciones(newPreparaciones);
+  };
 
   return (
     <>
@@ -62,14 +67,14 @@ const PreparacionProductos = () => {
               id={key}
               value={key}
               checked={listaCostoTamanio.includes(key)}
-              // disabled={listaCostoTamanio.includes("unico")}
+              disabled={listaCostoTamanio.includes("unico") && key !== "unico"}
               onChange={(e) => handleChecked(e, key)}
             />
             <label htmlFor={key}>{value}</label>
           </li>
         ))}
       </ul>
-      <TableIngredientesProductos />
+      <TableIngredientesProductos listaCostoTamanio={listaCostoTamanio} />
       <Box
         sx={{
           mt: "0.5rem",
@@ -88,19 +93,19 @@ const PreparacionProductos = () => {
                 ))}
               </TabList>
             </Box>
-            {/* {selectedPreparations.map((size) => (
-            <TabPanel value={size.key} key={size.key}>
-              {preparaciones
-                .filter((preparacion) => preparacion.tamanio === selectedTab)
-                .map((it) => (
-                  <InputIngrediente
-                    key={`${preparacion.id_materia}-${preparacion.tamanio}`}
-                    preparacion={preparacion}
-                    onDelete={deleteIngrediente}
-                  />
-                ))}
-            </TabPanel>
-          ))} */}
+            {listaCostoTamanio.map((tamanio, index) => (
+              <TabPanel value={tamanio} key={`lista.${tamanio}.${index}`}>
+                {preparaciones
+                  .filter((it) => it.tamanio === selectedTab)
+                  .map((it) => (
+                    <InputIngrediente
+                      key={`${it.id_materia}-${it.tamanio}`}
+                      preparacion={it}
+                      onDelete={deleteIngrediente}
+                    />
+                  ))}
+              </TabPanel>
+            ))}
           </TabContext>
         )}
       </Box>
