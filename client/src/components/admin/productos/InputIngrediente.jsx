@@ -8,7 +8,25 @@ const InputIngrediente = ({ preparacion, onDelete }) => {
   const { setPreparaciones } = useContext(ProductContext);
 
   const handleChange = (e) => {
-    setCantidad(e.target.value);
+    let value = Number(e.target.value.replace(/[^0-9]+/g, ""));
+
+    if (value < 1 || isNaN(value)) {
+      value = 1;
+    }
+
+    setCantidad(value);
+    setPreparaciones((draft) => {
+      return draft.map((it) => {
+        if (
+          it.id_materia === preparacion.id_materia &&
+          it.tamanio === preparacion.tamanio
+        ) {
+          it.cantidad = value;
+        }
+
+        return it;
+      });
+    });
   };
 
   return (

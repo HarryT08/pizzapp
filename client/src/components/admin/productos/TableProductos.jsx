@@ -45,6 +45,7 @@ const TableProductos = ({ searchProductos }) => {
     products,
     methodsProducts,
     preparations,
+    setProducto,
     loading,
     setListaCostoTamanio,
   } = useContext(ProductContext);
@@ -110,8 +111,15 @@ const TableProductos = ({ searchProductos }) => {
         ...objectProductoConPreparaciones,
         costos: costosProducto,
       });
+      setProducto({
+        ...objectProductoConPreparaciones,
+        costos: costosProducto,
+      });
 
-      console.log("objetoProductoPreparaciones ->", objectProductoConPreparaciones);
+      console.log(
+        "objetoProductoPreparaciones ->",
+        objectProductoConPreparaciones
+      );
 
       setListaCostoTamanio(objectProductoConPreparaciones.selectedSizes);
 

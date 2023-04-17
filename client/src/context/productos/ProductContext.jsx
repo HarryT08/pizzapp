@@ -32,6 +32,8 @@ export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [action, setAction] = useState("create");
   const [producto, setProducto] = useState(initialProduct);
+  const [listaIngredientesSeleccionados, setListaIngredientesSeleccionados] =
+    useState([]);
   const [preparaciones, setPreparaciones] = useState([]);
   const [listaCostoTamanio, setListaCostoTamanio] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -47,9 +49,57 @@ export const ProductProvider = ({ children }) => {
     setAction("update");
   };
 
+  const crearPreparacionesConIngredientes = (tamanio) => {
+    const newPreparaciones = listaIngredientesSeleccionados.map(
+      (ingrediente) => ({
+        id_materia: ingrediente.id,
+        id_producto: producto.id || "",
+        tamanio,
+        cantidad: 1,
+        materiaPrima: ingrediente,
+      })
+    );
+console.log("Nuevas preparaciones",newPreparaciones)
+    setPreparaciones((preparaciones) => [
+      ...preparaciones,
+      ...newPreparaciones,
+    ]);
+  };
+  // Si ya tengo ingredientes , cuando un tamaño , tengo que actualizar las preparaciones con los ingredientes actuales
   useEffect(() => {
     getProductos();
   }, []);
+
+  useEffect(() => {
+    if (listaCostoTamanio.length === 0) {
+      setPreparaciones([]);
+    }
+    if (listaCostoTamanio.length === 1 && listaCostoTamanio[0] === "unico") {
+      setPreparaciones([]);
+    }
+  }, [listaCostoTamanio]);
+
+  useEffect(() => {
+    const nuevasPreparaciones = [...preparaciones].filter((preparacion) =>
+      listaCostoTamanio.includes(preparacion.tamanio)
+    );
+
+    setPreparaciones(nuevasPreparaciones);
+  }, [listaCostoTamanio]);
+
+  useEffect(() => {
+    const nuevosIngredientes = [...preparaciones].filter(
+      (preparacion, index, arreglo) => {
+        return (
+          arreglo.findIndex(
+            (obj) => obj.materiaPrima.id === preparacion.materiaPrima.id
+          ) === index
+        );
+      }
+    );
+
+    setListaIngredientesSeleccionados(nuevosIngredientes);
+  }, [preparaciones]);
 
   const getProductos = async () => {
     setLoading(true);
@@ -99,8 +149,6 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  
-
   const value = {
     products,
     producto,
@@ -119,6 +167,8 @@ export const ProductProvider = ({ children }) => {
     setCategory,
     listaCostoTamanio,
     setListaCostoTamanio,
+    crearPreparacionesConIngredientes,
+    listaIngredientesSeleccionados
   };
 
   return (
