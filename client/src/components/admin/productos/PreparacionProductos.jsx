@@ -16,8 +16,6 @@ const PreparacionProductos = () => {
     preparations,
     listaCostoTamanio,
     setListaCostoTamanio,
-    crearPreparacionesConIngredientes,
-    listaIngredientesSeleccionados
   } = useContext(ProductContext);
 
   const [selectedTab, setSelectedTab] = useState(() => {
@@ -38,7 +36,6 @@ const PreparacionProductos = () => {
         );
         setListaCostoTamanio([...listaCostoTamanioSinUnico, value]);
       }
-    
       setSelectedTab(key);
     } else {
       const nuevaListaCostoTamanio = listaCostoTamanio.filter(
@@ -48,6 +45,7 @@ const PreparacionProductos = () => {
       setListaCostoTamanio(nuevaListaCostoTamanio);
     }
   };
+
 
   const deleteIngrediente = (id) => {
     const newPreparaciones = preparaciones.filter(

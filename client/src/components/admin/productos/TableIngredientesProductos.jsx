@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ProductContext } from "@/context/productos/ProductContext";
 import { IngredienteContext } from "@/context/ingredientes/IngredientesContext";
 import {
@@ -52,8 +52,6 @@ const TableIngredientesProductos = ({ listaCostoTamanio = [] }) => {
       (ingrediente) => ingrediente.id === id
     );
 
-    console.log("ingrediente ->", ingrediente);
-
     const newPreparaciones = listaCostoTamanio.map((tamanio) => ({
       id_materia: id,
       id_producto: producto.id,
@@ -62,8 +60,36 @@ const TableIngredientesProductos = ({ listaCostoTamanio = [] }) => {
       materiaPrima: ingrediente,
     }));
 
-    setPreparaciones((current) => current.concat(newPreparaciones))
+    setPreparaciones((current) => current.concat(newPreparaciones));
   };
+
+  useEffect(() => {
+    if (preparaciones.length === 0) {
+      return;
+    }
+
+    const newTamanioPreparaciones = listaCostoTamanio.filter((tamanio) => {
+      return !preparaciones.some(
+        (preparacion) => preparacion.tamanio === tamanio
+      );
+    });
+
+    console.log("Tamanios nuevos =>", newTamanioPreparaciones);
+
+    const nuevasPreparaciones = preparaciones.flatMap((preparacion) => {
+      return newTamanioPreparaciones.map((tamanio) => ({
+        ...preparacion,
+        tamanio,
+      }));
+    });
+
+    setPreparaciones((current) => [...current, ...nuevasPreparaciones]);
+
+    console.log("Nuevas preparaciones =>", newTamanioPreparaciones);
+    console.log("Nuevas preparaciones en objetos =>", nuevasPreparaciones);
+  }, [listaCostoTamanio]);
+
+  console.log(preparaciones);
 
   return (
     <Box
