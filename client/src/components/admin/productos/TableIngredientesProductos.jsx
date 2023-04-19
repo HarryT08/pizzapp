@@ -23,8 +23,12 @@ const columns = [
 const TableIngredientesProductos = ({ listaCostoTamanio = [] }) => {
   const [pageIngredientesProductos, setPageIngredientesProductos] = useState(0);
   const [rowsIngredientesProductos, setRowsIngredientesProductos] = useState(3);
-  const { producto, preparaciones, setPreparaciones } =
-    useContext(ProductContext);
+  const {
+    producto,
+    preparaciones,
+    setPreparaciones,
+    setListaIngredientesSeleccionados,
+  } = useContext(ProductContext);
   const { ingredientes } = useContext(IngredienteContext);
 
   const handleChangePageIngredientesProductos = (event, newPage) => {
@@ -52,15 +56,7 @@ const TableIngredientesProductos = ({ listaCostoTamanio = [] }) => {
       (ingrediente) => ingrediente.id === id
     );
 
-    const newPreparaciones = listaCostoTamanio.map((tamanio) => ({
-      id_materia: id,
-      id_producto: producto.id,
-      tamanio,
-      cantidad: 1,
-      materiaPrima: ingrediente,
-    }));
-
-    setPreparaciones((current) => current.concat(newPreparaciones));
+    setListaIngredientesSeleccionados((current) => current.concat(ingrediente));
   };
 
   useEffect(() => {

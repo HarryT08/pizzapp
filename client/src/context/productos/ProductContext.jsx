@@ -49,57 +49,48 @@ export const ProductProvider = ({ children }) => {
     setAction("update");
   };
 
-//   const crearPreparacionesConIngredientes = (tamanio) => {
-//     const newPreparaciones = listaIngredientesSeleccionados.map(
-//       (ingrediente) => ({
-//         id_materia: ingrediente.id,
-//         id_producto: producto.id || "",
-//         tamanio,
-//         cantidad: 1,
-//         materiaPrima: ingrediente,
-//       })
-//     );
-// console.log("Nuevas preparaciones",newPreparaciones)
-//     setPreparaciones((preparaciones) => [
-//       ...preparaciones,
-//       ...newPreparaciones,
-//     ]);
-//   };
   // Si ya tengo ingredientes , cuando un tamaño , tengo que actualizar las preparaciones con los ingredientes actuales
   useEffect(() => {
     getProductos();
   }, []);
 
-  // useEffect(() => {
-  //   if (listaCostoTamanio.length === 0) {
-  //     setPreparaciones([]);
-  //   }
-  //   if (listaCostoTamanio.length === 1 && listaCostoTamanio[0] === "unico") {
-  //     setPreparaciones([]);
-  //   }
-  // }, [listaCostoTamanio]);
+  useEffect(() => {
+    const nuevasPreparaciones = listaCostoTamanio.map((tamanio) => {
+    
 
-  // useEffect(() => {
-  //   const nuevasPreparaciones = [...preparaciones].filter((preparacion) =>
-  //     listaCostoTamanio.includes(preparacion.tamanio)
-  //   );
+      const nuevasPreparacionesConIngredientes =
+        listaIngredientesSeleccionados.map((ingrediente) => {
+          const cantidad =
+            preparaciones.find(
+              (preparacion) =>
+                preparacion.id_materia === ingrediente.id &&
+                preparacion.tamanio === tamanio
+            )?.cantidad || 1;
 
-  //   setPreparaciones(nuevasPreparaciones);
-  // }, [listaCostoTamanio]);
+          return {
+            id_materia: ingrediente.id || "",
+            id_producto: producto.id || "",
+            tamanio,
+            cantidad,
+            materiaPrima: ingrediente,
+          };
+        });
+      return [...nuevasPreparacionesConIngredientes];
+    });
 
-  // useEffect(() => {
-  //   const nuevosIngredientes = [...preparaciones].filter(
-  //     (preparacion, index, arreglo) => {
-  //       return (
-  //         arreglo.findIndex(
-  //           (obj) => obj.materiaPrima.id === preparacion.materiaPrima.id
-  //         ) === index
-  //       );
-  //     }
-  //   );
+    setPreparaciones(nuevasPreparaciones.flat(1));
+  }, [listaCostoTamanio, listaIngredientesSeleccionados]);
 
-  //   setListaIngredientesSeleccionados(nuevosIngredientes);
-  // }, [preparaciones]);
+  useEffect(() => {
+    if (listaCostoTamanio.length === 0) {
+      setListaIngredientesSeleccionados([]);
+      setPreparaciones([]);
+    }
+    if (listaCostoTamanio.length === 1 && listaCostoTamanio[0] === "unico") {
+      setPreparaciones([]);
+      setListaIngredientesSeleccionados([]);
+    }
+  }, [listaCostoTamanio]);
 
   const getProductos = async () => {
     setLoading(true);
@@ -123,23 +114,23 @@ export const ProductProvider = ({ children }) => {
         costos: {
           ...valoresProducto.costos,
         },
-        preparaciones: [],
+        preparaciones: preparaciones,
       };
 
       if (action === "create") {
-        // await productosServices.createProduct(data);
+        await productosServices.createProduct(data);
         console.log("Data create ->", data);
       } else if (action === "update") {
         console.log("Data update ->", data);
-        // await productosServices.updateProduct(data);
+         await productosServices.updateProduct(data);
       }
 
       toast.success("Producto agregado correctamente");
       setPreparaciones([]);
-      // setTimeout(() => {
-      //   getProductos();
-      //   navigate("/admin/productos");
-      // }, 1500);
+      setTimeout(() => {
+        getProductos();
+        navigate("/admin/productos");
+      }, 1500);
       setLoading(false);
     } catch (err) {
       toast.error("No se pudo guardar el producto");
@@ -148,6 +139,7 @@ export const ProductProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
 
   const value = {
     products,
@@ -167,8 +159,9 @@ export const ProductProvider = ({ children }) => {
     setCategory,
     listaCostoTamanio,
     setListaCostoTamanio,
-    // crearPreparacionesConIngredientes,
-    listaIngredientesSeleccionados
+    setListaIngredientesSeleccionados,
+
+    listaIngredientesSeleccionados,
   };
 
   return (

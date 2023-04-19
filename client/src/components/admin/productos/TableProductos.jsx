@@ -48,6 +48,8 @@ const TableProductos = ({ searchProductos }) => {
     setProducto,
     loading,
     setListaCostoTamanio,
+    setPreparaciones,
+    setListaIngredientesSeleccionados,
   } = useContext(ProductContext);
   const navigate = useNavigate();
 
@@ -116,18 +118,25 @@ const TableProductos = ({ searchProductos }) => {
         costos: costosProducto,
       });
 
-      console.log(
-        "objetoProductoPreparaciones ->",
-        objectProductoConPreparaciones
-      );
-
       setListaCostoTamanio(objectProductoConPreparaciones.selectedSizes);
 
       navigate("/admin/productos/editar");
 
-      console.log("Este es el objeto", objectProductoConPreparaciones);
+      setPreparaciones(objectProductoConPreparaciones.preparaciones);
+
+      const ingredientesSinRepetir = [];
+      objectProductoConPreparaciones.preparaciones.forEach((preparacion) => {
+        if (
+          !ingredientesSinRepetir.find(
+            (ingrediente) => ingrediente.id === preparacion.materiaPrima.id
+          )
+        ) {
+          ingredientesSinRepetir.push(preparacion.materiaPrima);
+        }
+      });
+
+      setListaIngredientesSeleccionados(ingredientesSinRepetir);
       onUpdate("");
-      console.log("Este es el nuevo Get Values", methodsProducts.getValues());
     } catch (error) {
       toast.error("No se pudo obtener el producto");
       console.error(error);
