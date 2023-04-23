@@ -1,0 +1,1 @@
+export const getTokenFromLocalStorage = () => localStorage.getItem('jwttoken');

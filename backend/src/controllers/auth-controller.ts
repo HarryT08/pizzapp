@@ -4,6 +4,7 @@ import { User } from '../entities/User';
 import { Persona } from '../entities/Persona';
 import { Rol } from '../entities/Rol';
 
+
 export const signup = async (req: Request, res: Response) => {
   try {
     let { username, password, cedula, idRol, nombre, apellido, celular } =
@@ -17,8 +18,7 @@ export const signup = async (req: Request, res: Response) => {
     rol.init(idRol, '');
     user.init(cedula, rol, username, password, persona);
     const savedUser = await user.save();
-    const token: string = jwt.sign({ cedula: savedUser.cedula }, 'secret');
-    return res.header('auth-token', token).json(savedUser);
+    return res.status(200).send("Inserted successfully")
   } catch (error) {
     if (error instanceof Error)
       return res.status(500).json({ message: error.message });
@@ -33,12 +33,9 @@ export const login = async (req: Request, res: Response) => {
 
     if (user && user.validatePassword(password)) {
       const token = jwt.sign({ cedula: user.cedula, nombre: user.persona.nombre, cargo: user.rol.nombre }, 'secret', {
-        expiresIn: '9h'
+        expiresIn: '1m'
       });
-
-      const { password, ...rest } = user;
-            
-      return res.send({ token, user: rest });
+      return res.send({ user, token });
     }
 
     return res.status(404).json({

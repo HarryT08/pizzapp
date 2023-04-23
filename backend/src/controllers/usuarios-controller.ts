@@ -30,6 +30,7 @@ export const createUser = async (req: Request, res: Response) => {
 Metodo para buscar todos los usuarios, usando el ORM de typeorm
 */
 export const getUsers = async (req: Request, res: Response) => {
+  console.log(req.header);
   try {
     const users = await User.find({relations: ["rol", "persona"]});
     if(users.length > 0)
