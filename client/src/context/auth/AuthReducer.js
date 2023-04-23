@@ -9,6 +9,7 @@ export const authReducer = (state, action) => {
       };
     case "LOGOUT":
       localStorage.removeItem("Authorization");
+      localStorage.removeItem("jwttoken")
       localStorage.removeItem("cargo");
       return {
         ...state,
