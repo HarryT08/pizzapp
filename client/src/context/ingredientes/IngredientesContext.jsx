@@ -3,6 +3,7 @@ import { bohemiaApi } from "@/api/bohemiaApi";
 import { ingredienteReducer } from "./IngredientesReducer";
 import { toast } from "react-toastify";
 import * as ingredientesServices from "@/services/ingredientes/ingredientes";
+import { getTokenFromLocalStorage } from "@/utils/getToken";
 
 const initialIngrediente = {
   ingredientes: [],
@@ -14,8 +15,12 @@ export const IngredienteProvider = ({ children }) => {
   const [state, dispatch] = useReducer(ingredienteReducer, initialIngrediente);
 
   const getIngredientes = async () => {
+    const token = getTokenFromLocalStorage();
+    const jwtConfig = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
     try {
-      const res = await bohemiaApi.get("/ingredientes");
+      const res = await bohemiaApi.get("/ingredientes", jwtConfig);
       dispatch({
         type: "GET_INGREDIENTES",
         payload: res.data,

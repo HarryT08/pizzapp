@@ -1,5 +1,6 @@
 import { bohemiaApi } from "@/api/bohemiaApi";
 import { normalizeProductos } from "@/utils/productos";
+import {getTokenFromLocalStorage } from '@/utils/getToken'
 
 export async function getProductosAndPreparaciones() {
   const { data } = await bohemiaApi.get("/productos/productsAndPreparations");
@@ -29,7 +30,11 @@ export async function getProductoAndPreparaciones(idProducto) {
 }
 
 export function getProducts() {
-  return bohemiaApi.get("/productos");
+  const token = getTokenFromLocalStorage();
+  const jwtConfig = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+  return bohemiaApi.get("/productos", jwtConfig);
 }
 
 export function createProduct(producto) {

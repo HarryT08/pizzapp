@@ -1,7 +1,13 @@
 import { bohemiaApi } from "@/api/bohemiaApi";
+import {getTokenFromLocalStorage } from '@/utils/getToken'
+
 
 export const getComandas = async () => {
-  const response = await bohemiaApi.get("/comanda");
+  const token = getTokenFromLocalStorage();
+  const jwtConfig = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+  const response = await bohemiaApi.get("/comanda", jwtConfig);
   return response.data;
 };
 

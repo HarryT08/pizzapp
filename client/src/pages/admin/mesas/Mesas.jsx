@@ -12,6 +12,7 @@ import { Header, Alerta, Mesa, ModalMesas } from "@/components";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
 import { toast } from "react-toastify";
 import { MdAdd } from "react-icons/md";
+import { getTokenFromLocalStorage } from "@/utils/getToken";
 
 const Mesas = () => {
   const [open, setModalMesaOpen] = useState(false);
@@ -28,9 +29,13 @@ const Mesas = () => {
   };
 
   const getMesas = async () => {
+    const token = getTokenFromLocalStorage();
+    const jwtConfig = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
     try {
       setLoading(true);
-      const response = await bohemiaApi.get("/mesas");
+      const response = await bohemiaApi.get("/mesas", jwtConfig);
       setMesas(response.data);
       setLoading(false);
     } catch (error) {

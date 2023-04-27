@@ -1,8 +1,7 @@
 import { bohemiaApi } from "@/api/bohemiaApi";
-import {getTokenFromLocalStorage } from '../../utils/getToken'
+import {getTokenFromLocalStorage } from '@/utils/getToken'
 export const getUsers = async () => {
   const token = getTokenFromLocalStorage();
-  console.log('TOKEN DESDE CUENTAS.JS --> ' , token);
   const jwtConfig = {
     headers: { Authorization: `Bearer ${token}` }
   };
